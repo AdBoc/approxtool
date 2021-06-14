@@ -1,10 +1,9 @@
-import { UserServiceClient } from './protos/userService/protos/UserServiceClientPb';
+import { UserServiceClient } from './protos/UserServiceClientPb';
 
 export type GRPCClients = {
   userServiceClient: UserServiceClient;
 };
 
-// TODO: Wrong port?
 export const gRPCClients = {
-  userServiceClient: new UserServiceClient('http://localhost:3000')
+  userServiceClient: new UserServiceClient('http://localhost:8080')
 };

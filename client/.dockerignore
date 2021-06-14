@@ -1,0 +1,6 @@
+build
+dockerfile
+.dockerignore
+.idea
+node_modules
+# src/protos

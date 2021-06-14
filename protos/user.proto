@@ -1,0 +1,11 @@
+syntax = "proto3"; //proto version
+package userService; //default name of directory with proto files
+option go_package = "./user"; //name of directory in GO with proto files
+
+message UserData {
+  uint32 userId = 1;
+}
+
+service UserService {
+  rpc GetUserId(UserData) returns (UserData);
+}

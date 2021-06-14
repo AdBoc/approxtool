@@ -1,6 +1,13 @@
 #IDE files
 **/.idea
+.idea
 
 #generated proto files
 **/client/src/protos
-**/userService/protos
+**/server/**/protos
+
+#react build
+/client/build
+
+#node_modules
+client/node_modules
