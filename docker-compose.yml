@@ -1,0 +1,25 @@
+services:
+  protobuff:
+    build:
+      context: ./protos
+      dockerfile: dockerfile
+  envoy:
+    build:
+      context: ./envoy
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+  server:
+    build:
+      context: ./server
+      dockerfile: dockerfile
+    ports:
+      - "9000:9000"
+    depends_on:
+      - envoy
+  client:
+    build:
+      context: ./client
+      dockerfile: dockerfile
+    ports:
+      - "3000:3000"

@@ -1,0 +1,6 @@
+#IDE files
+**/.idea
+
+#generated proto files
+**/client/src/protos
+**/userService/protos
