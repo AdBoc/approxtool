@@ -3,13 +3,13 @@ package main
 import (
 	"google.golang.org/grpc"
 	"log"
+	"modelsrv/protos/model"
+	"modelsrv/server"
 	"net"
-	"usersrv/protos/user"
-	"usersrv/server"
 )
 
 const (
-	port = ":9000"
+	port = ":9001"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 
 	s := server.Server{}
 	grpcServer := grpc.NewServer()
-	user.RegisterUserServiceServer(grpcServer, &s)
+	model.RegisterModelServiceServer(grpcServer, &s)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatal("Failed to serve gRPC server on port", port, err)

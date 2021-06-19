@@ -1,3 +1,8 @@
+admin:
+  access_log_path: /tmp/admin_access.log
+  address:
+    socket_address: { address: 0.0.0.0, port_value: 9901 }
+
 static_resources:
   listeners:
     - name: listener_0
@@ -16,18 +21,36 @@ static_resources:
                     - name: local_service
                       domains: ["*"]
                       routes:
-                        - match: { prefix: "/" }
+                        - name: user_service
+                          match:
+                            prefix: "/"
+                            headers:
+                              - name: service-header
+                                exact_match: "user_service"
                           route:
                             cluster: user_service
-                            max_stream_duration:
-                              grpc_timeout_header_max: 0s
-                      cors:
-                        allow_origin_string_match:
-                          - prefix: "*"
-                        allow_methods: GET, PUT, DELETE, POST, OPTIONS
-                        allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout
-                        max_age: "1728000"
-                        expose_headers: custom-header-1,grpc-status,grpc-message
+                            cors:
+                              allow_origin_string_match:
+                                - prefix: "*"
+                              allow_methods: GET, PUT, DELETE, POST, OPTIONS
+                              allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout,service-header
+                              max_age: "1728000"
+                              expose_headers: custom-header-1,grpc-status,grpc-message
+                        - name: model_service
+                          match:
+                            prefix: "/"
+                            headers:
+                              - name: service-header
+                                exact_match: "model_service"
+                          route:
+                            cluster: model_service
+                            cors:
+                              allow_origin_string_match:
+                                - prefix: "*"
+                              allow_methods: GET, PUT, DELETE, POST, OPTIONS
+                              allow_headers: keep-alive,user-agent,cache-control,content-type,content-transfer-encoding,custom-header-1,x-accept-content-transfer-encoding,x-accept-response-streaming,x-user-agent,x-grpc-web,grpc-timeout,service-header
+                              max_age: "1728000"
+                              expose_headers: custom-header-1,grpc-status,grpc-message
                 http_filters:
                   - name: envoy.filters.http.grpc_web
                   - name: envoy.filters.http.cors
@@ -47,3 +70,17 @@ static_resources:
                     socket_address:
                       address: host.docker.internal
                       port_value: 9000
+    - name: model_service
+      connect_timeout: 0.25s
+      type: logical_dns
+      http2_protocol_options: {}
+      lb_policy: round_robin
+      load_assignment:
+        cluster_name: cluster_1
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: host.docker.internal
+                      port_value: 9001

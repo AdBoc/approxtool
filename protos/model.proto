@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package modelService;
+
+option go_package = "./model";
+
+message UserId {
+  uint32 id = 1;
+}
+
+message Model {
+  string model = 1;
+}
+
+message Models {
+  repeated Model models = 1;
+}
+
+message NewModelRequest {
+  Model model = 1;
+  UserId userId = 2;
+}
+
+message ModelId {
+  uint32 id = 1;
+}
+
+service ModelService {
+  rpc GetUserModels(UserId) returns (Models);
+  rpc AddModel(NewModelRequest) returns (google.protobuf.Empty);
+  rpc DeleteModel(ModelId) returns (google.protobuf.Empty);
+}

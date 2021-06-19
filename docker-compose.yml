@@ -9,12 +9,22 @@ services:
       dockerfile: dockerfile
     ports:
       - "8080:8080"
+      - "9901:9901"
   usersrv:
     build:
       context: ./server/usersrv
       dockerfile: dockerfile
     ports:
       - "9000:9000"
+    depends_on:
+      - envoy
+      - protobuff
+  modelsrv:
+    build:
+      context: ./server/modelsrv
+      dockerfile: dockerfile
+    ports: 
+      - "9001:9001"
     depends_on:
       - envoy
       - protobuff

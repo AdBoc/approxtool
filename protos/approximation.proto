@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package approximationService;
+
+message CalculationRequest {
+  string model = 1;
+  string type = 2;
+}
+
+message CalculationResult {
+  string result = 1;
+}
+
+service ApproximationService {
+  rpc GetApproximation(CalculationRequest) returns (CalculationResult);
+}

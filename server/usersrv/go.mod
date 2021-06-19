@@ -1,4 +1,4 @@
-module grpcTest
+module usersrv
 
 go 1.16
 
