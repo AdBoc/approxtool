@@ -1,8 +1,8 @@
 services:
-  protobuff:
-    build:
-      context: ./protos
-      dockerfile: dockerfile
+  # protobuff:
+  #   build:
+  #     context: ./protos
+  #     dockerfile: dockerfile
   envoy:
     build:
       context: ./envoy
@@ -18,7 +18,7 @@ services:
       - "9000:9000"
     depends_on:
       - envoy
-      - protobuff
+      # - protobuff
   modelsrv:
     build:
       context: ./server/modelsrv
@@ -27,12 +27,21 @@ services:
       - "9001:9001"
     depends_on:
       - envoy
-      - protobuff
+      # - protobuff
+  approxsrv:
+    build:
+      context: ./server/approxsrv
+      dockerfile: dockerfile
+    ports:
+      - "9002:9002"
+    depends_on:
+      - envoy
+      # - protobuff
   client:
     build:
       context: ./client
       dockerfile: dockerfile
     ports:
       - "3000:3000"
-    depends_on:
-      - protobuff
+    # depends_on:
+    #   - protobuff

@@ -8,6 +8,7 @@ import { UserServiceMethods } from './components/UserServiceMethods';
 import { Menu } from './components/Menu';
 import { ErrorPage } from './components/ErrorPage';
 import { ModelMethods } from './components/ModelMethods';
+import { ApproximationMethods } from './components/ApproximationMethods';
 
 function App(): JSX.Element {
   return (
@@ -21,6 +22,9 @@ function App(): JSX.Element {
         </Route>
         <Route exact path="/model-service">
           <ModelMethods/>
+        </Route>
+        <Route exact path="/approximation-service">
+          <ApproximationMethods/>
         </Route>
         <Route path="*">
           <ErrorPage/>

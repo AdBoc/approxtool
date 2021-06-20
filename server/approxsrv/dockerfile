@@ -1,0 +1,7 @@
+FROM python:latest
+WORKDIR /code
+COPY . .
+RUN pip install --upgrade pip \
+ && pip install grpcio grpcio-tools
+EXPOSE 9002
+CMD ["python", "main.py"]

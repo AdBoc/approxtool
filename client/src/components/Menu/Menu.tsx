@@ -7,6 +7,7 @@ export const Menu = () => {
       <p>Main Page</p>
       <Link to="/user-service">User Service</Link>
       <Link to="/model-service">Model Service</Link>
+      <Link to="/approximation-service">Approximation Service</Link>
     </div>
   );
 };
