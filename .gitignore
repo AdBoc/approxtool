@@ -4,8 +4,8 @@
 .idea
 
 #generated proto files
-**/client/src/protos
-**/server/**/protos
+# **/client/src/protos
+# **/server/**/protos
 
 #react build
 /client/build

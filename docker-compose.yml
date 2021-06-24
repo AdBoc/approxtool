@@ -23,7 +23,7 @@ services:
     build:
       context: ./server/modelsrv
       dockerfile: dockerfile
-    ports: 
+    ports:
       - "9001:9001"
     depends_on:
       - envoy
@@ -45,3 +45,15 @@ services:
       - "3000:3000"
     # depends_on:
     #   - protobuff
+  postgresDb:
+    image: postgres:13.3
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5438:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgres/data
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
