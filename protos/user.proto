@@ -3,41 +3,46 @@ syntax = "proto3"; //proto version
 import "google/protobuf/empty.proto";
 
 package userService; //default name of directory with proto files
-
-option go_package = "./user"; //name of directory in GO with proto files
+option go_package = "./userService"; //name of directory in GO with proto files
 
 enum Role {
   BASIC_USER = 0;
   ADMIN = 1;
 }
 
-message UserId {
+message GetUserRequest {
   uint32 id = 1;
+}
+
+message GetUserResponse {
+  uint32 id = 1;
+  string username = 2;
 }
 
 message NewUserRequest {
   string login = 1;
   string password = 2;
-  Role role = 3;
+  string email = 3;
+  Role role = 4;
 }
 
-message UserPrivilegeRequest {
-  UserId userId = 1;
+message ChangePrivilegeRequest {
+  uint32 userId = 1;
   Role newRole = 2;
 }
 
-message UserResponse {
+message GetUsersResponse {
+  repeated GetUserResponse users = 1;
+}
+
+message DeleteUserRequest {
   uint32 id = 1;
 }
 
-message UsersResponse {
-  repeated UserResponse users = 1;
-}
-
 service UserService {
-  rpc GetUser(UserId) returns (UserResponse);
-  rpc GetAllUsers(google.protobuf.Empty) returns (UsersResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc GetAllUsers(google.protobuf.Empty) returns (GetUsersResponse);
   rpc CreateUser(NewUserRequest) returns (google.protobuf.Empty);
-  rpc DeleteUser(UserId) returns (google.protobuf.Empty);
-  rpc ChangeUserPrivilege(UserPrivilegeRequest) returns (google.protobuf.Empty);
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
+  rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty);
 }

@@ -1,11 +1,9 @@
 package main
 
 import (
-	"google.golang.org/grpc"
-	"log"
-	"net"
-	"usersrv/protos/user"
+	"context"
 	"usersrv/server"
+	"usersrv/services"
 )
 
 const (
@@ -13,16 +11,9 @@ const (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatal("Failed to create listener on port", port, err)
-	}
+	pgxPool := services.NewPgxConn()
+	defer pgxPool.Close(context.Background())
 
-	s := server.Server{}
-	grpcServer := grpc.NewServer()
-	user.RegisterUserServiceServer(grpcServer, &s)
-
-	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatal("Failed to serve gRPC server on port", port, err)
-	}
+	s := server.NewServer(pgxPool, port)
+	s.Run()
 }

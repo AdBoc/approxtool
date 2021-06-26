@@ -18,6 +18,7 @@ services:
       - "9000:9000"
     depends_on:
       - envoy
+      - postgres
       # - protobuff
   modelsrv:
     build:
@@ -27,6 +28,7 @@ services:
       - "9001:9001"
     depends_on:
       - envoy
+      - postgres
       # - protobuff
   approxsrv:
     build:
@@ -45,12 +47,14 @@ services:
       - "3000:3000"
     # depends_on:
     #   - protobuff
-  postgresDb:
+  postgres:
     image: postgres:13.3
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      # - DATABASE_HOST=${TEST_DB_HOST} 
     ports:
       - "5438:5432"
     volumes:

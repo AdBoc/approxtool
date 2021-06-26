@@ -37,28 +37,28 @@ export class UserServiceClient {
   }
 
   methodInfoGetUser = new grpcWeb.AbstractClientBase.MethodInfo(
-    user_pb.UserResponse,
-    (request: user_pb.UserId) => {
+    user_pb.GetUserResponse,
+    (request: user_pb.GetUserRequest) => {
       return request.serializeBinary();
     },
-    user_pb.UserResponse.deserializeBinary
+    user_pb.GetUserResponse.deserializeBinary
   );
 
   getUser(
-    request: user_pb.UserId,
-    metadata: grpcWeb.Metadata | null): Promise<user_pb.UserResponse>;
+    request: user_pb.GetUserRequest,
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.GetUserResponse>;
 
   getUser(
-    request: user_pb.UserId,
+    request: user_pb.GetUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: user_pb.UserResponse) => void): grpcWeb.ClientReadableStream<user_pb.UserResponse>;
+               response: user_pb.GetUserResponse) => void): grpcWeb.ClientReadableStream<user_pb.GetUserResponse>;
 
   getUser(
-    request: user_pb.UserId,
+    request: user_pb.GetUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: user_pb.UserResponse) => void) {
+               response: user_pb.GetUserResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -77,28 +77,28 @@ export class UserServiceClient {
   }
 
   methodInfoGetAllUsers = new grpcWeb.AbstractClientBase.MethodInfo(
-    user_pb.UsersResponse,
+    user_pb.GetUsersResponse,
     (request: google_protobuf_empty_pb.Empty) => {
       return request.serializeBinary();
     },
-    user_pb.UsersResponse.deserializeBinary
+    user_pb.GetUsersResponse.deserializeBinary
   );
 
   getAllUsers(
     request: google_protobuf_empty_pb.Empty,
-    metadata: grpcWeb.Metadata | null): Promise<user_pb.UsersResponse>;
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.GetUsersResponse>;
 
   getAllUsers(
     request: google_protobuf_empty_pb.Empty,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: user_pb.UsersResponse) => void): grpcWeb.ClientReadableStream<user_pb.UsersResponse>;
+               response: user_pb.GetUsersResponse) => void): grpcWeb.ClientReadableStream<user_pb.GetUsersResponse>;
 
   getAllUsers(
     request: google_protobuf_empty_pb.Empty,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: user_pb.UsersResponse) => void) {
+               response: user_pb.GetUsersResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -158,24 +158,24 @@ export class UserServiceClient {
 
   methodInfoDeleteUser = new grpcWeb.AbstractClientBase.MethodInfo(
     google_protobuf_empty_pb.Empty,
-    (request: user_pb.UserId) => {
+    (request: user_pb.DeleteUserRequest) => {
       return request.serializeBinary();
     },
     google_protobuf_empty_pb.Empty.deserializeBinary
   );
 
   deleteUser(
-    request: user_pb.UserId,
+    request: user_pb.DeleteUserRequest,
     metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
 
   deleteUser(
-    request: user_pb.UserId,
+    request: user_pb.DeleteUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   deleteUser(
-    request: user_pb.UserId,
+    request: user_pb.DeleteUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void) {
@@ -198,24 +198,24 @@ export class UserServiceClient {
 
   methodInfoChangeUserPrivilege = new grpcWeb.AbstractClientBase.MethodInfo(
     google_protobuf_empty_pb.Empty,
-    (request: user_pb.UserPrivilegeRequest) => {
+    (request: user_pb.ChangePrivilegeRequest) => {
       return request.serializeBinary();
     },
     google_protobuf_empty_pb.Empty.deserializeBinary
   );
 
   changeUserPrivilege(
-    request: user_pb.UserPrivilegeRequest,
+    request: user_pb.ChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
 
   changeUserPrivilege(
-    request: user_pb.UserPrivilegeRequest,
+    request: user_pb.ChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   changeUserPrivilege(
-    request: user_pb.UserPrivilegeRequest,
+    request: user_pb.ChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void) {
