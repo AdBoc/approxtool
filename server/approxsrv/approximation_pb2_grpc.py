@@ -14,17 +14,17 @@ class ApproximationServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetApproximation = channel.unary_unary(
-                '/approximationService.ApproximationService/GetApproximation',
-                request_serializer=approximation__pb2.CalculationRequest.SerializeToString,
-                response_deserializer=approximation__pb2.CalculationResult.FromString,
+        self.FitCurves = channel.unary_unary(
+                '/approximationService.ApproximationService/FitCurves',
+                request_serializer=approximation__pb2.CurveFitRequest.SerializeToString,
+                response_deserializer=approximation__pb2.CurveFitResult.FromString,
                 )
 
 
 class ApproximationServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetApproximation(self, request, context):
+    def FitCurves(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,10 +33,10 @@ class ApproximationServiceServicer(object):
 
 def add_ApproximationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetApproximation': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetApproximation,
-                    request_deserializer=approximation__pb2.CalculationRequest.FromString,
-                    response_serializer=approximation__pb2.CalculationResult.SerializeToString,
+            'FitCurves': grpc.unary_unary_rpc_method_handler(
+                    servicer.FitCurves,
+                    request_deserializer=approximation__pb2.CurveFitRequest.FromString,
+                    response_serializer=approximation__pb2.CurveFitResult.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -49,7 +49,7 @@ class ApproximationService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetApproximation(request,
+    def FitCurves(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +59,8 @@ class ApproximationService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/approximationService.ApproximationService/GetApproximation',
-            approximation__pb2.CalculationRequest.SerializeToString,
-            approximation__pb2.CalculationResult.FromString,
+        return grpc.experimental.unary_unary(request, target, '/approximationService.ApproximationService/FitCurves',
+            approximation__pb2.CurveFitRequest.SerializeToString,
+            approximation__pb2.CurveFitResult.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

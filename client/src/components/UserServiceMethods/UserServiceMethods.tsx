@@ -11,7 +11,7 @@ import {
   Role,
 } from '../../protos/user_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 
 const userSrv = gRPCClients.userServiceClient;
 const metadata = {'service-header': 'user_service'};

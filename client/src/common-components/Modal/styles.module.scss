@@ -1,0 +1,34 @@
+@use '../../styles/indexes';
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: indexes.$modal-index;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(0, 0, 0, .5);
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+}
+
+.modal {
+  z-index: 100;
+  background: white;
+  position: relative;
+  margin: 1.75rem auto;
+  border-radius: 3px;
+  height: 80vh;
+  max-width: 80vw;
+  padding: 2rem;
+}

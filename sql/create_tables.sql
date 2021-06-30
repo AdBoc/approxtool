@@ -1,7 +1,9 @@
 -- psql -d postgres -U postgres -f create_tables.sql
 
-CREATE DATABASE user_service;
-CREATE DATABASE model_service;
+CREATE
+DATABASE user_service;
+CREATE
+DATABASE model_service;
 
 \c user_service
 
@@ -14,7 +16,9 @@ CREATE TABLE users (
 
 \c model_service
 
-CREATE TABLE model (
-    id SERIAL PRIMARY KEY,
-    model VARCHAR(100) NOT NULL
+CREATE TABLE models (
+    id            SERIAL PRIMARY KEY,
+    name          VARCHAR(50)  NOT NULL,
+    expression    VARCHAR(100) NOT NULL,
+    lexexpression VARCHAR(150) NOT NULL
 );

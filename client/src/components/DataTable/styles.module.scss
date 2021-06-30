@@ -1,0 +1,38 @@
+.sheetWrapper {
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.numberCell {
+  align-self: stretch;
+  width: 2em;
+  border: 1px solid hsl(0deg 0% 70%);
+  background-color: hsl(0deg 0% 82%);
+}
+
+.cell {
+  width: 6rem;
+  height: 2.1rem;
+  border: 1px solid hsl(0deg 0% 84%);
+  background-color: hsl(0deg 0% 100%);
+
+  text-align: center;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+}
+
+.cellNumber {
+
+}

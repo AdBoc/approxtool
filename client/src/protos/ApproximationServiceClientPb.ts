@@ -35,44 +35,44 @@ export class ApproximationServiceClient {
     this.options_ = options;
   }
 
-  methodInfoGetApproximation = new grpcWeb.AbstractClientBase.MethodInfo(
-    approximation_pb.CalculationResult,
-    (request: approximation_pb.CalculationRequest) => {
+  methodInfoFitCurves = new grpcWeb.AbstractClientBase.MethodInfo(
+    approximation_pb.CurveFitResult,
+    (request: approximation_pb.CurveFitRequest) => {
       return request.serializeBinary();
     },
-    approximation_pb.CalculationResult.deserializeBinary
+    approximation_pb.CurveFitResult.deserializeBinary
   );
 
-  getApproximation(
-    request: approximation_pb.CalculationRequest,
-    metadata: grpcWeb.Metadata | null): Promise<approximation_pb.CalculationResult>;
+  fitCurves(
+    request: approximation_pb.CurveFitRequest,
+    metadata: grpcWeb.Metadata | null): Promise<approximation_pb.CurveFitResult>;
 
-  getApproximation(
-    request: approximation_pb.CalculationRequest,
+  fitCurves(
+    request: approximation_pb.CurveFitRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: approximation_pb.CalculationResult) => void): grpcWeb.ClientReadableStream<approximation_pb.CalculationResult>;
+               response: approximation_pb.CurveFitResult) => void): grpcWeb.ClientReadableStream<approximation_pb.CurveFitResult>;
 
-  getApproximation(
-    request: approximation_pb.CalculationRequest,
+  fitCurves(
+    request: approximation_pb.CurveFitRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: approximation_pb.CalculationResult) => void) {
+               response: approximation_pb.CurveFitResult) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/approximationService.ApproximationService/GetApproximation',
+          '/approximationService.ApproximationService/FitCurves',
         request,
         metadata || {},
-        this.methodInfoGetApproximation,
+        this.methodInfoFitCurves,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/approximationService.ApproximationService/GetApproximation',
+      '/approximationService.ApproximationService/FitCurves',
     request,
     metadata || {},
-    this.methodInfoGetApproximation);
+    this.methodInfoFitCurves);
   }
 
 }

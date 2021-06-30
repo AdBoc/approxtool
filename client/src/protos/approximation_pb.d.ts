@@ -2,43 +2,153 @@ import * as jspb from 'google-protobuf'
 
 
 
-export class CalculationRequest extends jspb.Message {
-  getModel(): string;
-  setModel(value: string): CalculationRequest;
+export class Parameter extends jspb.Message {
+  getName(): string;
+  setName(value: string): Parameter;
 
-  getType(): string;
-  setType(value: string): CalculationRequest;
+  getValue(): number;
+  setValue(value: number): Parameter;
+
+  getStderr(): number;
+  setStderr(value: number): Parameter;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): CalculationRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: CalculationRequest): CalculationRequest.AsObject;
-  static serializeBinaryToWriter(message: CalculationRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): CalculationRequest;
-  static deserializeBinaryFromReader(message: CalculationRequest, reader: jspb.BinaryReader): CalculationRequest;
+  toObject(includeInstance?: boolean): Parameter.AsObject;
+  static toObject(includeInstance: boolean, msg: Parameter): Parameter.AsObject;
+  static serializeBinaryToWriter(message: Parameter, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Parameter;
+  static deserializeBinaryFromReader(message: Parameter, reader: jspb.BinaryReader): Parameter;
 }
 
-export namespace CalculationRequest {
+export namespace Parameter {
   export type AsObject = {
-    model: string,
-    type: string,
+    name: string,
+    value: number,
+    stderr: number,
   }
 }
 
-export class CalculationResult extends jspb.Message {
-  getResult(): string;
-  setResult(value: string): CalculationResult;
+export class FitResult extends jspb.Message {
+  getSuccessStatus(): boolean;
+  setSuccessStatus(value: boolean): FitResult;
+
+  getR(): number;
+  setR(value: number): FitResult;
+
+  getRSqrt(): number;
+  setRSqrt(value: number): FitResult;
+
+  getAic(): number;
+  setAic(value: number): FitResult;
+
+  getBic(): number;
+  setBic(value: number): FitResult;
+
+  getFog(): number;
+  setFog(value: number): FitResult;
+
+  getMeanOfX(): number;
+  setMeanOfX(value: number): FitResult;
+
+  getMeanOfY(): number;
+  setMeanOfY(value: number): FitResult;
+
+  getChiSqrt(): number;
+  setChiSqrt(value: number): FitResult;
+
+  getReducedChiSqrt(): number;
+  setReducedChiSqrt(value: number): FitResult;
+
+  getDataPoints(): number;
+  setDataPoints(value: number): FitResult;
+
+  getFittingMethod(): string;
+  setFittingMethod(value: string): FitResult;
+
+  getParameterList(): Array<Parameter>;
+  setParameterList(value: Array<Parameter>): FitResult;
+  clearParameterList(): FitResult;
+  addParameter(value?: Parameter, index?: number): Parameter;
+
+  getModelName(): string;
+  setModelName(value: string): FitResult;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): CalculationResult.AsObject;
-  static toObject(includeInstance: boolean, msg: CalculationResult): CalculationResult.AsObject;
-  static serializeBinaryToWriter(message: CalculationResult, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): CalculationResult;
-  static deserializeBinaryFromReader(message: CalculationResult, reader: jspb.BinaryReader): CalculationResult;
+  toObject(includeInstance?: boolean): FitResult.AsObject;
+  static toObject(includeInstance: boolean, msg: FitResult): FitResult.AsObject;
+  static serializeBinaryToWriter(message: FitResult, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): FitResult;
+  static deserializeBinaryFromReader(message: FitResult, reader: jspb.BinaryReader): FitResult;
 }
 
-export namespace CalculationResult {
+export namespace FitResult {
   export type AsObject = {
-    result: string,
+    successStatus: boolean,
+    r: number,
+    rSqrt: number,
+    aic: number,
+    bic: number,
+    fog: number,
+    meanOfX: number,
+    meanOfY: number,
+    chiSqrt: number,
+    reducedChiSqrt: number,
+    dataPoints: number,
+    fittingMethod: string,
+    parameterList: Array<Parameter.AsObject>,
+    modelName: string,
+  }
+}
+
+export class CurveFitRequest extends jspb.Message {
+  getXDataList(): Array<number>;
+  setXDataList(value: Array<number>): CurveFitRequest;
+  clearXDataList(): CurveFitRequest;
+  addXData(value: number, index?: number): CurveFitRequest;
+
+  getYDataList(): Array<number>;
+  setYDataList(value: Array<number>): CurveFitRequest;
+  clearYDataList(): CurveFitRequest;
+  addYData(value: number, index?: number): CurveFitRequest;
+
+  getExpressionsList(): Array<string>;
+  setExpressionsList(value: Array<string>): CurveFitRequest;
+  clearExpressionsList(): CurveFitRequest;
+  addExpressions(value: string, index?: number): CurveFitRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CurveFitRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CurveFitRequest): CurveFitRequest.AsObject;
+  static serializeBinaryToWriter(message: CurveFitRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CurveFitRequest;
+  static deserializeBinaryFromReader(message: CurveFitRequest, reader: jspb.BinaryReader): CurveFitRequest;
+}
+
+export namespace CurveFitRequest {
+  export type AsObject = {
+    xDataList: Array<number>,
+    yDataList: Array<number>,
+    expressionsList: Array<string>,
+  }
+}
+
+export class CurveFitResult extends jspb.Message {
+  getFitResultList(): Array<FitResult>;
+  setFitResultList(value: Array<FitResult>): CurveFitResult;
+  clearFitResultList(): CurveFitResult;
+  addFitResult(value?: FitResult, index?: number): FitResult;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CurveFitResult.AsObject;
+  static toObject(includeInstance: boolean, msg: CurveFitResult): CurveFitResult.AsObject;
+  static serializeBinaryToWriter(message: CurveFitResult, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CurveFitResult;
+  static deserializeBinaryFromReader(message: CurveFitResult, reader: jspb.BinaryReader): CurveFitResult;
+}
+
+export namespace CurveFitResult {
+  export type AsObject = {
+    fitResultList: Array<FitResult.AsObject>,
   }
 }
 

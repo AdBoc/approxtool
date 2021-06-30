@@ -4,31 +4,36 @@ import "google/protobuf/empty.proto";
 
 package modelService;
 
-option go_package = "./model";
-
-message UserId {
-  uint32 id = 1;
-}
+option go_package = "./modelService";
 
 message Model {
-  string model = 1;
+  uint32 id = 1;
+  string name = 2;
+  string expression = 3;
+  string lexExpression = 4;
 }
 
-message Models {
+message GetModelsRequest {
+  uint32 userId = 1;
+}
+
+message GetModelsResponse {
   repeated Model models = 1;
 }
 
 message NewModelRequest {
-  Model model = 1;
-  UserId userId = 2;
+  uint32 userId = 1;
+  string name = 2;
+  string expression = 3;
+  string lexExpression = 4;
 }
 
-message ModelId {
-  uint32 id = 1;
+message DeleteModelRequest {
+  uint32 modelId = 1;
 }
 
 service ModelService {
-  rpc GetUserModels(UserId) returns (Models);
+  rpc GetUserModels(GetModelsRequest) returns (GetModelsResponse);
   rpc AddModel(NewModelRequest) returns (google.protobuf.Empty);
-  rpc DeleteModel(ModelId) returns (google.protobuf.Empty);
+  rpc DeleteModel(DeleteModelRequest) returns (google.protobuf.Empty);
 }

@@ -3,27 +3,18 @@ import * as jspb from 'google-protobuf'
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 
 
-export class UserId extends jspb.Message {
-  getId(): number;
-  setId(value: number): UserId;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): UserId.AsObject;
-  static toObject(includeInstance: boolean, msg: UserId): UserId.AsObject;
-  static serializeBinaryToWriter(message: UserId, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): UserId;
-  static deserializeBinaryFromReader(message: UserId, reader: jspb.BinaryReader): UserId;
-}
-
-export namespace UserId {
-  export type AsObject = {
-    id: number,
-  }
-}
-
 export class Model extends jspb.Message {
-  getModel(): string;
-  setModel(value: string): Model;
+  getId(): number;
+  setId(value: number): Model;
+
+  getName(): string;
+  setName(value: string): Model;
+
+  getExpression(): string;
+  setExpression(value: string): Model;
+
+  getLexexpression(): string;
+  setLexexpression(value: string): Model;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Model.AsObject;
@@ -35,40 +26,63 @@ export class Model extends jspb.Message {
 
 export namespace Model {
   export type AsObject = {
-    model: string,
+    id: number,
+    name: string,
+    expression: string,
+    lexexpression: string,
   }
 }
 
-export class Models extends jspb.Message {
+export class GetModelsRequest extends jspb.Message {
+  getUserid(): number;
+  setUserid(value: number): GetModelsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetModelsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetModelsRequest): GetModelsRequest.AsObject;
+  static serializeBinaryToWriter(message: GetModelsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetModelsRequest;
+  static deserializeBinaryFromReader(message: GetModelsRequest, reader: jspb.BinaryReader): GetModelsRequest;
+}
+
+export namespace GetModelsRequest {
+  export type AsObject = {
+    userid: number,
+  }
+}
+
+export class GetModelsResponse extends jspb.Message {
   getModelsList(): Array<Model>;
-  setModelsList(value: Array<Model>): Models;
-  clearModelsList(): Models;
+  setModelsList(value: Array<Model>): GetModelsResponse;
+  clearModelsList(): GetModelsResponse;
   addModels(value?: Model, index?: number): Model;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): Models.AsObject;
-  static toObject(includeInstance: boolean, msg: Models): Models.AsObject;
-  static serializeBinaryToWriter(message: Models, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): Models;
-  static deserializeBinaryFromReader(message: Models, reader: jspb.BinaryReader): Models;
+  toObject(includeInstance?: boolean): GetModelsResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetModelsResponse): GetModelsResponse.AsObject;
+  static serializeBinaryToWriter(message: GetModelsResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetModelsResponse;
+  static deserializeBinaryFromReader(message: GetModelsResponse, reader: jspb.BinaryReader): GetModelsResponse;
 }
 
-export namespace Models {
+export namespace GetModelsResponse {
   export type AsObject = {
     modelsList: Array<Model.AsObject>,
   }
 }
 
 export class NewModelRequest extends jspb.Message {
-  getModel(): Model | undefined;
-  setModel(value?: Model): NewModelRequest;
-  hasModel(): boolean;
-  clearModel(): NewModelRequest;
+  getUserid(): number;
+  setUserid(value: number): NewModelRequest;
 
-  getUserid(): UserId | undefined;
-  setUserid(value?: UserId): NewModelRequest;
-  hasUserid(): boolean;
-  clearUserid(): NewModelRequest;
+  getName(): string;
+  setName(value: string): NewModelRequest;
+
+  getExpression(): string;
+  setExpression(value: string): NewModelRequest;
+
+  getLexexpression(): string;
+  setLexexpression(value: string): NewModelRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): NewModelRequest.AsObject;
@@ -80,26 +94,28 @@ export class NewModelRequest extends jspb.Message {
 
 export namespace NewModelRequest {
   export type AsObject = {
-    model?: Model.AsObject,
-    userid?: UserId.AsObject,
+    userid: number,
+    name: string,
+    expression: string,
+    lexexpression: string,
   }
 }
 
-export class ModelId extends jspb.Message {
-  getId(): number;
-  setId(value: number): ModelId;
+export class DeleteModelRequest extends jspb.Message {
+  getModelid(): number;
+  setModelid(value: number): DeleteModelRequest;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): ModelId.AsObject;
-  static toObject(includeInstance: boolean, msg: ModelId): ModelId.AsObject;
-  static serializeBinaryToWriter(message: ModelId, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): ModelId;
-  static deserializeBinaryFromReader(message: ModelId, reader: jspb.BinaryReader): ModelId;
+  toObject(includeInstance?: boolean): DeleteModelRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DeleteModelRequest): DeleteModelRequest.AsObject;
+  static serializeBinaryToWriter(message: DeleteModelRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DeleteModelRequest;
+  static deserializeBinaryFromReader(message: DeleteModelRequest, reader: jspb.BinaryReader): DeleteModelRequest;
 }
 
-export namespace ModelId {
+export namespace DeleteModelRequest {
   export type AsObject = {
-    id: number,
+    modelid: number,
   }
 }
 

@@ -1,15 +1,39 @@
 syntax = "proto3";
 package approximationService;
 
-message CalculationRequest {
-  string model = 1;
-  string type = 2;
+message Parameter {
+  string name = 1;
+  float value = 2;
+  float stderr = 3;
 }
 
-message CalculationResult {
-  string result = 1;
+message FitResult {
+  bool success_status = 1;
+  float r = 2;
+  float r_sqrt = 3;
+  float aic = 4;
+  float bic = 5;
+  int32 fog = 6;
+  float mean_of_x = 7;
+  float mean_of_y = 8;
+  float chi_sqrt = 9;
+  float reduced_chi_sqrt = 10;
+  float data_points = 11;
+  string fitting_method = 12;
+  repeated Parameter parameter = 13;
+  string model_name = 14;
+}
+
+message CurveFitRequest {
+  repeated float x_data = 1;
+  repeated float y_data = 2;
+  repeated string expressions = 3;
+}
+
+message CurveFitResult {
+  repeated FitResult fit_result = 1;
 }
 
 service ApproximationService {
-  rpc GetApproximation(CalculationRequest) returns (CalculationResult);
+  rpc FitCurves(CurveFitRequest) returns (CurveFitResult);
 }

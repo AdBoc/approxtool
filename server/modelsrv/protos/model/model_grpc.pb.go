@@ -19,9 +19,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ModelServiceClient interface {
-	GetUserModels(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*Models, error)
+	GetUserModels(ctx context.Context, in *GetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error)
 	AddModel(ctx context.Context, in *NewModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteModel(ctx context.Context, in *ModelId, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteModel(ctx context.Context, in *DeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type modelServiceClient struct {
@@ -32,8 +32,8 @@ func NewModelServiceClient(cc grpc.ClientConnInterface) ModelServiceClient {
 	return &modelServiceClient{cc}
 }
 
-func (c *modelServiceClient) GetUserModels(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*Models, error) {
-	out := new(Models)
+func (c *modelServiceClient) GetUserModels(ctx context.Context, in *GetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error) {
+	out := new(GetModelsResponse)
 	err := c.cc.Invoke(ctx, "/modelService.ModelService/GetUserModels", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (c *modelServiceClient) AddModel(ctx context.Context, in *NewModelRequest, 
 	return out, nil
 }
 
-func (c *modelServiceClient) DeleteModel(ctx context.Context, in *ModelId, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *modelServiceClient) DeleteModel(ctx context.Context, in *DeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/modelService.ModelService/DeleteModel", in, out, opts...)
 	if err != nil {
@@ -63,9 +63,9 @@ func (c *modelServiceClient) DeleteModel(ctx context.Context, in *ModelId, opts 
 // All implementations must embed UnimplementedModelServiceServer
 // for forward compatibility
 type ModelServiceServer interface {
-	GetUserModels(context.Context, *UserId) (*Models, error)
+	GetUserModels(context.Context, *GetModelsRequest) (*GetModelsResponse, error)
 	AddModel(context.Context, *NewModelRequest) (*emptypb.Empty, error)
-	DeleteModel(context.Context, *ModelId) (*emptypb.Empty, error)
+	DeleteModel(context.Context, *DeleteModelRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedModelServiceServer()
 }
 
@@ -73,13 +73,13 @@ type ModelServiceServer interface {
 type UnimplementedModelServiceServer struct {
 }
 
-func (UnimplementedModelServiceServer) GetUserModels(context.Context, *UserId) (*Models, error) {
+func (UnimplementedModelServiceServer) GetUserModels(context.Context, *GetModelsRequest) (*GetModelsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserModels not implemented")
 }
 func (UnimplementedModelServiceServer) AddModel(context.Context, *NewModelRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddModel not implemented")
 }
-func (UnimplementedModelServiceServer) DeleteModel(context.Context, *ModelId) (*emptypb.Empty, error) {
+func (UnimplementedModelServiceServer) DeleteModel(context.Context, *DeleteModelRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteModel not implemented")
 }
 func (UnimplementedModelServiceServer) mustEmbedUnimplementedModelServiceServer() {}
@@ -96,7 +96,7 @@ func RegisterModelServiceServer(s grpc.ServiceRegistrar, srv ModelServiceServer)
 }
 
 func _ModelService_GetUserModels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserId)
+	in := new(GetModelsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func _ModelService_GetUserModels_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/modelService.ModelService/GetUserModels",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ModelServiceServer).GetUserModels(ctx, req.(*UserId))
+		return srv.(ModelServiceServer).GetUserModels(ctx, req.(*GetModelsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -132,7 +132,7 @@ func _ModelService_AddModel_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _ModelService_DeleteModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ModelId)
+	in := new(DeleteModelRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func _ModelService_DeleteModel_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: "/modelService.ModelService/DeleteModel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ModelServiceServer).DeleteModel(ctx, req.(*ModelId))
+		return srv.(ModelServiceServer).DeleteModel(ctx, req.(*DeleteModelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

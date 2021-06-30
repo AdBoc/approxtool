@@ -13,8 +13,8 @@
 
 import * as grpcWeb from 'grpc-web';
 
-import * as model_pb from './model_pb';
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
+import * as model_pb from './model_pb';
 
 
 export class ModelServiceClient {
@@ -37,28 +37,28 @@ export class ModelServiceClient {
   }
 
   methodInfoGetUserModels = new grpcWeb.AbstractClientBase.MethodInfo(
-    model_pb.Models,
-    (request: model_pb.UserId) => {
+    model_pb.GetModelsResponse,
+    (request: model_pb.GetModelsRequest) => {
       return request.serializeBinary();
     },
-    model_pb.Models.deserializeBinary
+    model_pb.GetModelsResponse.deserializeBinary
   );
 
   getUserModels(
-    request: model_pb.UserId,
-    metadata: grpcWeb.Metadata | null): Promise<model_pb.Models>;
+    request: model_pb.GetModelsRequest,
+    metadata: grpcWeb.Metadata | null): Promise<model_pb.GetModelsResponse>;
 
   getUserModels(
-    request: model_pb.UserId,
+    request: model_pb.GetModelsRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: model_pb.Models) => void): grpcWeb.ClientReadableStream<model_pb.Models>;
+               response: model_pb.GetModelsResponse) => void): grpcWeb.ClientReadableStream<model_pb.GetModelsResponse>;
 
   getUserModels(
-    request: model_pb.UserId,
+    request: model_pb.GetModelsRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: model_pb.Models) => void) {
+               response: model_pb.GetModelsResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -118,24 +118,24 @@ export class ModelServiceClient {
 
   methodInfoDeleteModel = new grpcWeb.AbstractClientBase.MethodInfo(
     google_protobuf_empty_pb.Empty,
-    (request: model_pb.ModelId) => {
+    (request: model_pb.DeleteModelRequest) => {
       return request.serializeBinary();
     },
     google_protobuf_empty_pb.Empty.deserializeBinary
   );
 
   deleteModel(
-    request: model_pb.ModelId,
+    request: model_pb.DeleteModelRequest,
     metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
 
   deleteModel(
-    request: model_pb.ModelId,
+    request: model_pb.DeleteModelRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   deleteModel(
-    request: model_pb.ModelId,
+    request: model_pb.DeleteModelRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void) {
