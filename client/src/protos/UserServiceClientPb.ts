@@ -236,5 +236,45 @@ export class UserServiceClient {
     this.methodInfoChangeUserPrivilege);
   }
 
+  methodInfoCompareCredentials = new grpcWeb.AbstractClientBase.MethodInfo(
+    google_protobuf_empty_pb.Empty,
+    (request: user_pb.CompareCredentialsRequest) => {
+      return request.serializeBinary();
+    },
+    google_protobuf_empty_pb.Empty.deserializeBinary
+  );
+
+  compareCredentials(
+    request: user_pb.CompareCredentialsRequest,
+    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
+
+  compareCredentials(
+    request: user_pb.CompareCredentialsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
+
+  compareCredentials(
+    request: user_pb.CompareCredentialsRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/userService.UserService/CompareCredentials',
+        request,
+        metadata || {},
+        this.methodInfoCompareCredentials,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/userService.UserService/CompareCredentials',
+    request,
+    metadata || {},
+    this.methodInfoCompareCredentials);
+  }
+
 }
 

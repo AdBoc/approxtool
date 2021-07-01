@@ -4,15 +4,14 @@ import styles from './styles.module.scss';
 
 interface Props {
   isShowing: boolean;
+  className?: string;
 }
 
-export const Modal: React.FC<Props> = ({children, isShowing}): JSX.Element | null =>
+export const Modal: React.FC<Props> = ({isShowing, className, children}): JSX.Element | null =>
   isShowing ? ReactDOM.createPortal(
     <div className={styles.modalOverlay}>
-      <div className={styles.modalWrapper}>
-        <div className={styles.modal}>
-          {children}
-        </div>
+      <div className={`${styles.modal} ${className && className}`}>
+        {children}
       </div>
     </div>, document.body
   ) : null;

@@ -2,20 +2,25 @@ package user
 
 import (
 	"context"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 	pb "usersrv/protos/userService"
 )
 
 type userPGRepository struct {
-	db *pgx.Conn
+	db *pgxpool.Pool
 }
 
-func NewUserPGRepository(db *pgx.Conn) *userPGRepository {
+func NewUserPGRepository(db *pgxpool.Pool) *userPGRepository {
 	return &userPGRepository{db: db}
 }
 
 func (u *userPGRepository) Create(newUser *pb.NewUserRequest) error {
-	_, err := u.db.Exec(context.Background(), insertNewUserQuery, newUser.Login, newUser.Password, newUser.Email)
+	status := map[int32]string{
+		0: "user",
+		1: "admin",
+	}
+
+	_, err := u.db.Exec(context.Background(), insertNewUserQuery, newUser.Email, newUser.Password, newUser.Username, status[int32(newUser.Status)])
 	if err != nil {
 		return err
 	}
@@ -38,25 +43,60 @@ func (u *userPGRepository) GetById(id uint32) (*pb.GetUserResponse, error) {
 func (u *userPGRepository) GetAll() (*pb.GetUsersResponse, error) {
 	list := &pb.GetUsersResponse{}
 
+	userStatuses := map[string]int32{
+		"user":  0,
+		"admin": 1,
+	}
+
 	rows, err := u.db.Query(context.Background(), getAllQuery)
 	if err != nil {
 		return nil, err
 	}
 
+	var userStatus string
 	for rows.Next() {
 		user := &pb.GetUserResponse{}
-		err := rows.Scan(&user.Id, &user.Username)
+		err := rows.Scan(&user.Id, &user.Username, &user.Email, &userStatus)
+		user.Status = pb.Role(userStatuses[userStatus])
+
 		if err != nil {
 			return nil, err
 		}
 		list.Users = append(list.Users, user)
 	}
+	defer rows.Close()
 
 	return list, nil
 }
 
 func (u *userPGRepository) DeleteById(id uint32) error {
 	if _, err := u.db.Exec(context.Background(), deleteByIdQuery, id); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u *userPGRepository) GetPasswordByEmail(email string) (string, error) {
+	var user struct{ password string }
+
+	if err := u.db.QueryRow(context.Background(), getByEmailQuery, email).Scan(
+		&user.password,
+	); err != nil {
+		return "", err
+	}
+
+	return user.password, nil
+}
+
+func (u *userPGRepository) ChangeUserStatus(user *pb.GetUserResponse, status *pb.Role) error {
+	newStatus := map[int32]string{
+		0: "user",
+		1: "admin",
+	}
+
+	_, err := u.db.Query(context.Background(), changeStatusQuery, newStatus[int32(*status)], user.Id)
+	if err != nil {
 		return err
 	}
 

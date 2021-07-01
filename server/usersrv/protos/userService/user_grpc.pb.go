@@ -24,6 +24,7 @@ type UserServiceClient interface {
 	CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ChangeUserPrivilege(ctx context.Context, in *ChangePrivilegeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CompareCredentials(ctx context.Context, in *CompareCredentialsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type userServiceClient struct {
@@ -79,6 +80,15 @@ func (c *userServiceClient) ChangeUserPrivilege(ctx context.Context, in *ChangeP
 	return out, nil
 }
 
+func (c *userServiceClient) CompareCredentials(ctx context.Context, in *CompareCredentialsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/userService.UserService/CompareCredentials", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -88,6 +98,7 @@ type UserServiceServer interface {
 	CreateUser(context.Context, *NewUserRequest) (*emptypb.Empty, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error)
 	ChangeUserPrivilege(context.Context, *ChangePrivilegeRequest) (*emptypb.Empty, error)
+	CompareCredentials(context.Context, *CompareCredentialsRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -109,6 +120,9 @@ func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserReq
 }
 func (UnimplementedUserServiceServer) ChangeUserPrivilege(context.Context, *ChangePrivilegeRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeUserPrivilege not implemented")
+}
+func (UnimplementedUserServiceServer) CompareCredentials(context.Context, *CompareCredentialsRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CompareCredentials not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -213,6 +227,24 @@ func _UserService_ChangeUserPrivilege_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_CompareCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CompareCredentialsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CompareCredentials(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/userService.UserService/CompareCredentials",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CompareCredentials(ctx, req.(*CompareCredentialsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -239,6 +271,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangeUserPrivilege",
 			Handler:    _UserService_ChangeUserPrivilege_Handler,
+		},
+		{
+			MethodName: "CompareCredentials",
+			Handler:    _UserService_CompareCredentials_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

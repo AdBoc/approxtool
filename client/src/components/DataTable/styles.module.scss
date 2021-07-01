@@ -1,5 +1,7 @@
 .sheetWrapper {
   text-align: center;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .row {
@@ -28,11 +30,8 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
   &[type=number] {
     -moz-appearance: textfield;
   }
-}
-
-.cellNumber {
-
 }

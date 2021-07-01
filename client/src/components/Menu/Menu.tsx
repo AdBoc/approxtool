@@ -1,13 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Login } from '../LoginForm';
+import styles from './styles.module.scss';
 
 export const Menu = () => {
   return (
-    <div>
-      <p>Main Page</p>
-      <Link to="/user-service">User Service</Link>
-      <Link to="/model-service">Model Service</Link>
-      <Link to="/approximation-service">Approximation Service</Link>
+    <div className={styles.welcomeWrapper}>
+      <div className={styles.welcomeText}>
+        <div className={styles.descriptionText}>
+          <h1>Curve fit</h1>
+          <p>Tool allows to save models and use them for curve fitting purposes.</p>
+        </div>
+      </div>
+      <Login/>
     </div>
   );
 };

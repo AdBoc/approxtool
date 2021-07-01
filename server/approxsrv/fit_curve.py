@@ -1,56 +1,34 @@
 import approximation_pb2
 import numpy as np
 from scipy.stats import pearsonr
+from lmfit import Parameters
 from lmfit.models import ExpressionModel
 
-special_characters = {'not', 'is', 'is not', 'in', 'not in', 'bs', 'acos', 'acosh', 'asin', 'asinh', 'atan',
-                      'atan2', 'atanh', 'ceil', 'copysign', 'cos', 'cosh', 'degrees', 'exp', 'fabs', 'factorial',
-                      'floor', 'fmod', 'frexp', 'fsum', 'hypot', 'isinf', 'isnan', 'ldexp', 'log', 'log10', 'log1p',
-                      'max', 'min', 'modf', 'pow', 'radians', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc', 'x'}
 
-
-def get_fit_params(method):  # TODO: Works only when spaces are correct (use def parsing func)
-    words = method.split()
-    kwargs_set = set()
-    for word in words:
-        if not (word.isalpha()) or word in special_characters:
-            continue
-        else:
-            kwargs_set.add(word)
-    return dict.fromkeys(kwargs_set, 1)
-
-
-def composeParams(result):
-    params = []
-    for param in result:
-        params.append(approximation_pb2.Parameter(name=param.name, value=param.value, stderr=param.stderr))
-    return params
-
-
-def fit_curves(x_data, y_data, methods):
+def fit_curves(x_data, y_data, expressions):
     fitting_results = []
 
-    for method in methods:
-        fit_result = fit_curve(x_data, y_data, method)
+    for expression in expressions:
+        fit_result = fit_curve(x_data, y_data, expression)
         fitting_results.append(fit_result)
 
     return fitting_results
 
 
-def fit_curve(x_data, y_data, method):
-    expression = ExpressionModel(method)
-    fit_params = get_fit_params(method)
+def fit_curve(x_data, y_data, expression):
+    model = ExpressionModel(expression.expression)
+    fit_params = get_fit_params(expression.parameters)
     try:
-        print(method, fit_params)
-        result = expression.fit(y_data, x=x_data, **fit_params)
+        result = model.fit(y_data, x=x_data, params=fit_params)
 
         r = pearsonr(x_data, y_data)[0]
         params = composeParams(result.params.values())
 
-        fit_res = approximation_pb2.FitResult(
+        return approximation_pb2.FitResult(
+            model_id=expression.id,
             success_status=True,
-            model_name="name",
-            fitting_method=result.method,
+            model_name=expression.name,
+            model_expression=expression.expression,
             r=r,
             r_sqrt=r * r,
             aic=result.aic,
@@ -59,14 +37,18 @@ def fit_curve(x_data, y_data, method):
             mean_of_x=np.mean(x_data),
             mean_of_y=np.mean(y_data),
             chi_sqrt=result.chisqr,
+            reduced_chi_sqrt=result.redchi,
             data_points=result.ndata,
-            parameter=params,
+            fitting_method=result.method,
+            parameters=params,
         )
     except ValueError:
-        fit_res = approximation_pb2.FitResult(
+        print('exception!!', expression.expression)
+        return approximation_pb2.FitResult(
+            model_id=expression.id,
             success_status=False,
-            model_name="",
-            fitting_method="",
+            model_name=expression.name,
+            model_expression=expression.expression,
             r=float(0),
             r_sqrt=float(0),
             aic=float(0),
@@ -75,8 +57,22 @@ def fit_curve(x_data, y_data, method):
             mean_of_x=float(0),
             mean_of_y=float(0),
             chi_sqrt=float(0),
+            reduced_chi_sqrt=float(0),
             data_points=float(0),
-            parameter=[],
+            fitting_method="",
+            parameters=[],
         )
 
-    return fit_res
+
+def get_fit_params(parameters):
+    parsed_params = Parameters()
+    for param in parameters:
+        parsed_params.add(param.paramName, value=param.paramValue, min=param.minBound, max=param.maxBound)
+    return parsed_params
+
+
+def composeParams(result):
+    params = []
+    for param in result:
+        params.append(approximation_pb2.Parameter(name=param.name, value=param.value, stderr=param.stderr))
+    return params

@@ -1,24 +1,22 @@
--- psql -d postgres -U postgres -f create_tables.sql
+CREATE DATABASE approx_tool;
 
-CREATE
-DATABASE user_service;
-CREATE
-DATABASE model_service;
+\c approx_tool
 
-\c user_service
+CREATE TYPE user_roles AS ENUM ('admin', 'user');
 
-CREATE TABLE users (
+CREATE TABLE public.users (
     id       SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE  NOT NULL,
-    password VARCHAR(50)         NOT NULL,
-    email    VARCHAR(255) UNIQUE NOT NULL
+    email    VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255)         NOT NULL,
+    username VARCHAR(255) UNIQUE  NOT NULL,
+    user_status user_roles NOT NULL,
+    created_on timestamp NOT NULL DEFAULT NOW()
 );
 
-\c model_service
-
-CREATE TABLE models (
+CREATE TABLE public.models (
     id            SERIAL PRIMARY KEY,
     name          VARCHAR(50)  NOT NULL,
     expression    VARCHAR(100) NOT NULL,
-    lexexpression VARCHAR(150) NOT NULL
+    lex_expression VARCHAR(200) NOT NULL,
+    user_id integer REFERENCES users (id)
 );

@@ -1,0 +1,26 @@
+@use '../../styles/colors';
+
+.welcomeWrapper {
+  display: flex;
+  height: 100vh;
+}
+
+.welcomeText {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  background-color: colors.$main-page-color;
+  color: colors.$main-page-text;
+
+  padding: 0 3rem;
+  flex-basis: 40vw;
+  font-size: 1.2rem;
+}
+
+$breakpoint-tablet: 768px;
+@media (max-width: $breakpoint-tablet) {
+  .welcomeText {
+    display: none;
+  }
+}

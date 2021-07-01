@@ -28,6 +28,12 @@ export class GetUserResponse extends jspb.Message {
   getUsername(): string;
   setUsername(value: string): GetUserResponse;
 
+  getEmail(): string;
+  setEmail(value: string): GetUserResponse;
+
+  getStatus(): Role;
+  setStatus(value: Role): GetUserResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetUserResponse.AsObject;
   static toObject(includeInstance: boolean, msg: GetUserResponse): GetUserResponse.AsObject;
@@ -40,12 +46,14 @@ export namespace GetUserResponse {
   export type AsObject = {
     id: number,
     username: string,
+    email: string,
+    status: Role,
   }
 }
 
 export class NewUserRequest extends jspb.Message {
-  getLogin(): string;
-  setLogin(value: string): NewUserRequest;
+  getUsername(): string;
+  setUsername(value: string): NewUserRequest;
 
   getPassword(): string;
   setPassword(value: string): NewUserRequest;
@@ -53,8 +61,8 @@ export class NewUserRequest extends jspb.Message {
   getEmail(): string;
   setEmail(value: string): NewUserRequest;
 
-  getRole(): Role;
-  setRole(value: Role): NewUserRequest;
+  getStatus(): Role;
+  setStatus(value: Role): NewUserRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): NewUserRequest.AsObject;
@@ -66,10 +74,10 @@ export class NewUserRequest extends jspb.Message {
 
 export namespace NewUserRequest {
   export type AsObject = {
-    login: string,
+    username: string,
     password: string,
     email: string,
-    role: Role,
+    status: Role,
   }
 }
 
@@ -77,8 +85,8 @@ export class ChangePrivilegeRequest extends jspb.Message {
   getUserid(): number;
   setUserid(value: number): ChangePrivilegeRequest;
 
-  getNewrole(): Role;
-  setNewrole(value: Role): ChangePrivilegeRequest;
+  getNewstatus(): Role;
+  setNewstatus(value: Role): ChangePrivilegeRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ChangePrivilegeRequest.AsObject;
@@ -91,7 +99,7 @@ export class ChangePrivilegeRequest extends jspb.Message {
 export namespace ChangePrivilegeRequest {
   export type AsObject = {
     userid: number,
-    newrole: Role,
+    newstatus: Role,
   }
 }
 
@@ -130,6 +138,28 @@ export class DeleteUserRequest extends jspb.Message {
 export namespace DeleteUserRequest {
   export type AsObject = {
     id: number,
+  }
+}
+
+export class CompareCredentialsRequest extends jspb.Message {
+  getEmail(): string;
+  setEmail(value: string): CompareCredentialsRequest;
+
+  getPassword(): string;
+  setPassword(value: string): CompareCredentialsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CompareCredentialsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CompareCredentialsRequest): CompareCredentialsRequest.AsObject;
+  static serializeBinaryToWriter(message: CompareCredentialsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CompareCredentialsRequest;
+  static deserializeBinaryFromReader(message: CompareCredentialsRequest, reader: jspb.BinaryReader): CompareCredentialsRequest;
+}
+
+export namespace CompareCredentialsRequest {
+  export type AsObject = {
+    email: string,
+    password: string,
   }
 }
 

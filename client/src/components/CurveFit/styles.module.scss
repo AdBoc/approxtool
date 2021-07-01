@@ -1,0 +1,18 @@
+@use '../../styles/mixins';
+
+.graphWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fittingButtons {
+  text-align: center;
+  p {
+    margin: 1rem 0;
+  }
+}
+
+.button {
+  @include mixins.button;
+}

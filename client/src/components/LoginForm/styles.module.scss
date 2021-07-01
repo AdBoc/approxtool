@@ -1,0 +1,57 @@
+@use '../../styles/colors';
+@use '../../styles/mixins';
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+
+  margin: auto;
+  height: 45rem;
+
+  text-align: center;
+  font-size: 1.2rem;
+
+  background: linear-gradient(180deg, rgb(1, 80, 158) 0%, rgb(1, 80, 158) 70%, rgba(255, 255, 255, 1) 60%);;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  color: white;
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+.formText {
+  margin: auto;
+}
+
+.inputWrapper {
+  border-radius: 7px;
+  background: white;
+  width: fit-content;
+  margin: 0 auto;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 2rem;
+}
+
+.buttonsWrapper {
+  margin-top: 1.75rem;
+}
+
+.button {
+  @include mixins.button;
+}
+
+.resetPassword {
+  color: colors.$main-page-color;
+  text-decoration: underline;
+  border: none;
+  background: inherit;
+  cursor: pointer;
+}
+
+.validationError {
+  color: red;
+}
+
+.passwordResetModal {
+  width: fit-content;
+  height: fit-content;
+}

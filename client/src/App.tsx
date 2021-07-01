@@ -4,27 +4,28 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-import { UserServiceMethods } from './components/UserServiceMethods';
-import { Menu } from './components/Menu';
+import { CurveFit } from './components/CurveFit';
 import { ErrorPage } from './components/ErrorPage';
-import { ModelMethods } from './components/ModelMethods';
-import { ApproximationMethods } from './components/ApproximationMethods';
+import { Menu } from './components/Menu';
+import { PrivateRoute } from './common-components/PrivateRoute/PrivateRoute';
+import { ModelManager } from './components/ModelManager';
+import { UserManager } from './components/UserManager/UserManager';
 
 function App(): JSX.Element {
   return (
     <Router>
       <Switch>
-        <Route exact path="/">
+        <PrivateRoute exact path="/">
+          <CurveFit/>
+        </PrivateRoute>
+        <PrivateRoute exact path="/model-manager">
+          <ModelManager/>
+        </PrivateRoute>
+        <PrivateRoute exact path="/user-manager">
+          <UserManager/>
+        </PrivateRoute>
+        <Route exact path="/login">
           <Menu/>
-        </Route>
-        <Route exact path="/user-service">
-          <UserServiceMethods/>
-        </Route>
-        <Route exact path="/model-service">
-          <ModelMethods/>
-        </Route>
-        <Route exact path="/approximation-service">
-          <ApproximationMethods/>
         </Route>
         <Route path="*">
           <ErrorPage/>

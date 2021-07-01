@@ -2,15 +2,15 @@ package model
 
 import (
 	"context"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 	pb "modelsrv/protos/modelService"
 )
 
 type modelPGRepository struct {
-	db *pgx.Conn
+	db *pgxpool.Pool
 }
 
-func NewModelPGRepository(db *pgx.Conn) *modelPGRepository {
+func NewModelPGRepository(db *pgxpool.Pool) *modelPGRepository {
 	return &modelPGRepository{db: db}
 }
 
@@ -30,14 +30,14 @@ func (m *modelPGRepository) GetUserModels(userId uint32) (*pb.GetModelsResponse,
 		}
 		list.Models = append(list.Models, model)
 	}
+	defer rows.Close()
 
 	return list, nil
 }
 
 func (m *modelPGRepository) AddModel(newModel *pb.NewModelRequest) error {
-	//TODO: User id is ignored
 	_, err := m.db.Exec(
-		context.Background(), insertNewModelQuery, newModel.Name, newModel.Expression, newModel.LexExpression,
+		context.Background(), insertNewModelQuery, newModel.Name, newModel.Expression, newModel.LexExpression, newModel.UserId,
 	)
 	if err != nil {
 		return err

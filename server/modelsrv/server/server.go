@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"google.golang.org/grpc"
 	"log"
 	"modelsrv/model"
@@ -10,11 +10,11 @@ import (
 )
 
 type server struct {
-	pgxPool *pgx.Conn
+	pgxPool *pgxpool.Pool
 	port    string
 }
 
-func NewServer(pgxPool *pgx.Conn, port string) *server {
+func NewServer(pgxPool *pgxpool.Pool, port string) *server {
 	return &server{pgxPool: pgxPool, port: port}
 }
 

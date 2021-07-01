@@ -1,0 +1,27 @@
+.resultElement {
+  display: flex;
+  align-items: center;
+
+  background-color: #f3f3f3;
+  border: 1px solid grey;
+  border-radius: 6px;
+  padding: 0.25rem;
+  margin: 0.25em 0;
+  min-width: 9rem;
+
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d4d4d4;
+  }
+}
+
+.errorStatus {
+  background-color: #ffdfdf;
+  cursor: unset;
+
+  &:hover {
+    background-color: #ffb7b7;
+  }
+}

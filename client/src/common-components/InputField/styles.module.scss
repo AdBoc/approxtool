@@ -1,0 +1,11 @@
+@use '../../styles/colors';
+@use '../../styles/mixins';
+
+
+.input {
+  @include mixins.inputField;
+}
+
+.label {
+  @include mixins.inputLabel;
+}

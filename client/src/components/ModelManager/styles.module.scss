@@ -1,0 +1,14 @@
+.model {
+  text-align: center;
+  padding: 1rem;
+  border: 1px solid black;
+  width: fit-content;
+  min-width: 10rem;
+  margin: 1rem auto;
+  background-color: #efefef;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #dcdcdc;
+  }
+}

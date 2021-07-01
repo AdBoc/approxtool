@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x13\x61pproximation.proto\x12\x14\x61pproximationService\"8\n\tParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x02\x12\x0e\n\x06stderr\x18\x03 \x01(\x02\"\xac\x02\n\tFitResult\x12\x16\n\x0esuccess_status\x18\x01 \x01(\x08\x12\t\n\x01r\x18\x02 \x01(\x02\x12\x0e\n\x06r_sqrt\x18\x03 \x01(\x02\x12\x0b\n\x03\x61ic\x18\x04 \x01(\x02\x12\x0b\n\x03\x62ic\x18\x05 \x01(\x02\x12\x0b\n\x03\x66og\x18\x06 \x01(\x05\x12\x11\n\tmean_of_x\x18\x07 \x01(\x02\x12\x11\n\tmean_of_y\x18\x08 \x01(\x02\x12\x10\n\x08\x63hi_sqrt\x18\t \x01(\x02\x12\x18\n\x10reduced_chi_sqrt\x18\n \x01(\x02\x12\x13\n\x0b\x64\x61ta_points\x18\x0b \x01(\x02\x12\x16\n\x0e\x66itting_method\x18\x0c \x01(\t\x12\x32\n\tparameter\x18\r \x03(\x0b\x32\x1f.approximationService.Parameter\x12\x12\n\nmodel_name\x18\x0e \x01(\t\"F\n\x0f\x43urveFitRequest\x12\x0e\n\x06x_data\x18\x01 \x03(\x02\x12\x0e\n\x06y_data\x18\x02 \x03(\x02\x12\x13\n\x0b\x65xpressions\x18\x03 \x03(\t\"E\n\x0e\x43urveFitResult\x12\x33\n\nfit_result\x18\x01 \x03(\x0b\x32\x1f.approximationService.FitResult2p\n\x14\x41pproximationService\x12X\n\tFitCurves\x12%.approximationService.CurveFitRequest\x1a$.approximationService.CurveFitResultb\x06proto3'
+  serialized_pb=b'\n\x13\x61pproximation.proto\x12\x14\x61pproximationService\"8\n\tParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x02\x12\x0e\n\x06stderr\x18\x03 \x01(\x02\"\xd9\x02\n\tFitResult\x12\x10\n\x08model_id\x18\x01 \x01(\r\x12\x16\n\x0esuccess_status\x18\x02 \x01(\x08\x12\x12\n\nmodel_name\x18\x03 \x01(\t\x12\x18\n\x10model_expression\x18\x04 \x01(\t\x12\t\n\x01r\x18\x05 \x01(\x02\x12\x0e\n\x06r_sqrt\x18\x06 \x01(\x02\x12\x0b\n\x03\x61ic\x18\x07 \x01(\x02\x12\x0b\n\x03\x62ic\x18\x08 \x01(\x02\x12\x0b\n\x03\x66og\x18\t \x01(\r\x12\x11\n\tmean_of_x\x18\n \x01(\x02\x12\x11\n\tmean_of_y\x18\x0b \x01(\x02\x12\x10\n\x08\x63hi_sqrt\x18\x0c \x01(\x02\x12\x18\n\x10reduced_chi_sqrt\x18\r \x01(\x02\x12\x13\n\x0b\x64\x61ta_points\x18\x0e \x01(\x02\x12\x16\n\x0e\x66itting_method\x18\x0f \x01(\t\x12\x33\n\nparameters\x18\x10 \x03(\x0b\x32\x1f.approximationService.Parameter\"g\n\x1aRequestExpressionParameter\x12\x11\n\tparamName\x18\x01 \x01(\t\x12\x12\n\nparamValue\x18\x02 \x01(\x02\x12\x10\n\x08minBound\x18\x03 \x01(\x02\x12\x10\n\x08maxBound\x18\x04 \x01(\x02\"\x80\x01\n\nExpression\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\nexpression\x18\x03 \x01(\t\x12\x44\n\nparameters\x18\x04 \x03(\x0b\x32\x30.approximationService.RequestExpressionParameter\"h\n\x0f\x43urveFitRequest\x12\x0e\n\x06x_data\x18\x01 \x03(\x02\x12\x0e\n\x06y_data\x18\x02 \x03(\x02\x12\x35\n\x0b\x65xpressions\x18\x03 \x03(\x0b\x32 .approximationService.Expression\"E\n\x0e\x43urveFitResult\x12\x33\n\nfit_result\x18\x01 \x03(\x0b\x32\x1f.approximationService.FitResult2p\n\x14\x41pproximationService\x12X\n\tFitCurves\x12%.approximationService.CurveFitRequest\x1a$.approximationService.CurveFitResultb\x06proto3'
 )
 
 
@@ -80,100 +80,114 @@ _FITRESULT = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='success_status', full_name='approximationService.FitResult.success_status', index=0,
-      number=1, type=8, cpp_type=7, label=1,
+      name='model_id', full_name='approximationService.FitResult.model_id', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='success_status', full_name='approximationService.FitResult.success_status', index=1,
+      number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='r', full_name='approximationService.FitResult.r', index=1,
-      number=2, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      name='model_name', full_name='approximationService.FitResult.model_name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='r_sqrt', full_name='approximationService.FitResult.r_sqrt', index=2,
-      number=3, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      name='model_expression', full_name='approximationService.FitResult.model_expression', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='aic', full_name='approximationService.FitResult.aic', index=3,
-      number=4, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='bic', full_name='approximationService.FitResult.bic', index=4,
+      name='r', full_name='approximationService.FitResult.r', index=4,
       number=5, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='fog', full_name='approximationService.FitResult.fog', index=5,
-      number=6, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
+      name='r_sqrt', full_name='approximationService.FitResult.r_sqrt', index=5,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='mean_of_x', full_name='approximationService.FitResult.mean_of_x', index=6,
+      name='aic', full_name='approximationService.FitResult.aic', index=6,
       number=7, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='mean_of_y', full_name='approximationService.FitResult.mean_of_y', index=7,
+      name='bic', full_name='approximationService.FitResult.bic', index=7,
       number=8, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='chi_sqrt', full_name='approximationService.FitResult.chi_sqrt', index=8,
-      number=9, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      name='fog', full_name='approximationService.FitResult.fog', index=8,
+      number=9, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='reduced_chi_sqrt', full_name='approximationService.FitResult.reduced_chi_sqrt', index=9,
+      name='mean_of_x', full_name='approximationService.FitResult.mean_of_x', index=9,
       number=10, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='data_points', full_name='approximationService.FitResult.data_points', index=10,
+      name='mean_of_y', full_name='approximationService.FitResult.mean_of_y', index=10,
       number=11, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='fitting_method', full_name='approximationService.FitResult.fitting_method', index=11,
-      number=12, type=9, cpp_type=9, label=1,
+      name='chi_sqrt', full_name='approximationService.FitResult.chi_sqrt', index=11,
+      number=12, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='reduced_chi_sqrt', full_name='approximationService.FitResult.reduced_chi_sqrt', index=12,
+      number=13, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='data_points', full_name='approximationService.FitResult.data_points', index=13,
+      number=14, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='fitting_method', full_name='approximationService.FitResult.fitting_method', index=14,
+      number=15, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='parameter', full_name='approximationService.FitResult.parameter', index=12,
-      number=13, type=11, cpp_type=10, label=3,
+      name='parameters', full_name='approximationService.FitResult.parameters', index=15,
+      number=16, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='model_name', full_name='approximationService.FitResult.model_name', index=13,
-      number=14, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -190,7 +204,113 @@ _FITRESULT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=104,
-  serialized_end=404,
+  serialized_end=449,
+)
+
+
+_REQUESTEXPRESSIONPARAMETER = _descriptor.Descriptor(
+  name='RequestExpressionParameter',
+  full_name='approximationService.RequestExpressionParameter',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='paramName', full_name='approximationService.RequestExpressionParameter.paramName', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='paramValue', full_name='approximationService.RequestExpressionParameter.paramValue', index=1,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='minBound', full_name='approximationService.RequestExpressionParameter.minBound', index=2,
+      number=3, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='maxBound', full_name='approximationService.RequestExpressionParameter.maxBound', index=3,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=451,
+  serialized_end=554,
+)
+
+
+_EXPRESSION = _descriptor.Descriptor(
+  name='Expression',
+  full_name='approximationService.Expression',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='approximationService.Expression.id', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='approximationService.Expression.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='expression', full_name='approximationService.Expression.expression', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='parameters', full_name='approximationService.Expression.parameters', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=557,
+  serialized_end=685,
 )
 
 
@@ -218,7 +338,7 @@ _CURVEFITREQUEST = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expressions', full_name='approximationService.CurveFitRequest.expressions', index=2,
-      number=3, type=9, cpp_type=9, label=3,
+      number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -235,8 +355,8 @@ _CURVEFITREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=406,
-  serialized_end=476,
+  serialized_start=687,
+  serialized_end=791,
 )
 
 
@@ -267,14 +387,18 @@ _CURVEFITRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=478,
-  serialized_end=547,
+  serialized_start=793,
+  serialized_end=862,
 )
 
-_FITRESULT.fields_by_name['parameter'].message_type = _PARAMETER
+_FITRESULT.fields_by_name['parameters'].message_type = _PARAMETER
+_EXPRESSION.fields_by_name['parameters'].message_type = _REQUESTEXPRESSIONPARAMETER
+_CURVEFITREQUEST.fields_by_name['expressions'].message_type = _EXPRESSION
 _CURVEFITRESULT.fields_by_name['fit_result'].message_type = _FITRESULT
 DESCRIPTOR.message_types_by_name['Parameter'] = _PARAMETER
 DESCRIPTOR.message_types_by_name['FitResult'] = _FITRESULT
+DESCRIPTOR.message_types_by_name['RequestExpressionParameter'] = _REQUESTEXPRESSIONPARAMETER
+DESCRIPTOR.message_types_by_name['Expression'] = _EXPRESSION
 DESCRIPTOR.message_types_by_name['CurveFitRequest'] = _CURVEFITREQUEST
 DESCRIPTOR.message_types_by_name['CurveFitResult'] = _CURVEFITRESULT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -292,6 +416,20 @@ FitResult = _reflection.GeneratedProtocolMessageType('FitResult', (_message.Mess
   # @@protoc_insertion_point(class_scope:approximationService.FitResult)
   })
 _sym_db.RegisterMessage(FitResult)
+
+RequestExpressionParameter = _reflection.GeneratedProtocolMessageType('RequestExpressionParameter', (_message.Message,), {
+  'DESCRIPTOR' : _REQUESTEXPRESSIONPARAMETER,
+  '__module__' : 'approximation_pb2'
+  # @@protoc_insertion_point(class_scope:approximationService.RequestExpressionParameter)
+  })
+_sym_db.RegisterMessage(RequestExpressionParameter)
+
+Expression = _reflection.GeneratedProtocolMessageType('Expression', (_message.Message,), {
+  'DESCRIPTOR' : _EXPRESSION,
+  '__module__' : 'approximation_pb2'
+  # @@protoc_insertion_point(class_scope:approximationService.Expression)
+  })
+_sym_db.RegisterMessage(Expression)
 
 CurveFitRequest = _reflection.GeneratedProtocolMessageType('CurveFitRequest', (_message.Message,), {
   'DESCRIPTOR' : _CURVEFITREQUEST,
@@ -316,8 +454,8 @@ _APPROXIMATIONSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=549,
-  serialized_end=661,
+  serialized_start=864,
+  serialized_end=976,
   methods=[
   _descriptor.MethodDescriptor(
     name='FitCurves',

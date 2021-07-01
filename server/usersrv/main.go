@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"usersrv/server"
 	"usersrv/services"
 )
@@ -12,7 +11,7 @@ const (
 
 func main() {
 	pgxPool := services.NewPgxConn()
-	defer pgxPool.Close(context.Background())
+	defer pgxPool.Close()
 
 	s := server.NewServer(pgxPool, port)
 	s.Run()

@@ -29,8 +29,17 @@ export namespace Parameter {
 }
 
 export class FitResult extends jspb.Message {
+  getModelId(): number;
+  setModelId(value: number): FitResult;
+
   getSuccessStatus(): boolean;
   setSuccessStatus(value: boolean): FitResult;
+
+  getModelName(): string;
+  setModelName(value: string): FitResult;
+
+  getModelExpression(): string;
+  setModelExpression(value: string): FitResult;
 
   getR(): number;
   setR(value: number): FitResult;
@@ -65,13 +74,10 @@ export class FitResult extends jspb.Message {
   getFittingMethod(): string;
   setFittingMethod(value: string): FitResult;
 
-  getParameterList(): Array<Parameter>;
-  setParameterList(value: Array<Parameter>): FitResult;
-  clearParameterList(): FitResult;
-  addParameter(value?: Parameter, index?: number): Parameter;
-
-  getModelName(): string;
-  setModelName(value: string): FitResult;
+  getParametersList(): Array<Parameter>;
+  setParametersList(value: Array<Parameter>): FitResult;
+  clearParametersList(): FitResult;
+  addParameters(value?: Parameter, index?: number): Parameter;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): FitResult.AsObject;
@@ -83,7 +89,10 @@ export class FitResult extends jspb.Message {
 
 export namespace FitResult {
   export type AsObject = {
+    modelId: number,
     successStatus: boolean,
+    modelName: string,
+    modelExpression: string,
     r: number,
     rSqrt: number,
     aic: number,
@@ -95,8 +104,69 @@ export namespace FitResult {
     reducedChiSqrt: number,
     dataPoints: number,
     fittingMethod: string,
-    parameterList: Array<Parameter.AsObject>,
-    modelName: string,
+    parametersList: Array<Parameter.AsObject>,
+  }
+}
+
+export class RequestExpressionParameter extends jspb.Message {
+  getParamname(): string;
+  setParamname(value: string): RequestExpressionParameter;
+
+  getParamvalue(): number;
+  setParamvalue(value: number): RequestExpressionParameter;
+
+  getMinbound(): number;
+  setMinbound(value: number): RequestExpressionParameter;
+
+  getMaxbound(): number;
+  setMaxbound(value: number): RequestExpressionParameter;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RequestExpressionParameter.AsObject;
+  static toObject(includeInstance: boolean, msg: RequestExpressionParameter): RequestExpressionParameter.AsObject;
+  static serializeBinaryToWriter(message: RequestExpressionParameter, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RequestExpressionParameter;
+  static deserializeBinaryFromReader(message: RequestExpressionParameter, reader: jspb.BinaryReader): RequestExpressionParameter;
+}
+
+export namespace RequestExpressionParameter {
+  export type AsObject = {
+    paramname: string,
+    paramvalue: number,
+    minbound: number,
+    maxbound: number,
+  }
+}
+
+export class Expression extends jspb.Message {
+  getId(): number;
+  setId(value: number): Expression;
+
+  getName(): string;
+  setName(value: string): Expression;
+
+  getExpression(): string;
+  setExpression(value: string): Expression;
+
+  getParametersList(): Array<RequestExpressionParameter>;
+  setParametersList(value: Array<RequestExpressionParameter>): Expression;
+  clearParametersList(): Expression;
+  addParameters(value?: RequestExpressionParameter, index?: number): RequestExpressionParameter;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Expression.AsObject;
+  static toObject(includeInstance: boolean, msg: Expression): Expression.AsObject;
+  static serializeBinaryToWriter(message: Expression, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Expression;
+  static deserializeBinaryFromReader(message: Expression, reader: jspb.BinaryReader): Expression;
+}
+
+export namespace Expression {
+  export type AsObject = {
+    id: number,
+    name: string,
+    expression: string,
+    parametersList: Array<RequestExpressionParameter.AsObject>,
   }
 }
 
@@ -111,10 +181,10 @@ export class CurveFitRequest extends jspb.Message {
   clearYDataList(): CurveFitRequest;
   addYData(value: number, index?: number): CurveFitRequest;
 
-  getExpressionsList(): Array<string>;
-  setExpressionsList(value: Array<string>): CurveFitRequest;
+  getExpressionsList(): Array<Expression>;
+  setExpressionsList(value: Array<Expression>): CurveFitRequest;
   clearExpressionsList(): CurveFitRequest;
-  addExpressions(value: string, index?: number): CurveFitRequest;
+  addExpressions(value?: Expression, index?: number): Expression;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CurveFitRequest.AsObject;
@@ -128,7 +198,7 @@ export namespace CurveFitRequest {
   export type AsObject = {
     xDataList: Array<number>,
     yDataList: Array<number>,
-    expressionsList: Array<string>,
+    expressionsList: Array<Expression.AsObject>,
   }
 }
 

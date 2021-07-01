@@ -8,26 +8,42 @@ message Parameter {
 }
 
 message FitResult {
-  bool success_status = 1;
-  float r = 2;
-  float r_sqrt = 3;
-  float aic = 4;
-  float bic = 5;
-  int32 fog = 6;
-  float mean_of_x = 7;
-  float mean_of_y = 8;
-  float chi_sqrt = 9;
-  float reduced_chi_sqrt = 10;
-  float data_points = 11;
-  string fitting_method = 12;
-  repeated Parameter parameter = 13;
-  string model_name = 14;
+  uint32 model_id = 1; 
+  bool success_status = 2;
+  string model_name = 3;
+  string model_expression = 4;
+  float r = 5;
+  float r_sqrt = 6;
+  float aic = 7;
+  float bic = 8;
+  uint32 fog = 9;
+  float mean_of_x = 10;
+  float mean_of_y = 11;
+  float chi_sqrt = 12;
+  float reduced_chi_sqrt = 13;
+  float data_points = 14;
+  string fitting_method = 15;
+  repeated Parameter parameters = 16;
+}
+
+message RequestExpressionParameter {
+  string paramName = 1;
+  float paramValue = 2;
+  float minBound = 3;
+  float maxBound = 4;
+}
+
+message Expression {
+  uint32 id = 1;
+  string name = 2;
+  string expression = 3;
+  repeated RequestExpressionParameter parameters = 4;
 }
 
 message CurveFitRequest {
   repeated float x_data = 1;
   repeated float y_data = 2;
-  repeated string expressions = 3;
+  repeated Expression expressions = 3;
 }
 
 message CurveFitResult {

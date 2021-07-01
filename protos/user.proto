@@ -17,18 +17,20 @@ message GetUserRequest {
 message GetUserResponse {
   uint32 id = 1;
   string username = 2;
+  string email = 3;
+  Role status = 4;
 }
 
 message NewUserRequest {
-  string login = 1;
+  string username = 1;
   string password = 2;
   string email = 3;
-  Role role = 4;
+  Role status = 4;
 }
 
 message ChangePrivilegeRequest {
   uint32 userId = 1;
-  Role newRole = 2;
+  Role newStatus = 2;
 }
 
 message GetUsersResponse {
@@ -39,10 +41,16 @@ message DeleteUserRequest {
   uint32 id = 1;
 }
 
+message CompareCredentialsRequest {
+  string email = 1;
+  string password = 2;
+}
+
 service UserService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc GetAllUsers(google.protobuf.Empty) returns (GetUsersResponse);
   rpc CreateUser(NewUserRequest) returns (google.protobuf.Empty);
   rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
   rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty);
+  rpc CompareCredentials(CompareCredentialsRequest) returns (google.protobuf.Empty);
 }
