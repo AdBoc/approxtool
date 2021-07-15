@@ -67,7 +67,7 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
               onClick={() => dispatch({type: FitActionType.TOGGLE_MODEL_SELECT, id: model.id})}
             >
               {model.name}
-              <button onClick={e => handleGuessBounds(e, model)}>Guesses and bounds</button>
+              <button type="button" onClick={e => handleGuessBounds(e, model)}>Guesses</button>
             </div>
           ))}
         </div>
@@ -78,7 +78,7 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
             type="button"
             onClick={() => dispatch({type: FitActionType.UNSELECT_ALL_MODELS})}
           />
-          <Button text="Add temporary model" onClick={toggleIsModelModal}/>
+          <Button text="Add temporary model" type="submit" onClick={toggleIsModelModal}/>
           <Button text="Close modal" type="submit" onClick={closeModelsModal}/>
         </div>
       </div>

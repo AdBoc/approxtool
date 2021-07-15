@@ -1,5 +1,6 @@
 .resultElement {
   display: flex;
+  justify-content: center;
   align-items: center;
 
   background-color: #f3f3f3;
@@ -17,11 +18,38 @@
   }
 }
 
-.errorStatus {
+.properFit {
+  background-color: #cdfcbf;
+
+  &:hover {
+    background-color: #b5fa9e;
+  }
+}
+
+.warnFit {
+  background-color: #fff0bb;
+
+  &:hover {
+    background-color: #ffeda2;
+  }
+}
+
+.errorFit {
   background-color: #ffdfdf;
   cursor: unset;
 
   &:hover {
     background-color: #ffb7b7;
+  }
+}
+
+.drawButton {
+  width: fit-content;
+  background-color: #898989;
+  border: 1px solid #7f7f7f;
+  margin: 0 0 0 auto;
+
+  &:hover {
+    background-color: #666666;
   }
 }

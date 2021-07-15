@@ -5,6 +5,7 @@ import {
 } from '../protos/user_pb';
 import { gRPCClients } from '../gRPCClients';
 import { FitStateExpression } from '../types/stateExpression';
+import { FitRes } from '../types/fitResult';
 
 export const csvRegex = /^.*\.csv$/gm;
 export const csvSplitter = /\r?\n|,/;
@@ -72,13 +73,13 @@ export const MODELS: FitStateExpression[] = [
     params: [
       {
         paramName: 'a',
-        paramValue: 1,
+        paramValue: 1.48,
         minBound: -Infinity,
         maxBound: Infinity,
       },
       {
         paramName: 'b',
-        paramValue: 1,
+        paramValue: 3,
         minBound: -Infinity,
         maxBound: Infinity,
       }
@@ -114,7 +115,7 @@ export const MODELS: FitStateExpression[] = [
   // },
 ];
 
-export const RESULTS: FitResult.AsObject[] = [
+export const RESULTS: FitRes[] = [
   {
     modelId: 1,
     successStatus: true,

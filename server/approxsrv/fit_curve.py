@@ -21,8 +21,33 @@ def fit_curve(x_data, y_data, expression):
     try:
         result = model.fit(y_data, x=x_data, params=fit_params)
 
-        r = pearsonr(x_data, y_data)[0]
+        r = result.redchi / np.var(y_data, ddof=int(result.nfree))
+        print(result.params.values())
         params = composeParams(result.params.values())
+
+        # Corrent r sqrt
+        ss_res = np.sum(result.residual ** 2)
+        ss_tot = np.sum((y_data - np.mean(y_data)) ** 2)
+        r_squared = 1 - (ss_res / ss_tot)
+
+        # print({
+        #     "model_id": expression.id,
+        #     "success_status": True,
+        #     "model_name": expression.name,
+        #     "model_expression": expression.expression,
+        #     "r": r,
+        #     "r_sqrt": r * r,
+        #     "aic": result.aic,
+        #     "bic": result.bic,
+        #     "fog": int(result.nfree),
+        #     "mean_of_x": np.mean(x_data),
+        #     "mean_of_y": np.mean(y_data),
+        #     "chi_sqrt": result.chisqr,
+        #     "reduced_chi_sqrt": result.redchi,
+        #     "data_points": result.ndata,
+        #     "fitting_method": result.method,
+        #     "parameters": params,
+        # })
 
         return approximation_pb2.FitResult(
             model_id=expression.id,
@@ -30,7 +55,7 @@ def fit_curve(x_data, y_data, expression):
             model_name=expression.name,
             model_expression=expression.expression,
             r=r,
-            r_sqrt=r * r,
+            r_sqrt=r_squared,
             aic=result.aic,
             bic=result.bic,
             fog=int(result.nfree),

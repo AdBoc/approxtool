@@ -5,12 +5,13 @@ import {
   GraphExpression,
 } from '../types/stateExpression';
 import { FitResult } from '../protos/approximation_pb';
+import { FitRes } from '../types/fitResult';
 
 export type CurveFitState = {
   allModels: FitStateExpression[];
   graphExpression: GraphExpression | null;
   graphPoints: Point[];
-  fitResult: FitResult.AsObject[];
+  fitResult: FitRes[];
   fitSelectedModelIds: number[];
   rawPoints: number[];
   xDomain: [number, number];
@@ -34,7 +35,7 @@ export enum FitActionType {
 export type CurveFitActions =
   { type: FitActionType.SET_MODELS, models: FitStateExpression[] } |
   { type: FitActionType.SET_PLOT_POINTS, plotPoints: number[] } |
-  { type: FitActionType.SET_RESULT, result: FitResult.AsObject[] } |
+  { type: FitActionType.SET_RESULT, result: FitRes[] } |
   { type: FitActionType.TOGGLE_MODEL_SELECT, id: number } |
   { type: FitActionType.RAW_POINTS_TO_GRAPH_POINTS, graphPoints: Point[] } |
   { type: FitActionType.SET_GRAPH_EXPRESSION, expression: GraphExpression } |
@@ -111,12 +112,14 @@ export const curveFitReducer: CurveFitReducer = (state, action) => {
     case FitActionType.SELECT_ALL_MODELS:
       return {
         ...state,
-        allModels: state.allModels.map((model) => ({...model, isSelected: true}))
+        allModels: state.allModels.map((model) => ({...model, isSelected: true})),
+        fitSelectedModelIds: state.allModels.map(({id}) => id)
       };
     case FitActionType.UNSELECT_ALL_MODELS:
       return {
         ...state,
-        allModels: state.allModels.map((model) => ({...model, isSelected: false}))
+        allModels: state.allModels.map((model) => ({...model, isSelected: false})),
+        fitSelectedModelIds: []
       }
     default:
       return state;

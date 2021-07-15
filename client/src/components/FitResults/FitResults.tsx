@@ -11,18 +11,18 @@ import {
   CurveFitActions,
   FitActionType
 } from '../../reducers/curveFitReducer';
-import { FitResult } from '../../protos/approximation_pb';
+import { FitRes } from '../../types/fitResult';
 
 interface Props {
-  results: FitResult.AsObject[];
+  results: FitRes[];
   dispatch: React.Dispatch<CurveFitActions>;
 }
 
 export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element => {
-  const [highlightedResult, setHighlightedResult] = useState<FitResult.AsObject | null>(null);
+  const [highlightedResult, setHighlightedResult] = useState<FitRes | null>(null);
   const {isShowing, toggle} = useModal();
 
-  const handleShowDetails = (result: FitResult.AsObject) => {
+  const handleShowDetails = (result: FitRes) => {
     if (!result.successStatus) return;
     setHighlightedResult(result);
     toggle();
@@ -32,7 +32,7 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
     console.error('Unimplemented');
   };
 
-  const drawExpression = (e: BaseSyntheticEvent, result: FitResult.AsObject) => {
+  const drawExpression = (e: BaseSyntheticEvent, result: FitRes) => {
     e.stopPropagation();
     let expression = graphDataManager.getExpression(result);
     if (!expression) {
@@ -48,16 +48,22 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
         {results.map((result, index) => (
           <div
             key={index}
-            className={`${styles.resultElement} ${!result.successStatus ? styles.errorStatus : ''}`}
+            className={`${styles.resultElement} ${!result.successStatus ? styles.errorFit : result.successStatus === 'WARN' ? styles.warnFit : styles.properFit}`}
             onClick={() => handleShowDetails(result)}
           >
             <p>{result.modelName}</p>
-            {result.successStatus && <Button text="Draw" value={result.modelId} onClick={(e) => drawExpression(e, result)}/>}
+            {result.successStatus &&
+            <Button
+                className={styles.drawButton}
+                text="Draw"
+                value={result.modelId}
+                onClick={(e) => drawExpression(e, result)}/>}
           </div>
         ))}
       </div>
       <Modal isShowing={isShowing}>
-        <Button text="Copy function" type="button" onClick={handleCopyFunction}/>
+        <Button text="Copy model expression" type="button" onClick={handleCopyFunction}/>
+        {/*<TexMath block math={highlightedResult?}TODO: APPLY LEXEXPRESSION*/}
         <h2>Overview</h2>
         <p>Model: {highlightedResult?.modelName}</p>
         <p>R: {highlightedResult?.r}</p>
@@ -66,7 +72,12 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
         <p>AIC: {highlightedResult?.aic}</p>
         <p>FOG: {highlightedResult?.fog}</p>
         <h2>Parameters</h2>
-        <h2>Covariance Matrix</h2>
+        {highlightedResult?.parametersList.map(parameter =>
+          <div key={parameter.name}>
+            <span>{parameter.name} : {parameter.value}</span>
+            <span>Std Err:{parameter.stderr}</span>
+          </div>
+        )}
         <Button text="Close" type="submit" onClick={toggle}/>
       </Modal>
     </>

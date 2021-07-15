@@ -70,5 +70,7 @@ export function parsePointsForGraph(points: number[]): Point[] {
     fitPoints.push([points[i], points[i + 1]]);
   }
 
+  //TODO: TWO LAST POINTS ARE UNDEFINED
+
   return fitPoints;
 }

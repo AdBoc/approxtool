@@ -6,6 +6,7 @@ import { Parser } from 'expr-eval';
 import { parseAsterisks } from './dataParsing';
 import { GraphExpression, } from '../types/stateExpression';
 import { FitResult } from '../protos/approximation_pb';
+import { FitRes } from '../types/fitResult';
 
 /**
  * calculate points to draw on graph from string expression
@@ -27,15 +28,12 @@ export function calculatePoints(expression: string, expressionParams: GenericObj
     let expressionToEval = expression.replace(/ /g, ''); //TODO: NECESSARY?
     expressionToEval = parseAsterisks(expressionToEval);
     const expr = parser.parse(expressionToEval);
-    console.log(expr);
-    console.log(expressionParams);
     for (let x = xMin; x < xMax; x++) {
       points.push([x, expr.evaluate({...expressionParams, x})]);
     }
   } catch (e) {
     return false;
   }
-  console.log(points);
   return points;
 }
 
@@ -46,7 +44,7 @@ export function calculatePoints(expression: string, expressionParams: GenericObj
  * @param xMax
  * @return {name, points} are returned on successful calculation, false is returned on error
  */
-export function calculateExpressionsPoints(expressions: FitResult.AsObject[], xMin: number, xMax: number): GraphExpression[] | false {
+export function calculateExpressionsPoints(expressions: FitRes[], xMin: number, xMax: number): GraphExpression[] | false {
   const parsedExpressions: GraphExpression[] = [];
 
 

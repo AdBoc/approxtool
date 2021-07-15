@@ -6,6 +6,7 @@ import {
 import { FitResult } from '../../protos/approximation_pb';
 import { GetUserResponse } from '../../protos/user_pb';
 import { FitStateExpression } from '../../types/stateExpression';
+import { FitRes } from '../../types/fitResult';
 
 export function fetchModels(): Promise<FitStateExpression[]> {
   return new Promise((resolve) => {
@@ -13,7 +14,7 @@ export function fetchModels(): Promise<FitStateExpression[]> {
   });
 }
 
-export function fetchResults(): Promise<FitResult.AsObject[]> {
+export function fetchResults(): Promise<FitRes[]> {
   return new Promise((resolve) => {
     setTimeout(() => resolve(RESULTS), 1000);
   });
