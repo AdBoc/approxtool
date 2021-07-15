@@ -3,17 +3,20 @@ import { useState } from 'react';
 interface ModalReturn {
   isShowing: boolean;
   toggle: () => void;
+  show: () => void;
+  hide: () => void;
 }
 
 export const useModal = (): ModalReturn => {
   const [isShowing, setIsShowing] = useState(false);
-
-  function toggle() {
-    setIsShowing(prev => !prev);
-  }
+  const toggle = () => setIsShowing(prev => !prev);
+  const show = () => setIsShowing(true);
+  const hide = () => setIsShowing(false);
 
   return {
     isShowing,
-    toggle
-  }
-}
+    toggle,
+    hide,
+    show
+  };
+};

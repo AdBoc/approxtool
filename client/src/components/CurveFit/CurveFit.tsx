@@ -127,7 +127,7 @@ export const CurveFit = () => {
           return;
         }
 
-        const fitResult = res.toObject().fitResultList.sort((a, b) => a.rSqrt - b.rSqrt);
+        const fitResult = res.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
 
         fitResult.forEach(RateResult);
 
@@ -145,7 +145,7 @@ export const CurveFit = () => {
     const [xMin, xMax, yMin, yMax] = getXYAxisMinMax(graphPoints);
     graphDataManager.setXMinMax(xMin, xMax);
     dispatch({type: FitActionType.RAW_POINTS_TO_GRAPH_POINTS, graphPoints});
-    dispatch({type: FitActionType.SET_DOMAINS, xDomain: [xMin, xMax], yDomain: [yMin, yMax]}); //TODO: refactor??
+    dispatch({type: FitActionType.SET_DOMAINS, xDomain: [xMin, xMax], yDomain: [yMin, yMax]});
   };
 
   return (
@@ -153,9 +153,6 @@ export const CurveFit = () => {
       <SideBar/>
       <div className={styles.curveFitWrapper}>
         <div className={styles.graphWrapper}>
-          {Boolean(state.fitResult.length) && (
-            <FitResults results={state.fitResult} dispatch={dispatch}/>
-          )}
           {Boolean(state.graphPoints.length) && (
             <Graph
               graphExpression={state.graphExpression}
@@ -163,6 +160,9 @@ export const CurveFit = () => {
               xScaleDomain={state.xDomain}
               yScaleDomain={state.yDomain}
             />
+          )}
+          {Boolean(state.fitResult.length) && (
+            <FitResults results={state.fitResult} dispatch={dispatch}/>
           )}
         </div>
         <div className={styles.fittingButtons}>

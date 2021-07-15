@@ -31,7 +31,7 @@ interface Props {
 
 export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
   const [graphPoints, setGraphPoints] = useState<Point[]>([]);
-  const [parameters, setParameters] = useState<string[]>([]);
+  const [parameters, setParameters] = useState<GenericObject<number>>({});
   const [errors, setErrors] = useState<string[]>([]);
   const [modelForm, setModelForm] = useState<NewExpression>({
     name: '',
@@ -39,16 +39,23 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
     lexexpression: '',
   });
 
-  const {isShowing: isGraph, toggle: toggleGraph} = useModal();
+  const {isShowing: isGraph, show, hide} = useModal();
 
   useEffect(() => {
     if (!modelForm.expression) return setModelForm(prev => ({...prev, lexExpression: ''}));
     let exprErrors: string[] = [];
     try {
       const lexEquation = nerdamer(modelForm.expression).toTeX();
-      const exprParams = expressionParams(modelForm.expression);
+      let exprParams: string[] | GenericObject<number> = expressionParams(modelForm.expression);
       exprErrors = extraExprValidation(modelForm.expression, exprParams, modelForm.name);
       setModelForm(prev => ({...prev, lexexpression: lexEquation}));
+      // setParameters(exprParams.map(param => ({paramName: param, paramVal: 1})));
+
+      exprParams = exprParams.reduce((params, letter) => {
+        params[letter] = 1;
+        return params;
+      }, {} as GenericObject<number>);
+
       setParameters(exprParams)
     } catch (e) {
       exprErrors.push('Expression cannot be converted to latex');
@@ -61,21 +68,21 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
 
   const handleInput = (e: BaseSyntheticEvent) => setModelForm(prev => ({...prev, [e.target.name]: e.target.value}));
 
-  const handleDrawGraph = () => {
+  const handleChangeParameter = (e: BaseSyntheticEvent) => setParameters(prev => ({
+    ...prev,
+    [e.target.name]: parseFloat(e.target.value),
+  })); //TODO: Make sure user inputs float
+
+  const drawGraph = () => {
     if (errors.length) return;
 
-    const expressionParams = parameters.reduce((params, letter) => {
-      params[letter] = 1;
-      return params;
-    }, {} as GenericObject<number>);
-
-    const calculatedPoints = calculatePoints(modelForm.expression, expressionParams);
+    const calculatedPoints = calculatePoints(modelForm.expression, parameters);
     if (!calculatedPoints) {
       setErrors(prev => [...prev, 'Internal App Error: Expression cannot be evaluated']);
       return;
     }
     setGraphPoints(calculatedPoints);
-    toggleGraph();
+    show();
   };
 
   const handleModelSubmit = () => {
@@ -100,25 +107,43 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
                 math={modelForm.lexexpression}
             />
             <label>Show graph
-                <input type="checkbox" checked={isGraph} onChange={handleDrawGraph}/>
+                <input type="checkbox" checked={isGraph} onChange={drawGraph}/>
             </label>
         </>
         }
         <div className={styles.textWrapper}>
           {errors.map(error => <p key={error} className={styles.textError}>{error}</p>)}
         </div>
-        {Boolean(parameters.length) && <div className={styles.textWrapper}>
-          <p>Detected parameters: {parameters.join(', ')}</p>
+        {Boolean(Object.keys(parameters).length) && <div className={styles.textWrapper}>
+            <p>Detected parameters: {Object.keys(parameters).join(', ')}</p>
         </div>}
         <Button text="Submit" type="submit" onClick={handleModelSubmit}/>
       </div>
       <Modal isShowing={isGraph} className={styles.graphModal}>
-        <Graph
-          graphExpression={{id: 1, name: modelForm.name, points: graphPoints}}
-          yScaleDomain={yScaleDomain}
-          xScaleDomain={[-100, 100]}
-        />
-        <Button text="Hide graph" type="submit" onClick={toggleGraph}/>
+        <div className={styles.graphFlex}>
+          <Graph
+            graphExpression={{id: 1, name: modelForm.name, points: graphPoints}}
+            yScaleDomain={yScaleDomain}
+            xScaleDomain={[-100, 100]}
+          />
+          <div>
+            {Object.entries(parameters).map(([paramName, paramVal]) => (
+              <div key={paramName}>
+                <label>{paramName}:
+                  <input
+                    className={styles.paramsLabel}
+                    type="number"
+                    name={paramName}
+                    value={paramVal}
+                    onChange={handleChangeParameter}
+                  />
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <Button text="Update graph" type="button" onClick={drawGraph}/>
+        <Button text="Hide graph" type="submit" onClick={hide}/>
       </Modal>
     </>
   );

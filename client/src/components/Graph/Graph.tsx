@@ -29,7 +29,7 @@ export const Graph: React.FC<Props> = React.memo((
   const expression = graphExpression || {id: 1, name: '', points: []};
 
   useEffect(() => {
-    const margin = {top: 20, right: 30, bottom: 30, left: 30};
+    const margin = {top: 20, right: 30, bottom: 30, left: 50};
     const width = parseInt(d3.select('#func-chart').style('width')) - margin.left - margin.right;
     const height = parseInt(d3.select('#func-chart').style('height')) - margin.top - margin.bottom;
 
