@@ -1,8 +1,4 @@
 services:
-  # protobuff:
-  #   build:
-  #     context: ./protos
-  #     dockerfile: dockerfile
   envoy:
     build:
       context: ./envoy
@@ -19,7 +15,6 @@ services:
     depends_on:
       - envoy
       - postgres
-      # - protobuff
   modelsrv:
     build:
       context: ./server/modelsrv
@@ -29,7 +24,6 @@ services:
     depends_on:
       - envoy
       - postgres
-      # - protobuff
   approxsrv:
     build:
       context: ./server/approxsrv
@@ -38,15 +32,12 @@ services:
       - "9002:9002"
     depends_on:
       - envoy
-      # - protobuff
   client:
     build:
       context: ./client
       dockerfile: dockerfile
     ports:
       - "3000:3000"
-    # depends_on:
-    #   - protobuff
   postgres:
     image: postgres:13.3
     restart: always

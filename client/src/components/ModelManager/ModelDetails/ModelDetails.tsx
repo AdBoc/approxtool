@@ -3,19 +3,23 @@ import TexMath from '@matejmazur/react-katex';
 import { Button } from '../../../common-components/Button/Button';
 import { StateExpression } from '../../../types';
 import styles from './styles.module.scss';
-import { DeleteModelRequest } from '../../../protos/model_pb';
+import {
+  DeleteModelRequest,
+  Model
+} from '../../../protos/model_pb';
 import {
   modelMetadata,
   modelSrv
 } from '../../../constants/constants';
+import { mutateModel } from '../ModelManager.utils';
 
 interface Props {
-  selectedModel: StateExpression;
+  selectedModel: StateExpression | Model.AsObject;
   toggleModal: () => void;
+  setModels: React.Dispatch<React.SetStateAction<Model.AsObject[]>>;
 }
 
-export const ModelDetails: React.FC<Props> = ({selectedModel, toggleModal}): JSX.Element => {
-
+export const ModelDetails: React.FC<Props> = ({selectedModel, toggleModal, setModels}): JSX.Element => {
   const handleDeleteModel = (modelId: number) => {
     const request = new DeleteModelRequest();
     request.setModelid(modelId);
@@ -24,6 +28,7 @@ export const ModelDetails: React.FC<Props> = ({selectedModel, toggleModal}): JSX
         console.log(err.code, err.message);
         return;
       }
+      setModels(prev => mutateModel.deleteModel(prev, modelId));
     });
   };
 

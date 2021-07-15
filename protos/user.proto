@@ -49,7 +49,7 @@ message CompareCredentialsRequest {
 service UserService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc GetAllUsers(google.protobuf.Empty) returns (GetUsersResponse);
-  rpc CreateUser(NewUserRequest) returns (google.protobuf.Empty);
+  rpc CreateUser(NewUserRequest) returns (GetUserResponse);
   rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty);
   rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty);
   rpc CompareCredentials(CompareCredentialsRequest) returns (google.protobuf.Empty);

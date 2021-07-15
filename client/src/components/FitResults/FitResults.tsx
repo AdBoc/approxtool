@@ -44,7 +44,7 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
 
   return (
     <>
-      <div>
+      <div className={styles.resultsWrapper}>
         {results.map((result, index) => (
           <div
             key={index}
@@ -61,21 +61,20 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
           </div>
         ))}
       </div>
-      <Modal isShowing={isShowing}>
+      <Modal isShowing={isShowing} className={styles.detailsView}>
         <Button text="Copy model expression" type="button" onClick={handleCopyFunction}/>
         {/*<TexMath block math={highlightedResult?}TODO: APPLY LEXEXPRESSION*/}
         <h2>Overview</h2>
-        <p>Model: {highlightedResult?.modelName}</p>
-        <p>R: {highlightedResult?.r}</p>
+        <p>Name: {highlightedResult?.modelName}</p>
         <p>R^2: {highlightedResult?.rSqrt}</p>
         <p>BIC: {highlightedResult?.bic}</p>
         <p>AIC: {highlightedResult?.aic}</p>
-        <p>FOG: {highlightedResult?.fog}</p>
+        <p>nfree: {highlightedResult?.fog}</p>
         <h2>Parameters</h2>
         {highlightedResult?.parametersList.map(parameter =>
-          <div key={parameter.name}>
-            <span>{parameter.name} : {parameter.value}</span>
-            <span>Std Err:{parameter.stderr}</span>
+          <div key={parameter.name} className={styles.parameters}>
+            <span>{parameter.name}: {parameter.value}</span>
+            <span>Std Err: {parameter.stderr}</span>
           </div>
         )}
         <Button text="Close" type="submit" onClick={toggle}/>

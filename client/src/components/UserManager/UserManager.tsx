@@ -2,7 +2,6 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import { InputField } from '../../common-components/InputField/InputField';
 import { fetchUsers } from '../../temporary/sim-request/sim-request';
 import { Modal } from '../../common-components/Modal/Modal';
 import { Button } from '../../common-components/Button/Button';
@@ -19,11 +18,17 @@ import {
 } from '../../constants/constants';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import styles from './styles.module.scss';
+import { useModal } from '../../hooks/useModal';
+import { RegisterForm } from '../RegisterForm';
+import { mutateUser } from './UserManager.utils';
 
 export const UserManager: React.FC = (): JSX.Element => {
   const [userQuery, setUserQuery] = useState('');
+
+  const {isShowing: isRegisterForm, toggle: toggleRegisterForm} = useModal();
+
   const [users, setUsers] = useState<GetUserResponse.AsObject[]>([]);
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [selectedUser, setSelectedUser] = useState<GetUserResponse.AsObject | null>(null);
 
   useEffect(() => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -35,7 +40,6 @@ export const UserManager: React.FC = (): JSX.Element => {
           console.log(err.code, err.message);
           return;
         }
-        console.log(res.toObject().usersList);
         setUsers(res.toObject().usersList);
       });
     }
@@ -50,6 +54,8 @@ export const UserManager: React.FC = (): JSX.Element => {
         console.log(err.code, err.message);
         return;
       }
+      setUsers(mutateUser.changePrivilege(users, userId));
+      setSelectedUser(null);
     });
   };
 
@@ -61,27 +67,39 @@ export const UserManager: React.FC = (): JSX.Element => {
         console.log(err.code, err.message);
         return;
       }
+      //mutate state
+      setUsers(mutateUser.deleteUser(users, userId));
+      setSelectedUser(null);
     });
   };
 
   return (
     <div className={styles.usersWrapper}>
-      <InputField
-        label="Search by username/email:"
-        value={userQuery}
-        handler={e => setUserQuery(e.target.value)}
-      />
+      <Button text="Add user" onClick={toggleRegisterForm}/>
+      {/*<InputField*/}
+      {/*  label="Search by username/email:"*/}
+      {/*  value={userQuery}*/}
+      {/*  handler={e => setUserQuery(e.target.value)}*/}
+      {/*/>*/}
       {users.map((user) => (
-        <div key={user.id} className={styles.user} onClick={() => setSelectedUserId(user.id)}>
+        <div key={user.id} className={styles.user} onClick={() => setSelectedUser(user)}>
           <p>Username: {user.username}</p>
           <p>Email: {user.email}</p>
           <p>Status: {roles[user.status]}</p>
         </div>
       ))}
-      <Modal isShowing={Boolean(selectedUserId)}>
-        <Button text="Give admin role" onClick={() => handleChangePrivilege(selectedUserId!)}/>
-        <Button text="Close" onClick={() => setSelectedUserId(null)}/>
-        <Button text="Delete user" className={styles.dangerousButton} onClick={() => handleDeleteUser(selectedUserId!)}/>
+      <Modal isShowing={Boolean(selectedUser)}>
+        {selectedUser?.status === Role.BASIC_USER &&
+        <Button text="Give admin role" onClick={() => handleChangePrivilege(selectedUser!.id)}/>}
+        <Button text="Close" onClick={() => setSelectedUser(null)}/>
+        <Button
+          text="Delete user"
+          className={styles.dangerousButton}
+          onClick={() => handleDeleteUser(selectedUser!.id)}
+        />
+      </Modal>
+      <Modal isShowing={isRegisterForm} className={styles.modalRegisterWrapper}>
+        <RegisterForm setUsers={setUsers} handleClose={toggleRegisterForm}/>
       </Modal>
     </div>
   );

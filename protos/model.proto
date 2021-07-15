@@ -34,6 +34,6 @@ message DeleteModelRequest {
 
 service ModelService {
   rpc GetUserModels(GetModelsRequest) returns (GetModelsResponse);
-  rpc AddModel(NewModelRequest) returns (google.protobuf.Empty);
+  rpc AddModel(NewModelRequest) returns (Model);
   rpc DeleteModel(DeleteModelRequest) returns (google.protobuf.Empty);
 }

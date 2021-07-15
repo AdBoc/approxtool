@@ -130,6 +130,7 @@ export const Graph: React.FC<Props> = React.memo((
 
     return () => {
       svg.remove();
+      tooltip.remove();
     };
   }, [expression.points, points, xScaleDomain, yScaleDomain]);
 

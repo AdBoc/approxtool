@@ -1,4 +1,3 @@
-import { FitResult } from '../protos/approximation_pb';
 import {
   GetUserResponse,
   Role
@@ -238,7 +237,7 @@ export const USERS: GetUserResponse.AsObject[] = [{
   id: 1,
   username: 'Billy',
   email: 'Bill@Herrington.com',
-  status: Role.BASIC_USER,
+  status: Role.ADMIN,
 }, {
   id: 2,
   username: 'Van',

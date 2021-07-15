@@ -22,7 +22,7 @@ import {
   fetchModels,
   fetchResults,
 } from '../../temporary/sim-request/sim-request';
-import { Graph } from '../Graph';
+import { Graph } from '../../common-components/Graph';
 import { graphDataManager } from '../../utils/GraphData';
 import { getXYAxisMinMax } from '../../utils/curveFit';
 import styles from './styles.module.scss';
@@ -181,7 +181,7 @@ export const CurveFit = () => {
             Yellow color indicates that the result should only be used with caution.
             It indicates that the calculation succeeded, but with reservations.
             Red color means that calculation failed and threw exception
-            (Make sure that models is correct and correct bounds are set).
+            (Make sure that models and its bounds are correct).
           </p>
           <Button text="Fit" type="button" onClick={handleApproximation}/>
         </div>

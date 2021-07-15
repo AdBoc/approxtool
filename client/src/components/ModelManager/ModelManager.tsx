@@ -10,10 +10,10 @@ import { Modal } from '../../common-components/Modal/Modal';
 import { AddModel } from '../../common-components/AddModel/AddModel';
 import { Button } from '../../common-components/Button/Button';
 import { ModelDetails } from './ModelDetails';
-import { StateExpression } from '../../types';
 import styles from './styles.module.scss';
 import {
   GetModelsRequest,
+  Model,
   NewModelRequest
 } from '../../protos/model_pb';
 import {
@@ -21,10 +21,11 @@ import {
   modelSrv
 } from '../../constants/constants';
 import { NewExpression } from '../../types/stateExpression';
+import { mutateModel } from './ModelManager.utils';
 
 export const ModelManager: React.FC = (): JSX.Element => {
-  const [models, setModels] = useState<StateExpression[]>([]);
-  const [selectedModel, setSelectedModel] = useState<StateExpression | null>(null);
+  const [models, setModels] = useState<Model.AsObject[]>([]);
+  const [selectedModel, setSelectedModel] = useState<Model.AsObject | null>(null);
 
   const {isShowing: isModelDetails, toggle: toggleModelDetails} = useModal();
   const {isShowing: isAddModel, toggle: toggleAddModel} = useModal();
@@ -40,7 +41,7 @@ export const ModelManager: React.FC = (): JSX.Element => {
           console.log(err.code, err.message);
           return;
         }
-        setModels(res.toObject().modelsList.map(model => ({...model, isSelected: false})));
+        setModels(res.toObject().modelsList);
       });
     }
   }, []);
@@ -58,11 +59,13 @@ export const ModelManager: React.FC = (): JSX.Element => {
     request.setUserid(1);//TODO: STATIC
     request.setExpression(newExpr.expression);
     request.setLexexpression(newExpr.lexexpression);
-    modelSrv.addModel(request, modelMetadata, (err, _) => {
+    modelSrv.addModel(request, modelMetadata, (err, res) => {
       if (err) {
         console.log(err.code, err.message);
         return;
       }
+      setModels(prev => mutateModel.addModel(prev, res.toObject()));
+      toggleAddModel();
     });
   }
 
@@ -75,7 +78,7 @@ export const ModelManager: React.FC = (): JSX.Element => {
       ))}
       <Button text="New model" onClick={toggleAddModel}/>
       <Modal isShowing={isModelDetails}>
-        <ModelDetails selectedModel={selectedModel!} toggleModal={toggleModelDetails}/>
+        <ModelDetails selectedModel={selectedModel!} toggleModal={toggleModelDetails} setModels={setModels}/>
       </Modal>
       <Modal isShowing={isAddModel}>
         <AddModel modelSubmit={modelSubmit}/>

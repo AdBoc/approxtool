@@ -17,15 +17,6 @@ func NewUserService(uc UseCase) *userService {
 	return &userService{UnimplementedUserServiceServer: pb.UnimplementedUserServiceServer{}, userUC: uc}
 }
 
-func (us *userService) GetUser(ctx context.Context, userId *pb.GetUserRequest) (*pb.GetUserResponse, error) {
-	user, err := us.userUC.GetById(userId.Id)
-	if err != nil {
-		return nil, grpc_errors.ErrorResponse(err, err.Error())
-	}
-
-	return user, nil
-}
-
 func (us *userService) GetAllUsers(ctx context.Context, _ *emptypb.Empty) (*pb.GetUsersResponse, error) {
 	//TODO: Pagination
 
@@ -37,7 +28,7 @@ func (us *userService) GetAllUsers(ctx context.Context, _ *emptypb.Empty) (*pb.G
 	return users, nil
 }
 
-func (us *userService) CreateUser(ctx context.Context, newUser *pb.NewUserRequest) (*emptypb.Empty, error) {
+func (us *userService) CreateUser(ctx context.Context, newUser *pb.NewUserRequest) (*pb.GetUserResponse, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -45,11 +36,12 @@ func (us *userService) CreateUser(ctx context.Context, newUser *pb.NewUserReques
 
 	newUser.Password = string(hashedPassword)
 
-	if err := us.userUC.Create(newUser); err != nil {
+	user, err := us.userUC.Create(newUser)
+	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
 
-	return new(emptypb.Empty), nil
+	return user, nil
 }
 
 func (us *userService) DeleteUser(ctx context.Context, userId *pb.DeleteUserRequest) (*emptypb.Empty, error) {
@@ -61,12 +53,7 @@ func (us *userService) DeleteUser(ctx context.Context, userId *pb.DeleteUserRequ
 }
 
 func (us *userService) ChangeUserPrivilege(ctx context.Context, userPrivilege *pb.ChangePrivilegeRequest) (*emptypb.Empty, error) {
-	user, err := us.userUC.GetById(userPrivilege.UserId)
-	if err != nil {
-		return nil, grpc_errors.ErrorResponse(err, err.Error())
-	}
-
-	err = us.userUC.ChangeUserStatus(user, &userPrivilege.NewStatus)
+	err := us.userUC.ChangeUserStatus(userPrivilege.UserId, &userPrivilege.NewStatus)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
@@ -87,5 +74,3 @@ func (us *userService) CompareCredentials(ctx context.Context, credentials *pb.C
 
 	return new(emptypb.Empty), nil
 }
-
-// TODO: Compare password

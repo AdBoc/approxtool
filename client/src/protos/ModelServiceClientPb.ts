@@ -77,28 +77,28 @@ export class ModelServiceClient {
   }
 
   methodInfoAddModel = new grpcWeb.AbstractClientBase.MethodInfo(
-    google_protobuf_empty_pb.Empty,
+    model_pb.Model,
     (request: model_pb.NewModelRequest) => {
       return request.serializeBinary();
     },
-    google_protobuf_empty_pb.Empty.deserializeBinary
+    model_pb.Model.deserializeBinary
   );
 
   addModel(
     request: model_pb.NewModelRequest,
-    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
+    metadata: grpcWeb.Metadata | null): Promise<model_pb.Model>;
 
   addModel(
     request: model_pb.NewModelRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
+               response: model_pb.Model) => void): grpcWeb.ClientReadableStream<model_pb.Model>;
 
   addModel(
     request: model_pb.NewModelRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void) {
+               response: model_pb.Model) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +

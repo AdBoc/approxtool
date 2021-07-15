@@ -1,3 +1,8 @@
+.resultsWrapper {
+  overflow-y: auto;
+  height: 50vh;
+}
+
 .resultElement {
   display: flex;
   justify-content: center;
@@ -52,4 +57,16 @@
   &:hover {
     background-color: #666666;
   }
+}
+
+.detailsView {
+  width: 70vw;
+  text-align: center;
+}
+
+.parameters {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  grid-gap: 2rem;
 }

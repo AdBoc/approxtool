@@ -14,18 +14,31 @@ func NewUserPGRepository(db *pgxpool.Pool) *userPGRepository {
 	return &userPGRepository{db: db}
 }
 
-func (u *userPGRepository) Create(newUser *pb.NewUserRequest) error {
-	status := map[int32]string{
+func (u *userPGRepository) Create(newUser *pb.NewUserRequest) (*pb.GetUserResponse, error) {
+	var (
+		user      pb.GetUserResponse
+		userStatus string
+	)
+
+	status := map[int32]string{ //TODO: DRY ENUM
 		0: "user",
 		1: "admin",
 	}
 
-	_, err := u.db.Exec(context.Background(), insertNewUserQuery, newUser.Email, newUser.Password, newUser.Username, status[int32(newUser.Status)])
-	if err != nil {
-		return err
+	userStatuses := map[string]int32{
+		"user":  0,
+		"admin": 1,
 	}
 
-	return nil
+	if err := u.db.QueryRow(context.Background(), insertNewUserQuery, newUser.Email, newUser.Password, newUser.Username, status[int32(newUser.Status)]).Scan(
+		&user.Id, &user.Username, &user.Email, &userStatus,
+	); err != nil {
+		return nil, err
+	}
+
+	user.Status = pb.Role(userStatuses[userStatus])
+
+	return &user, nil
 }
 
 func (u *userPGRepository) GetById(id uint32) (*pb.GetUserResponse, error) {
@@ -38,7 +51,7 @@ func (u *userPGRepository) GetById(id uint32) (*pb.GetUserResponse, error) {
 	}
 
 	return &user, nil
-}
+} // TODO: TO DELETE
 
 func (u *userPGRepository) GetAll() (*pb.GetUsersResponse, error) {
 	list := &pb.GetUsersResponse{}
@@ -89,13 +102,13 @@ func (u *userPGRepository) GetPasswordByEmail(email string) (string, error) {
 	return user.password, nil
 }
 
-func (u *userPGRepository) ChangeUserStatus(user *pb.GetUserResponse, status *pb.Role) error {
+func (u *userPGRepository) ChangeUserStatus(userId uint32, status *pb.Role) error {
 	newStatus := map[int32]string{
 		0: "user",
 		1: "admin",
 	}
 
-	_, err := u.db.Query(context.Background(), changeStatusQuery, newStatus[int32(*status)], user.Id)
+	_, err := u.db.Query(context.Background(), changeStatusQuery, newStatus[int32(*status)], userId)
 	if err != nil {
 		return err
 	}

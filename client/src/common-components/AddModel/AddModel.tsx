@@ -10,7 +10,7 @@ import { expressionParams } from '../../utils/dataParsing';
 import { extraExprValidation } from './AddModel.utils';
 import { NewExpression } from '../../types/stateExpression';
 import { InputField } from '../InputField/InputField';
-import { Graph } from '../../components/Graph';
+import { Graph } from '../Graph';
 import {
   calculatePoints,
   getYAxisMinMax

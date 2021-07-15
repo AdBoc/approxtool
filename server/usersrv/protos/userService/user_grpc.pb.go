@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type UserServiceClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	GetAllUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUsersResponse, error)
-	CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ChangeUserPrivilege(ctx context.Context, in *ChangePrivilegeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CompareCredentials(ctx context.Context, in *CompareCredentialsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -53,8 +53,8 @@ func (c *userServiceClient) GetAllUsers(ctx context.Context, in *emptypb.Empty, 
 	return out, nil
 }
 
-func (c *userServiceClient) CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *userServiceClient) CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
+	out := new(GetUserResponse)
 	err := c.cc.Invoke(ctx, "/userService.UserService/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -95,7 +95,7 @@ func (c *userServiceClient) CompareCredentials(ctx context.Context, in *CompareC
 type UserServiceServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	GetAllUsers(context.Context, *emptypb.Empty) (*GetUsersResponse, error)
-	CreateUser(context.Context, *NewUserRequest) (*emptypb.Empty, error)
+	CreateUser(context.Context, *NewUserRequest) (*GetUserResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error)
 	ChangeUserPrivilege(context.Context, *ChangePrivilegeRequest) (*emptypb.Empty, error)
 	CompareCredentials(context.Context, *CompareCredentialsRequest) (*emptypb.Empty, error)
@@ -112,7 +112,7 @@ func (UnimplementedUserServiceServer) GetUser(context.Context, *GetUserRequest) 
 func (UnimplementedUserServiceServer) GetAllUsers(context.Context, *emptypb.Empty) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
 }
-func (UnimplementedUserServiceServer) CreateUser(context.Context, *NewUserRequest) (*emptypb.Empty, error) {
+func (UnimplementedUserServiceServer) CreateUser(context.Context, *NewUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error) {
