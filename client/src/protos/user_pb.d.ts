@@ -21,28 +21,28 @@ export namespace GetUserRequest {
   }
 }
 
-export class GetUserResponse extends jspb.Message {
+export class User extends jspb.Message {
   getId(): number;
-  setId(value: number): GetUserResponse;
+  setId(value: number): User;
 
   getUsername(): string;
-  setUsername(value: string): GetUserResponse;
+  setUsername(value: string): User;
 
   getEmail(): string;
-  setEmail(value: string): GetUserResponse;
+  setEmail(value: string): User;
 
   getStatus(): Role;
-  setStatus(value: Role): GetUserResponse;
+  setStatus(value: Role): User;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetUserResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: GetUserResponse): GetUserResponse.AsObject;
-  static serializeBinaryToWriter(message: GetUserResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetUserResponse;
-  static deserializeBinaryFromReader(message: GetUserResponse, reader: jspb.BinaryReader): GetUserResponse;
+  toObject(includeInstance?: boolean): User.AsObject;
+  static toObject(includeInstance: boolean, msg: User): User.AsObject;
+  static serializeBinaryToWriter(message: User, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): User;
+  static deserializeBinaryFromReader(message: User, reader: jspb.BinaryReader): User;
 }
 
-export namespace GetUserResponse {
+export namespace User {
   export type AsObject = {
     id: number,
     username: string,
@@ -104,10 +104,10 @@ export namespace ChangePrivilegeRequest {
 }
 
 export class GetUsersResponse extends jspb.Message {
-  getUsersList(): Array<GetUserResponse>;
-  setUsersList(value: Array<GetUserResponse>): GetUsersResponse;
+  getUsersList(): Array<User>;
+  setUsersList(value: Array<User>): GetUsersResponse;
   clearUsersList(): GetUsersResponse;
-  addUsers(value?: GetUserResponse, index?: number): GetUserResponse;
+  addUsers(value?: User, index?: number): User;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetUsersResponse.AsObject;
@@ -119,7 +119,7 @@ export class GetUsersResponse extends jspb.Message {
 
 export namespace GetUsersResponse {
   export type AsObject = {
-    usersList: Array<GetUserResponse.AsObject>,
+    usersList: Array<User.AsObject>,
   }
 }
 
@@ -160,6 +160,44 @@ export namespace CompareCredentialsRequest {
   export type AsObject = {
     email: string,
     password: string,
+  }
+}
+
+export class SearchRequest extends jspb.Message {
+  getSearchquery(): string;
+  setSearchquery(value: string): SearchRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SearchRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: SearchRequest): SearchRequest.AsObject;
+  static serializeBinaryToWriter(message: SearchRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SearchRequest;
+  static deserializeBinaryFromReader(message: SearchRequest, reader: jspb.BinaryReader): SearchRequest;
+}
+
+export namespace SearchRequest {
+  export type AsObject = {
+    searchquery: string,
+  }
+}
+
+export class SearchResponse extends jspb.Message {
+  getUsersList(): Array<User>;
+  setUsersList(value: Array<User>): SearchResponse;
+  clearUsersList(): SearchResponse;
+  addUsers(value?: User, index?: number): User;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): SearchResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: SearchResponse): SearchResponse.AsObject;
+  static serializeBinaryToWriter(message: SearchResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): SearchResponse;
+  static deserializeBinaryFromReader(message: SearchResponse, reader: jspb.BinaryReader): SearchResponse;
+}
+
+export namespace SearchResponse {
+  export type AsObject = {
+    usersList: Array<User.AsObject>,
   }
 }
 

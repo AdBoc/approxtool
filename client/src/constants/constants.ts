@@ -1,6 +1,6 @@
 import {
-  GetUserResponse,
-  Role
+  Role,
+  User
 } from '../protos/user_pb';
 import { gRPCClients } from '../gRPCClients';
 import { FitStateExpression } from '../types/stateExpression';
@@ -120,7 +120,7 @@ export const RESULTS: FitRes[] = [
     successStatus: true,
     modelName: 'name1',
     modelExpression: 'a * x + b',
-    r: 0.92,
+    lexExpression: 'None',
     rSqrt: 0.90,
     aic: 40,
     bic: 113,
@@ -144,7 +144,6 @@ export const RESULTS: FitRes[] = [
   {
     modelId: 2,
     successStatus: true,
-    r: 0.93,
     rSqrt: 0.89,
     aic: 50,
     bic: 120,
@@ -170,11 +169,11 @@ export const RESULTS: FitRes[] = [
     }],
     modelName: 'name2',
     modelExpression: 'a * x + b * x ** 2 + c',
+    lexExpression: 'None',
   },
   {
     modelId: 3,
     successStatus: true,
-    r: 0.79,
     rSqrt: 0.6,
     aic: 30,
     bic: 140,
@@ -200,11 +199,11 @@ export const RESULTS: FitRes[] = [
     }],
     modelName: 'name3',
     modelExpression: 'a * sin ( b * x ) + c',
+    lexExpression: 'None',
   },
   {
     modelId: 4,
     successStatus: false,
-    r: 0,
     rSqrt: 0,
     aic: 0,
     bic: 0,
@@ -230,10 +229,11 @@ export const RESULTS: FitRes[] = [
     }],
     modelName: 'name4',
     modelExpression: 'a * exp ( -b * x ) + c',
+    lexExpression: 'None',
   }
 ];
 
-export const USERS: GetUserResponse.AsObject[] = [{
+export const USERS: User.AsObject[] = [{
   id: 1,
   username: 'Billy',
   email: 'Bill@Herrington.com',

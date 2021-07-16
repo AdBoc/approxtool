@@ -41,8 +41,8 @@ export class FitResult extends jspb.Message {
   getModelExpression(): string;
   setModelExpression(value: string): FitResult;
 
-  getR(): number;
-  setR(value: number): FitResult;
+  getLexExpression(): string;
+  setLexExpression(value: string): FitResult;
 
   getRSqrt(): number;
   setRSqrt(value: number): FitResult;
@@ -93,7 +93,7 @@ export namespace FitResult {
     successStatus: boolean,
     modelName: string,
     modelExpression: string,
-    r: number,
+    lexExpression: string,
     rSqrt: number,
     aic: number,
     bic: number,
@@ -148,6 +148,9 @@ export class Expression extends jspb.Message {
   getExpression(): string;
   setExpression(value: string): Expression;
 
+  getLexExpression(): string;
+  setLexExpression(value: string): Expression;
+
   getParametersList(): Array<RequestExpressionParameter>;
   setParametersList(value: Array<RequestExpressionParameter>): Expression;
   clearParametersList(): Expression;
@@ -166,6 +169,7 @@ export namespace Expression {
     id: number,
     name: string,
     expression: string,
+    lexExpression: string,
     parametersList: Array<RequestExpressionParameter.AsObject>,
   }
 }

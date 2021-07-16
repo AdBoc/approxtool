@@ -12,6 +12,7 @@ import {
   FitActionType
 } from '../../reducers/curveFitReducer';
 import { FitRes } from '../../types/fitResult';
+import TexMath from '@matejmazur/react-katex';
 
 interface Props {
   results: FitRes[];
@@ -28,10 +29,6 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
     toggle();
   };
 
-  const handleCopyFunction = (e: BaseSyntheticEvent) => {
-    console.error('Unimplemented');
-  };
-
   const drawExpression = (e: BaseSyntheticEvent, result: FitRes) => {
     e.stopPropagation();
     let expression = graphDataManager.getExpression(result);
@@ -40,6 +37,14 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
       return;
     }
     dispatch({type: FitActionType.SET_GRAPH_EXPRESSION, expression});
+  };
+
+  const handleLatexToClipboard = async (lexExpression: string) => {
+    try {
+      await navigator.clipboard.writeText(lexExpression);
+    } catch (e) {
+      console.error('Failed to copy');
+    }
   };
 
   return (
@@ -62,14 +67,18 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
         ))}
       </div>
       <Modal isShowing={isShowing} className={styles.detailsView}>
-        <Button text="Copy model expression" type="button" onClick={handleCopyFunction}/>
-        {/*<TexMath block math={highlightedResult?}TODO: APPLY LEXEXPRESSION*/}
+        <TexMath
+          block
+          className={styles.katexArea}
+          math={highlightedResult?.lexExpression}
+          onClick={() => handleLatexToClipboard(highlightedResult!.lexExpression)}
+        />
         <h2>Overview</h2>
         <p>Name: {highlightedResult?.modelName}</p>
+        <p>nfree: {highlightedResult?.fog}</p>
         <p>R^2: {highlightedResult?.rSqrt}</p>
         <p>BIC: {highlightedResult?.bic}</p>
         <p>AIC: {highlightedResult?.aic}</p>
-        <p>nfree: {highlightedResult?.fog}</p>
         <h2>Parameters</h2>
         {highlightedResult?.parametersList.map(parameter =>
           <div key={parameter.name} className={styles.parameters}>
@@ -82,6 +91,3 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
     </>
   );
 };
-
-//TODO: Add id to result
-//TODO: SEND COMPONENT TO MODAL AS PROP??

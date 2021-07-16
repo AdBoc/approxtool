@@ -8,9 +8,9 @@ import {
   validateRegisterForm
 } from '../LoginForm/Login.utils';
 import {
-  GetUserResponse,
   NewUserRequest,
-  Role
+  Role,
+  User
 } from '../../protos/user_pb';
 import {
   userMetadata,
@@ -23,7 +23,7 @@ import { mutateUser } from '../UserManager/UserManager.utils';
 
 interface Props {
   handleClose: () => void;
-  setUsers?: React.Dispatch<React.SetStateAction<GetUserResponse.AsObject[]>>;
+  setUsers?: React.Dispatch<React.SetStateAction<User.AsObject[]>>;
 }
 
 export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Element => {

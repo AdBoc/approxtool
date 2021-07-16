@@ -25,7 +25,6 @@ import {
 import { Graph } from '../../common-components/Graph';
 import { graphDataManager } from '../../utils/GraphData';
 import { getXYAxisMinMax } from '../../utils/curveFit';
-import styles from './styles.module.scss';
 import { GetModelsRequest } from '../../protos/model_pb';
 import {
   approximationSrv,
@@ -40,6 +39,7 @@ import {
 } from '../../protos/approximation_pb';
 import { RateResult } from './CurveFit.utils';
 import { Button } from '../../common-components/Button/Button';
+import styles from './styles.module.scss';
 
 export const CurveFit = () => {
   const [state, dispatch] = useReducer(curveFitReducer, initialCurveState);
@@ -89,7 +89,7 @@ export const CurveFit = () => {
 
       state.allModels
         .filter(({id}) => state.fitSelectedModelIds.includes(id))
-        .forEach(({id, name, expression, params}) => {
+        .forEach(({id, name, expression, lexexpression, params}) => {
           const parsedParams = params.map(param => {
             const requestParams = new RequestExpressionParameter();
 
@@ -106,7 +106,8 @@ export const CurveFit = () => {
           newExpression.setId(id);
           newExpression.setName(name);
           newExpression.setExpression(expression);
-          newExpression.setParametersList(parsedParams)
+          newExpression.setLexExpression(lexexpression);
+          newExpression.setParametersList(parsedParams);
 
           expressions.push(newExpression);
         });
@@ -154,12 +155,8 @@ export const CurveFit = () => {
       <div className={styles.curveFitWrapper}>
         <div className={styles.graphWrapper}>
           {Boolean(state.graphPoints.length) && (
-            <Graph
-              graphExpression={state.graphExpression}
-              points={state.graphPoints}
-              xScaleDomain={state.xDomain}
-              yScaleDomain={state.yDomain}
-            />
+            <Graph graphExpression={state.graphExpression} points={state.graphPoints} xScaleDomain={state.xDomain}
+                   yScaleDomain={state.yDomain}/>
           )}
           {Boolean(state.fitResult.length) && (
             <FitResults results={state.fitResult} dispatch={dispatch}/>
@@ -181,22 +178,17 @@ export const CurveFit = () => {
             Yellow color indicates that the result should only be used with caution.
             It indicates that the calculation succeeded, but with reservations.
             Red color means that calculation failed and threw exception
-            (Make sure that models and its bounds are correct).
+            (Likely generated NaN values, Make sure that models and its bounds are correct).
           </p>
           <Button text="Fit" type="button" onClick={handleApproximation}/>
         </div>
         <Modal isShowing={isDataModal}>
-          <DataHandler toggleModal={updateGraphPoints} state={state} dispatch={dispatch}/>
+          <DataHandler state={state} toggleModal={updateGraphPoints} dispatch={dispatch}/>
         </Modal>
         <Modal isShowing={isModelsSelection}>
-          <Models dispatch={dispatch} expressions={state.allModels} closeModelsModal={toggleModelsSelection}/>
+          <Models expressions={state.allModels} closeModelsModal={toggleModelsSelection} dispatch={dispatch}/>
         </Modal>
       </div>
     </>
   );
 };
-
-// TODO: ADD TEMPORARY MODEL
-// TODO: If someone changes points after fit it should be flushed
-// TODO: create reducer! or context
-// TODO: DB with tags and set that takes them by id and consumes and sends??

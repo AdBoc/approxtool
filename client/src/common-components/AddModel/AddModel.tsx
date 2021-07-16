@@ -49,7 +49,6 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
       let exprParams: string[] | GenericObject<number> = expressionParams(modelForm.expression);
       exprErrors = extraExprValidation(modelForm.expression, exprParams, modelForm.name);
       setModelForm(prev => ({...prev, lexexpression: lexEquation}));
-      // setParameters(exprParams.map(param => ({paramName: param, paramVal: 1})));
 
       exprParams = exprParams.reduce((params, letter) => {
         params[letter] = 1;

@@ -4,7 +4,6 @@ import {
   FitStateExpression,
   GraphExpression,
 } from '../types/stateExpression';
-import { FitResult } from '../protos/approximation_pb';
 import { FitRes } from '../types/fitResult';
 
 export type CurveFitState = {

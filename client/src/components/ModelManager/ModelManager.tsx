@@ -56,7 +56,7 @@ export const ModelManager: React.FC = (): JSX.Element => {
   const modelSubmit = (newExpr: NewExpression) => {
     const request = new NewModelRequest();
     request.setName(newExpr.name);
-    request.setUserid(1);//TODO: STATIC
+    request.setUserid(1);//TODO: STATIC USER ID
     request.setExpression(newExpr.expression);
     request.setLexexpression(newExpr.lexexpression);
     modelSrv.addModel(request, modelMetadata, (err, res) => {
@@ -65,6 +65,7 @@ export const ModelManager: React.FC = (): JSX.Element => {
         return;
       }
       setModels(prev => mutateModel.addModel(prev, res.toObject()));
+      console.log(isAddModel);
       toggleAddModel();
     });
   }
@@ -78,7 +79,7 @@ export const ModelManager: React.FC = (): JSX.Element => {
       ))}
       <Button text="New model" onClick={toggleAddModel}/>
       <Modal isShowing={isModelDetails}>
-        <ModelDetails selectedModel={selectedModel!} toggleModal={toggleModelDetails} setModels={setModels}/>
+        <ModelDetails selectedModel={selectedModel!} closeModal={toggleModelDetails} setModels={setModels}/>
       </Modal>
       <Modal isShowing={isAddModel}>
         <AddModel modelSubmit={modelSubmit}/>

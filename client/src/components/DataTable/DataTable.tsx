@@ -37,7 +37,7 @@ export const DataTable: React.FC<Props> = ({plotPoints, dispatch}): JSX.Element 
     let cells: JSX.Element[] = [];
     let cellKey = 1;
 
-    for (let i = 0; i <= calculationData.length; i += 2) { //TODO: WHAT IF I DO calc.length - 1??
+    for (let i = 0; i <= calculationData.length; i += 2) {
       cells.push(
         <div key={cellKey} className={styles.row}>
           <span className={styles.numberCell}>{cellKey}</span>
@@ -81,5 +81,4 @@ export const DataTable: React.FC<Props> = ({plotPoints, dispatch}): JSX.Element 
 //TODO: PASTE FROM POSITION INDEX 5 FOR EXAMPLE
 //TODO: CREATE ROW COMPONENT
 //TODO: DATA SELECTION BY USER
-//TODO: FIX BUG WITH ADDING NEW ROW
 //TODO: REFACTOR

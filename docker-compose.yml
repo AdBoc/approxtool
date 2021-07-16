@@ -1,4 +1,18 @@
 services:
+  postgres:
+    image: postgres:13.3
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      # - DATABASE_HOST=${TEST_DB_HOST} 
+    ports:
+      - "5438:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgres/data
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
   envoy:
     build:
       context: ./envoy
@@ -32,23 +46,10 @@ services:
       - "9002:9002"
     depends_on:
       - envoy
+      - postgres
   client:
     build:
       context: ./client
       dockerfile: dockerfile
     ports:
       - "3000:3000"
-  postgres:
-    image: postgres:13.3
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
-      # - DATABASE_HOST=${TEST_DB_HOST} 
-    ports:
-      - "5438:5432"
-    volumes:
-      - ./postgres-data:/var/lib/postgres/data
-      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql

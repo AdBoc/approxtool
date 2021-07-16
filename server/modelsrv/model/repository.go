@@ -35,15 +35,16 @@ func (m *modelPGRepository) GetUserModels(userId uint32) (*pb.GetModelsResponse,
 	return list, nil
 }
 
-func (m *modelPGRepository) AddModel(newModel *pb.NewModelRequest) error {
-	_, err := m.db.Exec(
+func (m *modelPGRepository) AddModel(newModel *pb.NewModelRequest) (*pb.Model, error) {
+	var model pb.Model
+
+	if err := m.db.QueryRow(
 		context.Background(), insertNewModelQuery, newModel.Name, newModel.Expression, newModel.LexExpression, newModel.UserId,
-	)
-	if err != nil {
-		return err
+	).Scan(&model.Id, &model.Name, &model.Expression, &model.LexExpression); err != nil {
+		return nil, err
 	}
 
-	return nil
+	return &model, nil
 }
 
 func (m *modelPGRepository) DeleteModel(id uint32) error {

@@ -28,4 +28,4 @@ export const SideBar = () => {
   );
 };
 
-//TODO: LOGOUT MEMORY LEAK
+//TODO: LOGOUT MEMORY LEAK?

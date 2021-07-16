@@ -15,11 +15,11 @@ import { mutateModel } from '../ModelManager.utils';
 
 interface Props {
   selectedModel: StateExpression | Model.AsObject;
-  toggleModal: () => void;
+  closeModal: () => void;
   setModels: React.Dispatch<React.SetStateAction<Model.AsObject[]>>;
 }
 
-export const ModelDetails: React.FC<Props> = ({selectedModel, toggleModal, setModels}): JSX.Element => {
+export const ModelDetails: React.FC<Props> = ({selectedModel, closeModal, setModels}): JSX.Element => {
   const handleDeleteModel = (modelId: number) => {
     const request = new DeleteModelRequest();
     request.setModelid(modelId);
@@ -29,6 +29,7 @@ export const ModelDetails: React.FC<Props> = ({selectedModel, toggleModal, setMo
         return;
       }
       setModels(prev => mutateModel.deleteModel(prev, modelId));
+      closeModal();
     });
   };
 
@@ -46,7 +47,7 @@ export const ModelDetails: React.FC<Props> = ({selectedModel, toggleModal, setMo
       <p>Expression: {selectedModel.expression}</p>
       <TexMath block className={styles.texExpression} math={selectedModel.lexexpression}/>
       <Button text="Copy latex expression" onClick={() => handleLatexToClipboard(selectedModel.lexexpression)}/>
-      <Button text="Close" onClick={toggleModal}/>
+      <Button text="Close" onClick={closeModal}/>
       <Button className={styles.dangerousButton} text="Delete" onClick={() => handleDeleteModel(selectedModel.id)}/>
     </div>
   );

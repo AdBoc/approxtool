@@ -25,12 +25,13 @@ func (us *modelService) GetUserModels(ctx context.Context, userId *pb.GetModelsR
 	return users, nil
 }
 
-func (us *modelService) AddModel(ctx context.Context, newModel *pb.NewModelRequest) (*emptypb.Empty, error) {
-	if err := us.modelUc.AddModel(newModel); err != nil {
+func (us *modelService) AddModel(ctx context.Context, newModel *pb.NewModelRequest) (*pb.Model, error) {
+	model, err := us.modelUc.AddModel(newModel);
+	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
 
-	return new(emptypb.Empty), nil
+	return model, nil
 }
 
 

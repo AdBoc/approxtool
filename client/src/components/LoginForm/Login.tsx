@@ -32,8 +32,6 @@ export const Login = () => {
     setLoginErrors(errors);
     if (isError(Object.entries(errors))) return;
 
-    console.log(isError(Object.entries(errors)))
-
     const request = new CompareCredentialsRequest();
     request.setEmail(loginForm.email);
     request.setPassword(loginForm.password);

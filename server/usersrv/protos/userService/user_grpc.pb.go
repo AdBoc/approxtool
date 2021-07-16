@@ -19,12 +19,12 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
-	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	GetAllUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUsersResponse, error)
-	CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*User, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ChangeUserPrivilege(ctx context.Context, in *ChangePrivilegeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CompareCredentials(ctx context.Context, in *CompareCredentialsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SearchForUsers(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SearchResponse, error)
 }
 
 type userServiceClient struct {
@@ -33,15 +33,6 @@ type userServiceClient struct {
 
 func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 	return &userServiceClient{cc}
-}
-
-func (c *userServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
-	out := new(GetUserResponse)
-	err := c.cc.Invoke(ctx, "/userService.UserService/GetUser", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *userServiceClient) GetAllUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUsersResponse, error) {
@@ -53,8 +44,8 @@ func (c *userServiceClient) GetAllUsers(ctx context.Context, in *emptypb.Empty, 
 	return out, nil
 }
 
-func (c *userServiceClient) CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
-	out := new(GetUserResponse)
+func (c *userServiceClient) CreateUser(ctx context.Context, in *NewUserRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
 	err := c.cc.Invoke(ctx, "/userService.UserService/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -89,16 +80,25 @@ func (c *userServiceClient) CompareCredentials(ctx context.Context, in *CompareC
 	return out, nil
 }
 
+func (c *userServiceClient) SearchForUsers(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SearchResponse, error) {
+	out := new(SearchResponse)
+	err := c.cc.Invoke(ctx, "/userService.UserService/SearchForUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
-	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	GetAllUsers(context.Context, *emptypb.Empty) (*GetUsersResponse, error)
-	CreateUser(context.Context, *NewUserRequest) (*GetUserResponse, error)
+	CreateUser(context.Context, *NewUserRequest) (*User, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error)
 	ChangeUserPrivilege(context.Context, *ChangePrivilegeRequest) (*emptypb.Empty, error)
 	CompareCredentials(context.Context, *CompareCredentialsRequest) (*emptypb.Empty, error)
+	SearchForUsers(context.Context, *SearchRequest) (*SearchResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -106,13 +106,10 @@ type UserServiceServer interface {
 type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedUserServiceServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
-}
 func (UnimplementedUserServiceServer) GetAllUsers(context.Context, *emptypb.Empty) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
 }
-func (UnimplementedUserServiceServer) CreateUser(context.Context, *NewUserRequest) (*GetUserResponse, error) {
+func (UnimplementedUserServiceServer) CreateUser(context.Context, *NewUserRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error) {
@@ -123,6 +120,9 @@ func (UnimplementedUserServiceServer) ChangeUserPrivilege(context.Context, *Chan
 }
 func (UnimplementedUserServiceServer) CompareCredentials(context.Context, *CompareCredentialsRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CompareCredentials not implemented")
+}
+func (UnimplementedUserServiceServer) SearchForUsers(context.Context, *SearchRequest) (*SearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchForUsers not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -135,24 +135,6 @@ type UnsafeUserServiceServer interface {
 
 func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
 	s.RegisterService(&UserService_ServiceDesc, srv)
-}
-
-func _UserService_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).GetUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/userService.UserService/GetUser",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetUser(ctx, req.(*GetUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _UserService_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -245,6 +227,24 @@ func _UserService_CompareCredentials_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_SearchForUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).SearchForUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/userService.UserService/SearchForUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).SearchForUsers(ctx, req.(*SearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -252,10 +252,6 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "userService.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetUser",
-			Handler:    _UserService_GetUser_Handler,
-		},
 		{
 			MethodName: "GetAllUsers",
 			Handler:    _UserService_GetAllUsers_Handler,
@@ -275,6 +271,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CompareCredentials",
 			Handler:    _UserService_CompareCredentials_Handler,
+		},
+		{
+			MethodName: "SearchForUsers",
+			Handler:    _UserService_SearchForUsers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -2,48 +2,45 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import { fetchUsers } from '../../temporary/sim-request/sim-request';
 import { Modal } from '../../common-components/Modal/Modal';
 import { Button } from '../../common-components/Button/Button';
 import {
   ChangePrivilegeRequest,
   DeleteUserRequest,
-  GetUserResponse,
-  Role
+  Role,
+  SearchRequest,
+  User
 } from '../../protos/user_pb';
 import {
   roles,
   userMetadata,
   userSrv
 } from '../../constants/constants';
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import styles from './styles.module.scss';
 import { useModal } from '../../hooks/useModal';
 import { RegisterForm } from '../RegisterForm';
 import { mutateUser } from './UserManager.utils';
+import { InputField } from '../../common-components/InputField/InputField';
 
 export const UserManager: React.FC = (): JSX.Element => {
   const [userQuery, setUserQuery] = useState('');
 
   const {isShowing: isRegisterForm, toggle: toggleRegisterForm} = useModal();
 
-  const [users, setUsers] = useState<GetUserResponse.AsObject[]>([]);
-  const [selectedUser, setSelectedUser] = useState<GetUserResponse.AsObject | null>(null);
+  const [users, setUsers] = useState<User.AsObject[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User.AsObject | null>(null);
 
   useEffect(() => {
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      fetchUsers().then(users => setUsers(users));
-    } else {
-      const request = new Empty();
-      userSrv.getAllUsers(request, userMetadata, (err, res) => {
-        if (err) {
-          console.log(err.code, err.message);
-          return;
-        }
-        setUsers(res.toObject().usersList);
-      });
-    }
-  }, []);
+    const request = new SearchRequest();
+    request.setSearchquery(userQuery);
+    userSrv.searchForUsers(request, userMetadata, (err, res) => {
+      if (err) {
+        console.log(err.code, err.message);
+        return;
+      }
+      setUsers(res.toObject().usersList);
+    });
+  }, [userQuery]);
 
   const handleChangePrivilege = (userId: number) => {
     const request = new ChangePrivilegeRequest();
@@ -76,11 +73,11 @@ export const UserManager: React.FC = (): JSX.Element => {
   return (
     <div className={styles.usersWrapper}>
       <Button text="Add user" onClick={toggleRegisterForm}/>
-      {/*<InputField*/}
-      {/*  label="Search by username/email:"*/}
-      {/*  value={userQuery}*/}
-      {/*  handler={e => setUserQuery(e.target.value)}*/}
-      {/*/>*/}
+      <InputField
+        label="Search by username:"
+        value={userQuery}
+        handler={e => setUserQuery(e.target.value)}
+      />
       {users.map((user) => (
         <div key={user.id} className={styles.user} onClick={() => setSelectedUser(user)}>
           <p>Username: {user.username}</p>
@@ -105,5 +102,4 @@ export const UserManager: React.FC = (): JSX.Element => {
   );
 };
 
-// TODO: Implement search XD?
-// TODO: PAGINATION XD
+// TODO: PAGINATION?

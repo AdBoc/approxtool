@@ -20,12 +20,9 @@ def fit_curve(x_data, y_data, expression):
     fit_params = get_fit_params(expression.parameters)
     try:
         result = model.fit(y_data, x=x_data, params=fit_params)
-
-        r = result.redchi / np.var(y_data, ddof=int(result.nfree))
-        print(result.params.values())
         params = composeParams(result.params.values())
 
-        # Corrent r sqrt
+        # r sqrt
         ss_res = np.sum(result.residual ** 2)
         ss_tot = np.sum((y_data - np.mean(y_data)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
@@ -54,7 +51,7 @@ def fit_curve(x_data, y_data, expression):
             success_status=True,
             model_name=expression.name,
             model_expression=expression.expression,
-            r=r,
+            lex_expression=expression.lex_expression,
             r_sqrt=r_squared,
             aic=result.aic,
             bic=result.bic,
@@ -74,7 +71,7 @@ def fit_curve(x_data, y_data, expression):
             success_status=False,
             model_name=expression.name,
             model_expression=expression.expression,
-            r=float(0),
+
             r_sqrt=float(0),
             aic=float(0),
             bic=float(0),

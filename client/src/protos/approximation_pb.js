@@ -380,7 +380,7 @@ proto.approximationService.FitResult.toObject = function(includeInstance, msg) {
     successStatus: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
     modelName: jspb.Message.getFieldWithDefault(msg, 3, ""),
     modelExpression: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    r: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    lexExpression: jspb.Message.getFieldWithDefault(msg, 5, ""),
     rSqrt: jspb.Message.getFloatingPointFieldWithDefault(msg, 6, 0.0),
     aic: jspb.Message.getFloatingPointFieldWithDefault(msg, 7, 0.0),
     bic: jspb.Message.getFloatingPointFieldWithDefault(msg, 8, 0.0),
@@ -446,8 +446,8 @@ proto.approximationService.FitResult.deserializeBinaryFromReader = function(msg,
       msg.setModelExpression(value);
       break;
     case 5:
-      var value = /** @type {number} */ (reader.readFloat());
-      msg.setR(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLexExpression(value);
       break;
     case 6:
       var value = /** @type {number} */ (reader.readFloat());
@@ -551,9 +551,9 @@ proto.approximationService.FitResult.serializeBinaryToWriter = function(message,
       f
     );
   }
-  f = message.getR();
-  if (f !== 0.0) {
-    writer.writeFloat(
+  f = message.getLexExpression();
+  if (f.length > 0) {
+    writer.writeString(
       5,
       f
     );
@@ -712,20 +712,20 @@ proto.approximationService.FitResult.prototype.setModelExpression = function(val
 
 
 /**
- * optional float r = 5;
- * @return {number}
+ * optional string lex_expression = 5;
+ * @return {string}
  */
-proto.approximationService.FitResult.prototype.getR = function() {
-  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+proto.approximationService.FitResult.prototype.getLexExpression = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.approximationService.FitResult} returns this
  */
-proto.approximationService.FitResult.prototype.setR = function(value) {
-  return jspb.Message.setProto3FloatField(this, 5, value);
+proto.approximationService.FitResult.prototype.setLexExpression = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
@@ -1173,7 +1173,7 @@ proto.approximationService.RequestExpressionParameter.prototype.setMaxbound = fu
  * @private {!Array<number>}
  * @const
  */
-proto.approximationService.Expression.repeatedFields_ = [4];
+proto.approximationService.Expression.repeatedFields_ = [5];
 
 
 
@@ -1209,6 +1209,7 @@ proto.approximationService.Expression.toObject = function(includeInstance, msg) 
     id: jspb.Message.getFieldWithDefault(msg, 1, 0),
     name: jspb.Message.getFieldWithDefault(msg, 2, ""),
     expression: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    lexExpression: jspb.Message.getFieldWithDefault(msg, 4, ""),
     parametersList: jspb.Message.toObjectList(msg.getParametersList(),
     proto.approximationService.RequestExpressionParameter.toObject, includeInstance)
   };
@@ -1260,6 +1261,10 @@ proto.approximationService.Expression.deserializeBinaryFromReader = function(msg
       msg.setExpression(value);
       break;
     case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLexExpression(value);
+      break;
+    case 5:
       var value = new proto.approximationService.RequestExpressionParameter;
       reader.readMessage(value,proto.approximationService.RequestExpressionParameter.deserializeBinaryFromReader);
       msg.addParameters(value);
@@ -1314,10 +1319,17 @@ proto.approximationService.Expression.serializeBinaryToWriter = function(message
       f
     );
   }
+  f = message.getLexExpression();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
   f = message.getParametersList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      4,
+      5,
       f,
       proto.approximationService.RequestExpressionParameter.serializeBinaryToWriter
     );
@@ -1380,12 +1392,30 @@ proto.approximationService.Expression.prototype.setExpression = function(value) 
 
 
 /**
- * repeated RequestExpressionParameter parameters = 4;
+ * optional string lex_expression = 4;
+ * @return {string}
+ */
+proto.approximationService.Expression.prototype.getLexExpression = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.approximationService.Expression} returns this
+ */
+proto.approximationService.Expression.prototype.setLexExpression = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * repeated RequestExpressionParameter parameters = 5;
  * @return {!Array<!proto.approximationService.RequestExpressionParameter>}
  */
 proto.approximationService.Expression.prototype.getParametersList = function() {
   return /** @type{!Array<!proto.approximationService.RequestExpressionParameter>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.approximationService.RequestExpressionParameter, 4));
+    jspb.Message.getRepeatedWrapperField(this, proto.approximationService.RequestExpressionParameter, 5));
 };
 
 
@@ -1394,7 +1424,7 @@ proto.approximationService.Expression.prototype.getParametersList = function() {
  * @return {!proto.approximationService.Expression} returns this
 */
 proto.approximationService.Expression.prototype.setParametersList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 4, value);
+  return jspb.Message.setRepeatedWrapperField(this, 5, value);
 };
 
 
@@ -1404,7 +1434,7 @@ proto.approximationService.Expression.prototype.setParametersList = function(val
  * @return {!proto.approximationService.RequestExpressionParameter}
  */
 proto.approximationService.Expression.prototype.addParameters = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.approximationService.RequestExpressionParameter, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, proto.approximationService.RequestExpressionParameter, opt_index);
 };
 
 

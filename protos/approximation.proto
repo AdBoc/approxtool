@@ -12,7 +12,7 @@ message FitResult {
   bool success_status = 2;
   string model_name = 3;
   string model_expression = 4;
-  float r = 5;
+  string lex_expression = 5;
   float r_sqrt = 6;
   float aic = 7;
   float bic = 8;
@@ -37,7 +37,8 @@ message Expression {
   uint32 id = 1;
   string name = 2;
   string expression = 3;
-  repeated RequestExpressionParameter parameters = 4;
+  string lex_expression = 4;
+  repeated RequestExpressionParameter parameters = 5;
 }
 
 message CurveFitRequest {

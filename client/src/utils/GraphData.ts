@@ -2,7 +2,6 @@ import { GraphExpression, } from '../types/stateExpression';
 import { parseAsterisks } from './dataParsing';
 import { GenericObject } from '../types';
 import { calculatePoints } from './curveFit';
-import { FitResult } from '../protos/approximation_pb';
 import { FitRes } from '../types/fitResult';
 
 class GraphDataManager {
@@ -41,7 +40,6 @@ class GraphDataManager {
   };
 
   public getExpression(expression: FitRes) {
-    // console.log(expression, this.#xMin, this.#xMax);
     let graphExpr: undefined | false | GraphExpression;
 
     graphExpr = this.#calculatedExpressions.find(({id}) => expression.modelId === id);

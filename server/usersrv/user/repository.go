@@ -14,9 +14,9 @@ func NewUserPGRepository(db *pgxpool.Pool) *userPGRepository {
 	return &userPGRepository{db: db}
 }
 
-func (u *userPGRepository) Create(newUser *pb.NewUserRequest) (*pb.GetUserResponse, error) {
+func (u *userPGRepository) Create(newUser *pb.NewUserRequest) (*pb.User, error) {
 	var (
-		user      pb.GetUserResponse
+		user       pb.User
 		userStatus string
 	)
 
@@ -41,18 +41,6 @@ func (u *userPGRepository) Create(newUser *pb.NewUserRequest) (*pb.GetUserRespon
 	return &user, nil
 }
 
-func (u *userPGRepository) GetById(id uint32) (*pb.GetUserResponse, error) {
-	var user pb.GetUserResponse
-
-	if err := u.db.QueryRow(context.Background(), getByIdQuery, id).Scan(
-		&user.Id, &user.Username,
-	); err != nil {
-		return nil, err
-	}
-
-	return &user, nil
-} // TODO: TO DELETE
-
 func (u *userPGRepository) GetAll() (*pb.GetUsersResponse, error) {
 	list := &pb.GetUsersResponse{}
 
@@ -61,17 +49,16 @@ func (u *userPGRepository) GetAll() (*pb.GetUsersResponse, error) {
 		"admin": 1,
 	}
 
-	rows, err := u.db.Query(context.Background(), getAllQuery)
+	rows, err := u.db.Query(context.Background(), allUsersQuery)
 	if err != nil {
 		return nil, err
 	}
 
 	var userStatus string
 	for rows.Next() {
-		user := &pb.GetUserResponse{}
+		user := &pb.User{}
 		err := rows.Scan(&user.Id, &user.Username, &user.Email, &userStatus)
 		user.Status = pb.Role(userStatuses[userStatus])
-
 		if err != nil {
 			return nil, err
 		}
@@ -93,7 +80,7 @@ func (u *userPGRepository) DeleteById(id uint32) error {
 func (u *userPGRepository) GetPasswordByEmail(email string) (string, error) {
 	var user struct{ password string }
 
-	if err := u.db.QueryRow(context.Background(), getByEmailQuery, email).Scan(
+	if err := u.db.QueryRow(context.Background(), userByEmailQuery, email).Scan(
 		&user.password,
 	); err != nil {
 		return "", err
@@ -114,4 +101,32 @@ func (u *userPGRepository) ChangeUserStatus(userId uint32, status *pb.Role) erro
 	}
 
 	return nil
+}
+
+func (u *userPGRepository) SearchUserByName(userQuery string) (*pb.SearchResponse, error) {
+	var userStatus string
+	list := &pb.SearchResponse{}
+
+	userStatuses := map[string]int32{
+		"user":  0,
+		"admin": 1,
+	}
+
+	rows, err := u.db.Query(context.Background(), userByNameQuery, userQuery)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		user := &pb.User{}
+		err := rows.Scan(&user.Id, &user.Username, &user.Email, &userStatus)
+		user.Status = pb.Role(userStatuses[userStatus])
+		if err != nil {
+			return nil, err
+		}
+		list.Users = append(list.Users, user)
+	}
+	defer rows.Close()
+
+	return list, nil
 }

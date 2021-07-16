@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x13\x61pproximation.proto\x12\x14\x61pproximationService\"8\n\tParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x02\x12\x0e\n\x06stderr\x18\x03 \x01(\x02\"\xd9\x02\n\tFitResult\x12\x10\n\x08model_id\x18\x01 \x01(\r\x12\x16\n\x0esuccess_status\x18\x02 \x01(\x08\x12\x12\n\nmodel_name\x18\x03 \x01(\t\x12\x18\n\x10model_expression\x18\x04 \x01(\t\x12\t\n\x01r\x18\x05 \x01(\x02\x12\x0e\n\x06r_sqrt\x18\x06 \x01(\x02\x12\x0b\n\x03\x61ic\x18\x07 \x01(\x02\x12\x0b\n\x03\x62ic\x18\x08 \x01(\x02\x12\x0b\n\x03\x66og\x18\t \x01(\r\x12\x11\n\tmean_of_x\x18\n \x01(\x02\x12\x11\n\tmean_of_y\x18\x0b \x01(\x02\x12\x10\n\x08\x63hi_sqrt\x18\x0c \x01(\x02\x12\x18\n\x10reduced_chi_sqrt\x18\r \x01(\x02\x12\x13\n\x0b\x64\x61ta_points\x18\x0e \x01(\x02\x12\x16\n\x0e\x66itting_method\x18\x0f \x01(\t\x12\x33\n\nparameters\x18\x10 \x03(\x0b\x32\x1f.approximationService.Parameter\"g\n\x1aRequestExpressionParameter\x12\x11\n\tparamName\x18\x01 \x01(\t\x12\x12\n\nparamValue\x18\x02 \x01(\x02\x12\x10\n\x08minBound\x18\x03 \x01(\x02\x12\x10\n\x08maxBound\x18\x04 \x01(\x02\"\x80\x01\n\nExpression\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\nexpression\x18\x03 \x01(\t\x12\x44\n\nparameters\x18\x04 \x03(\x0b\x32\x30.approximationService.RequestExpressionParameter\"h\n\x0f\x43urveFitRequest\x12\x0e\n\x06x_data\x18\x01 \x03(\x02\x12\x0e\n\x06y_data\x18\x02 \x03(\x02\x12\x35\n\x0b\x65xpressions\x18\x03 \x03(\x0b\x32 .approximationService.Expression\"E\n\x0e\x43urveFitResult\x12\x33\n\nfit_result\x18\x01 \x03(\x0b\x32\x1f.approximationService.FitResult2p\n\x14\x41pproximationService\x12X\n\tFitCurves\x12%.approximationService.CurveFitRequest\x1a$.approximationService.CurveFitResultb\x06proto3'
+  serialized_pb=b'\n\x13\x61pproximation.proto\x12\x14\x61pproximationService\"8\n\tParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x02\x12\x0e\n\x06stderr\x18\x03 \x01(\x02\"\xe6\x02\n\tFitResult\x12\x10\n\x08model_id\x18\x01 \x01(\r\x12\x16\n\x0esuccess_status\x18\x02 \x01(\x08\x12\x12\n\nmodel_name\x18\x03 \x01(\t\x12\x18\n\x10model_expression\x18\x04 \x01(\t\x12\x16\n\x0elex_expression\x18\x05 \x01(\t\x12\x0e\n\x06r_sqrt\x18\x06 \x01(\x02\x12\x0b\n\x03\x61ic\x18\x07 \x01(\x02\x12\x0b\n\x03\x62ic\x18\x08 \x01(\x02\x12\x0b\n\x03\x66og\x18\t \x01(\r\x12\x11\n\tmean_of_x\x18\n \x01(\x02\x12\x11\n\tmean_of_y\x18\x0b \x01(\x02\x12\x10\n\x08\x63hi_sqrt\x18\x0c \x01(\x02\x12\x18\n\x10reduced_chi_sqrt\x18\r \x01(\x02\x12\x13\n\x0b\x64\x61ta_points\x18\x0e \x01(\x02\x12\x16\n\x0e\x66itting_method\x18\x0f \x01(\t\x12\x33\n\nparameters\x18\x10 \x03(\x0b\x32\x1f.approximationService.Parameter\"g\n\x1aRequestExpressionParameter\x12\x11\n\tparamName\x18\x01 \x01(\t\x12\x12\n\nparamValue\x18\x02 \x01(\x02\x12\x10\n\x08minBound\x18\x03 \x01(\x02\x12\x10\n\x08maxBound\x18\x04 \x01(\x02\"\x98\x01\n\nExpression\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\nexpression\x18\x03 \x01(\t\x12\x16\n\x0elex_expression\x18\x04 \x01(\t\x12\x44\n\nparameters\x18\x05 \x03(\x0b\x32\x30.approximationService.RequestExpressionParameter\"h\n\x0f\x43urveFitRequest\x12\x0e\n\x06x_data\x18\x01 \x03(\x02\x12\x0e\n\x06y_data\x18\x02 \x03(\x02\x12\x35\n\x0b\x65xpressions\x18\x03 \x03(\x0b\x32 .approximationService.Expression\"E\n\x0e\x43urveFitResult\x12\x33\n\nfit_result\x18\x01 \x03(\x0b\x32\x1f.approximationService.FitResult2p\n\x14\x41pproximationService\x12X\n\tFitCurves\x12%.approximationService.CurveFitRequest\x1a$.approximationService.CurveFitResultb\x06proto3'
 )
 
 
@@ -108,9 +108,9 @@ _FITRESULT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='r', full_name='approximationService.FitResult.r', index=4,
-      number=5, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      name='lex_expression', full_name='approximationService.FitResult.lex_expression', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -204,7 +204,7 @@ _FITRESULT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=104,
-  serialized_end=449,
+  serialized_end=462,
 )
 
 
@@ -256,8 +256,8 @@ _REQUESTEXPRESSIONPARAMETER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=451,
-  serialized_end=554,
+  serialized_start=464,
+  serialized_end=567,
 )
 
 
@@ -291,8 +291,15 @@ _EXPRESSION = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='parameters', full_name='approximationService.Expression.parameters', index=3,
-      number=4, type=11, cpp_type=10, label=3,
+      name='lex_expression', full_name='approximationService.Expression.lex_expression', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='parameters', full_name='approximationService.Expression.parameters', index=4,
+      number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -309,8 +316,8 @@ _EXPRESSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=557,
-  serialized_end=685,
+  serialized_start=570,
+  serialized_end=722,
 )
 
 
@@ -355,8 +362,8 @@ _CURVEFITREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=687,
-  serialized_end=791,
+  serialized_start=724,
+  serialized_end=828,
 )
 
 
@@ -387,8 +394,8 @@ _CURVEFITRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=793,
-  serialized_end=862,
+  serialized_start=830,
+  serialized_end=899,
 )
 
 _FITRESULT.fields_by_name['parameters'].message_type = _PARAMETER
@@ -454,8 +461,8 @@ _APPROXIMATIONSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=864,
-  serialized_end=976,
+  serialized_start=901,
+  serialized_end=1013,
   methods=[
   _descriptor.MethodDescriptor(
     name='FitCurves',

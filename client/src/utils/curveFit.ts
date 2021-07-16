@@ -5,7 +5,6 @@ import {
 import { Parser } from 'expr-eval';
 import { parseAsterisks } from './dataParsing';
 import { GraphExpression, } from '../types/stateExpression';
-import { FitResult } from '../protos/approximation_pb';
 import { FitRes } from '../types/fitResult';
 
 /**

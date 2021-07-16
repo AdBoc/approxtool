@@ -3,8 +3,7 @@ import {
   RESULTS,
   USERS
 } from '../../constants/constants';
-import { FitResult } from '../../protos/approximation_pb';
-import { GetUserResponse } from '../../protos/user_pb';
+import { User } from '../../protos/user_pb';
 import { FitStateExpression } from '../../types/stateExpression';
 import { FitRes } from '../../types/fitResult';
 
@@ -20,7 +19,7 @@ export function fetchResults(): Promise<FitRes[]> {
   });
 }
 
-export function fetchUsers(): Promise<GetUserResponse.AsObject[]> {
+export function fetchUsers(): Promise<User.AsObject[]> {
   return new Promise((resolve) => {
     setTimeout(() => resolve(USERS), 1000);
   });

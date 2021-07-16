@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ModelServiceClient interface {
 	GetUserModels(ctx context.Context, in *GetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error)
-	AddModel(ctx context.Context, in *NewModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	AddModel(ctx context.Context, in *NewModelRequest, opts ...grpc.CallOption) (*Model, error)
 	DeleteModel(ctx context.Context, in *DeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
@@ -41,8 +41,8 @@ func (c *modelServiceClient) GetUserModels(ctx context.Context, in *GetModelsReq
 	return out, nil
 }
 
-func (c *modelServiceClient) AddModel(ctx context.Context, in *NewModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *modelServiceClient) AddModel(ctx context.Context, in *NewModelRequest, opts ...grpc.CallOption) (*Model, error) {
+	out := new(Model)
 	err := c.cc.Invoke(ctx, "/modelService.ModelService/AddModel", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (c *modelServiceClient) DeleteModel(ctx context.Context, in *DeleteModelReq
 // for forward compatibility
 type ModelServiceServer interface {
 	GetUserModels(context.Context, *GetModelsRequest) (*GetModelsResponse, error)
-	AddModel(context.Context, *NewModelRequest) (*emptypb.Empty, error)
+	AddModel(context.Context, *NewModelRequest) (*Model, error)
 	DeleteModel(context.Context, *DeleteModelRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedModelServiceServer()
 }
@@ -76,7 +76,7 @@ type UnimplementedModelServiceServer struct {
 func (UnimplementedModelServiceServer) GetUserModels(context.Context, *GetModelsRequest) (*GetModelsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserModels not implemented")
 }
-func (UnimplementedModelServiceServer) AddModel(context.Context, *NewModelRequest) (*emptypb.Empty, error) {
+func (UnimplementedModelServiceServer) AddModel(context.Context, *NewModelRequest) (*Model, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddModel not implemented")
 }
 func (UnimplementedModelServiceServer) DeleteModel(context.Context, *DeleteModelRequest) (*emptypb.Empty, error) {

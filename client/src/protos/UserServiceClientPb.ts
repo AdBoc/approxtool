@@ -36,46 +36,6 @@ export class UserServiceClient {
     this.options_ = options;
   }
 
-  methodInfoGetUser = new grpcWeb.AbstractClientBase.MethodInfo(
-    user_pb.GetUserResponse,
-    (request: user_pb.GetUserRequest) => {
-      return request.serializeBinary();
-    },
-    user_pb.GetUserResponse.deserializeBinary
-  );
-
-  getUser(
-    request: user_pb.GetUserRequest,
-    metadata: grpcWeb.Metadata | null): Promise<user_pb.GetUserResponse>;
-
-  getUser(
-    request: user_pb.GetUserRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: user_pb.GetUserResponse) => void): grpcWeb.ClientReadableStream<user_pb.GetUserResponse>;
-
-  getUser(
-    request: user_pb.GetUserRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: user_pb.GetUserResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/userService.UserService/GetUser',
-        request,
-        metadata || {},
-        this.methodInfoGetUser,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/userService.UserService/GetUser',
-    request,
-    metadata || {},
-    this.methodInfoGetUser);
-  }
-
   methodInfoGetAllUsers = new grpcWeb.AbstractClientBase.MethodInfo(
     user_pb.GetUsersResponse,
     (request: google_protobuf_empty_pb.Empty) => {
@@ -117,28 +77,28 @@ export class UserServiceClient {
   }
 
   methodInfoCreateUser = new grpcWeb.AbstractClientBase.MethodInfo(
-    user_pb.GetUserResponse,
+    user_pb.User,
     (request: user_pb.NewUserRequest) => {
       return request.serializeBinary();
     },
-    user_pb.GetUserResponse.deserializeBinary
+    user_pb.User.deserializeBinary
   );
 
   createUser(
     request: user_pb.NewUserRequest,
-    metadata: grpcWeb.Metadata | null): Promise<user_pb.GetUserResponse>;
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.User>;
 
   createUser(
     request: user_pb.NewUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: user_pb.GetUserResponse) => void): grpcWeb.ClientReadableStream<user_pb.GetUserResponse>;
+               response: user_pb.User) => void): grpcWeb.ClientReadableStream<user_pb.User>;
 
   createUser(
     request: user_pb.NewUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: user_pb.GetUserResponse) => void) {
+               response: user_pb.User) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -274,6 +234,46 @@ export class UserServiceClient {
     request,
     metadata || {},
     this.methodInfoCompareCredentials);
+  }
+
+  methodInfoSearchForUsers = new grpcWeb.AbstractClientBase.MethodInfo(
+    user_pb.SearchResponse,
+    (request: user_pb.SearchRequest) => {
+      return request.serializeBinary();
+    },
+    user_pb.SearchResponse.deserializeBinary
+  );
+
+  searchForUsers(
+    request: user_pb.SearchRequest,
+    metadata: grpcWeb.Metadata | null): Promise<user_pb.SearchResponse>;
+
+  searchForUsers(
+    request: user_pb.SearchRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: user_pb.SearchResponse) => void): grpcWeb.ClientReadableStream<user_pb.SearchResponse>;
+
+  searchForUsers(
+    request: user_pb.SearchRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: user_pb.SearchResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/userService.UserService/SearchForUsers',
+        request,
+        metadata || {},
+        this.methodInfoSearchForUsers,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/userService.UserService/SearchForUsers',
+    request,
+    metadata || {},
+    this.methodInfoSearchForUsers);
   }
 
 }

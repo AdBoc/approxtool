@@ -2,22 +2,22 @@ import React, {
   BaseSyntheticEvent,
   useState
 } from 'react';
+import { expressionParams } from '../../utils/dataParsing';
+import { useModal } from '../../hooks/useModal';
 import { Button } from '../../common-components/Button/Button';
+import { Modal } from '../../common-components/Modal/Modal';
+import { AddModel } from '../../common-components/AddModel/AddModel';
+import { EditModelParams } from '../../common-components/EditModelParams/EditModelParams';
 import {
   CurveFitActions,
   CurveFitState,
   FitActionType
 } from '../../reducers/curveFitReducer';
-import styles from './styles.module.scss';
-import { useModal } from '../../hooks/useModal';
-import { Modal } from '../../common-components/Modal/Modal';
-import { AddModel } from '../../common-components/AddModel/AddModel';
 import {
   FitStateExpression,
   NewExpression
 } from '../../types/stateExpression';
-import { expressionParams } from '../../utils/dataParsing';
-import { EditModelParams } from '../../common-components/EditModelParams/EditModelParams';
+import styles from './styles.module.scss';
 
 interface Props {
   expressions: CurveFitState['allModels'];
@@ -92,7 +92,3 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
     </>
   );
 };
-
-//TODO: implement handle all
-//TODO: implement new model
-//TODO: implement edit mode
