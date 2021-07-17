@@ -6,13 +6,17 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
-      # - DATABASE_HOST=${TEST_DB_HOST} 
     ports:
-      - "5438:5432"
+      - "5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgres/data
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   envoy:
     build:
       context: ./envoy
@@ -27,8 +31,8 @@ services:
     ports:
       - "9000:9000"
     depends_on:
-      - envoy
-      - postgres
+      postgres:
+        condition: service_healthy
   modelsrv:
     build:
       context: ./server/modelsrv
@@ -36,8 +40,8 @@ services:
     ports:
       - "9001:9001"
     depends_on:
-      - envoy
-      - postgres
+      postgres:
+        condition: service_healthy
   approxsrv:
     build:
       context: ./server/approxsrv
@@ -53,3 +57,5 @@ services:
       dockerfile: dockerfile
     ports:
       - "3000:3000"
+volumes:
+  postgres:

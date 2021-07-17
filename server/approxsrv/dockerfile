@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.9.6-slim
 WORKDIR /code
 COPY . .
 RUN pip install --upgrade pip \

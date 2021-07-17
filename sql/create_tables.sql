@@ -18,5 +18,5 @@ CREATE TABLE public.models (
     name          VARCHAR(50)  NOT NULL,
     expression    VARCHAR(100) NOT NULL,
     lex_expression VARCHAR(200) NOT NULL,
-    user_id integer REFERENCES users (id)
+    user_id integer REFERENCES users (id) ON DELETE CASCADE
 );

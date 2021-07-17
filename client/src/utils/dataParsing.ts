@@ -4,7 +4,7 @@ import {
   pasteSplitter,
   splitExpressionChars
 } from '../constants/constants';
-import { Point } from '../types/pointCoordinate';
+import { Point } from '../types';
 
 export function parseCSVText(text: string): number[] {
   return text.split(csvSplitter).map(point => parseFloat(point)).filter(point => !isNaN(point));

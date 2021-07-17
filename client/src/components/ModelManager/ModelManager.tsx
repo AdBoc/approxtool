@@ -65,10 +65,9 @@ export const ModelManager: React.FC = (): JSX.Element => {
         return;
       }
       setModels(prev => mutateModel.addModel(prev, res.toObject()));
-      console.log(isAddModel);
       toggleAddModel();
     });
-  }
+  };
 
   return (
     <div>

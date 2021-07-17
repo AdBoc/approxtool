@@ -20,14 +20,14 @@ export function calculatePoints(expression: string, expressionParams: GenericObj
 
   const points: Point[] = [];
 
-  // const pointNum = 250;
-  // const iteratorAddValue = (xMax - xMin) / pointNum;
+  const numOfPlotPoints = 1000;
+  const addValue = (xMax - xMin) / numOfPlotPoints;
 
   try {
     let expressionToEval = expression.replace(/ /g, ''); //TODO: NECESSARY?
     expressionToEval = parseAsterisks(expressionToEval);
     const expr = parser.parse(expressionToEval);
-    for (let x = xMin; x < xMax; x++) {
+    for (let x = xMin; x < xMax; x += addValue) {
       points.push([x, expr.evaluate({...expressionParams, x})]);
     }
   } catch (e) {
@@ -122,5 +122,4 @@ export function getXYAxisMinMax(points: Point[]): [number, number, number, numbe
   return [xMin, xMax, yMin, yMax];
 }
 
-
-//TODO: DRY CODE?
+//TODO: DRY?

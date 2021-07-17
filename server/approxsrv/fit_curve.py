@@ -1,6 +1,5 @@
 import approximation_pb2
 import numpy as np
-from scipy.stats import pearsonr
 from lmfit import Parameters
 from lmfit.models import ExpressionModel
 
@@ -27,28 +26,9 @@ def fit_curve(x_data, y_data, expression):
         ss_tot = np.sum((y_data - np.mean(y_data)) ** 2)
         r_squared = 1 - (ss_res / ss_tot)
 
-        # print({
-        #     "model_id": expression.id,
-        #     "success_status": True,
-        #     "model_name": expression.name,
-        #     "model_expression": expression.expression,
-        #     "r": r,
-        #     "r_sqrt": r * r,
-        #     "aic": result.aic,
-        #     "bic": result.bic,
-        #     "fog": int(result.nfree),
-        #     "mean_of_x": np.mean(x_data),
-        #     "mean_of_y": np.mean(y_data),
-        #     "chi_sqrt": result.chisqr,
-        #     "reduced_chi_sqrt": result.redchi,
-        #     "data_points": result.ndata,
-        #     "fitting_method": result.method,
-        #     "parameters": params,
-        # })
-
         return approximation_pb2.FitResult(
             model_id=expression.id,
-            success_status=True,
+            success_status=result.success,
             model_name=expression.name,
             model_expression=expression.expression,
             lex_expression=expression.lex_expression,
@@ -68,10 +48,10 @@ def fit_curve(x_data, y_data, expression):
         print('exception!!', expression.expression)
         return approximation_pb2.FitResult(
             model_id=expression.id,
-            success_status=False,
+            success_status=result.success,
             model_name=expression.name,
             model_expression=expression.expression,
-
+            lex_expression=expression.lex_expression,
             r_sqrt=float(0),
             aic=float(0),
             bic=float(0),
