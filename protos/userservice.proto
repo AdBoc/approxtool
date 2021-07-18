@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "./user";
+package protos;
+
+service UserService {
+  rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty) {}
+  rpc CompareCredentials(CompareCredentialsRequest) returns (google.protobuf.Empty) {}
+  rpc CreateUser(NewUserRequest) returns (UserResponse) {}
+  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
+  rpc GetAllUsers(google.protobuf.Empty) returns (GetUsersResponse) {}
+  rpc SearchForUsers(SearchRequest) returns (SearchResponse) {}
+}
+
+enum Role {
+  BASIC_USER = 0;
+  ADMIN = 1;
+}
+
+message GetUserRequest {
+  uint32 id = 1;
+}
+
+message UserResponse {
+  uint32 id = 1;
+  string username = 2;
+  string email = 3;
+  Role status = 4;
+}
+
+message NewUserRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  Role status = 4;
+}
+
+message ChangePrivilegeRequest {
+  uint32 userId = 1;
+  Role newStatus = 2;
+}
+
+message GetUsersResponse {
+  repeated UserResponse users = 1;
+}
+
+message DeleteUserRequest {
+  uint32 id = 1;
+}
+
+message CompareCredentialsRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message SearchRequest {
+  string searchQuery = 1;
+}
+
+message SearchResponse {
+  repeated UserResponse users = 1;
+}

@@ -3,15 +3,8 @@
 **/__pycache__
 .idea
 
-#generated proto files
-# **/client/src/protos
-# **/server/**/protos
-
-#react build
-/client/build
-
 #node_modules
-client/node_modules
+services/ClientService/node_modules
 
 #temp files
-/protos/generateProto.txt
+*.txt

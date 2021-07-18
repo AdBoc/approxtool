@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option go_package = "./approx";
+package protos;
+
+service ApproximationService {
+  rpc FitCurves(CurveFitRequest) returns (CurveFitResult) {}
+}
+
+message CurveFitRequest {
+  repeated float x_data = 1;
+  repeated float y_data = 2;
+  repeated Expression expressions = 3;
+}
+
+message CurveFitResult {
+  repeated FitResult fit_result = 1;
+}
+
+message Parameter {
+  string name = 1;
+  float value = 2;
+  float stderr = 3;
+}
+
+message FitResult {
+  uint32 model_id = 1; 
+  bool success_status = 2;
+  string model_name = 3;
+  string model_expression = 4;
+  string lex_expression = 5;
+  float r_sqrt = 6;
+  float aic = 7;
+  float bic = 8;
+  uint32 fog = 9;
+  float mean_of_x = 10;
+  float mean_of_y = 11;
+  float chi_sqrt = 12;
+  float reduced_chi_sqrt = 13;
+  float data_points = 14;
+  string fitting_method = 15;
+  repeated Parameter parameters = 16;
+}
+
+message RequestExpressionParameter {
+  string paramName = 1;
+  float paramValue = 2;
+  float minBound = 3;
+  float maxBound = 4;
+}
+
+message Expression {
+  uint32 id = 1;
+  string name = 2;
+  string expression = 3;
+  string lex_expression = 4;
+  repeated RequestExpressionParameter parameters = 5;
+}
