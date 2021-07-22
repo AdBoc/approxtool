@@ -1,10 +1,7 @@
 import { FitStateExpression } from '../types/stateExpression';
 import { FitRes } from '../types/fitResult';
-import { ApiServiceClient } from '../protos/ApiserviceServiceClientPb';
 import { Role } from '../protos/userservice_pb';
 import { User } from '../types';
-
-export const apiSrv = new ApiServiceClient('http://localhost:8080');
 
 export const csvRegex = /^.*\.csv$/gm;
 export const csvSplitter = /\r?\n|,/;

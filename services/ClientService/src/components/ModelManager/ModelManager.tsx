@@ -2,9 +2,6 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import {
-  fetchModels,
-} from '../../temporary/sim-request/sim-request';
 import { useModal } from '../../hooks/useModal';
 import { Modal } from '../../common-components/Modal/Modal';
 import { AddModel } from '../../common-components/AddModel/AddModel';
@@ -18,7 +15,11 @@ import {
   Model,
   NewModelRequest
 } from '../../protos/modelservice_pb';
-import { apiSrv } from '../../constants/constants';
+import {
+  apiSrv,
+  fetchWithAuthRetry
+} from '../../grpc-web';
+import { token } from '../../utils/token';
 
 export const ModelManager: React.FC = (): JSX.Element => {
   const [models, setModels] = useState<Model.AsObject[]>([]);
@@ -28,19 +29,21 @@ export const ModelManager: React.FC = (): JSX.Element => {
   const {isShowing: isAddModel, toggle: toggleAddModel} = useModal();
 
   useEffect(() => {
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      fetchModels().then(models => setModels(models));
-    } else {
+    async function fetchModels() {
       const request = new GetModelsRequest();
-      request.setUserid(1) //TODO: STATIC USER ID
-      apiSrv.getUserModels(request, null, (err, res) => {
-        if (err) {
-          console.log(err.code, err.message);
-          return;
-        }
-        setModels(res.toObject().modelsList);
-      });
+      try {
+        const result = await fetchWithAuthRetry(() => {
+          request.setAccesstoken(token.accessToken);
+          return apiSrv.getUserModels(request, null);
+        });
+
+        setModels(result.toObject().modelsList);
+      } catch (e) {
+        console.error(e);
+      }
     }
+
+    fetchModels();
   }, []);
 
   const handleModelDetails = (modelId: number) => {
@@ -50,20 +53,23 @@ export const ModelManager: React.FC = (): JSX.Element => {
     toggleModelDetails();
   };
 
-  const modelSubmit = (newExpr: NewExpression) => {
+  const modelSubmit = async (newExpr: NewExpression) => {
     const request = new NewModelRequest();
     request.setName(newExpr.name);
-    request.setUserid(1);//TODO: STATIC USER ID
     request.setExpression(newExpr.expression);
     request.setLexexpression(newExpr.lexexpression);
-    apiSrv.addModel(request, null, (err, res) => {
-      if (err) {
-        console.log(err.code, err.message);
-        return;
-      }
-      setModels(prev => mutateModel.addModel(prev, res.toObject()));
+
+    try {
+      const result = await fetchWithAuthRetry(() => {
+        request.setAccesstoken(token.accessToken);
+        return apiSrv.addModel(request, null)
+      });
+
+      setModels(prev => mutateModel.addModel(prev, result.toObject()));
       toggleAddModel();
-    });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

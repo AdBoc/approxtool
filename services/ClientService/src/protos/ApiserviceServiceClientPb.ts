@@ -39,46 +39,6 @@ export class ApiServiceClient {
     this.options_ = options;
   }
 
-  methodInfoGetSession = new grpcWeb.AbstractClientBase.MethodInfo(
-    authservice_pb.GetSessionResponse,
-    (request: authservice_pb.GetSessionRequest) => {
-      return request.serializeBinary();
-    },
-    authservice_pb.GetSessionResponse.deserializeBinary
-  );
-
-  getSession(
-    request: authservice_pb.GetSessionRequest,
-    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.GetSessionResponse>;
-
-  getSession(
-    request: authservice_pb.GetSessionRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: authservice_pb.GetSessionResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.GetSessionResponse>;
-
-  getSession(
-    request: authservice_pb.GetSessionRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: authservice_pb.GetSessionResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/protos.ApiService/GetSession',
-        request,
-        metadata || {},
-        this.methodInfoGetSession,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/protos.ApiService/GetSession',
-    request,
-    metadata || {},
-    this.methodInfoGetSession);
-  }
-
   methodInfoLogin = new grpcWeb.AbstractClientBase.MethodInfo(
     authservice_pb.LoginResponse,
     (request: authservice_pb.LoginRequest) => {
@@ -117,6 +77,46 @@ export class ApiServiceClient {
     request,
     metadata || {},
     this.methodInfoLogin);
+  }
+
+  methodInfoRefreshToken = new grpcWeb.AbstractClientBase.MethodInfo(
+    authservice_pb.RefreshResponse,
+    (request: authservice_pb.RefreshRequest) => {
+      return request.serializeBinary();
+    },
+    authservice_pb.RefreshResponse.deserializeBinary
+  );
+
+  refreshToken(
+    request: authservice_pb.RefreshRequest,
+    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.RefreshResponse>;
+
+  refreshToken(
+    request: authservice_pb.RefreshRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: authservice_pb.RefreshResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.RefreshResponse>;
+
+  refreshToken(
+    request: authservice_pb.RefreshRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: authservice_pb.RefreshResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/protos.ApiService/RefreshToken',
+        request,
+        metadata || {},
+        this.methodInfoRefreshToken,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/protos.ApiService/RefreshToken',
+    request,
+    metadata || {},
+    this.methodInfoRefreshToken);
   }
 
   methodInfoLogout = new grpcWeb.AbstractClientBase.MethodInfo(
@@ -197,46 +197,6 @@ export class ApiServiceClient {
     request,
     metadata || {},
     this.methodInfoChangeUserPrivilege);
-  }
-
-  methodInfoCompareCredentials = new grpcWeb.AbstractClientBase.MethodInfo(
-    google_protobuf_empty_pb.Empty,
-    (request: userservice_pb.CompareCredentialsRequest) => {
-      return request.serializeBinary();
-    },
-    google_protobuf_empty_pb.Empty.deserializeBinary
-  );
-
-  compareCredentials(
-    request: userservice_pb.CompareCredentialsRequest,
-    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
-
-  compareCredentials(
-    request: userservice_pb.CompareCredentialsRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
-
-  compareCredentials(
-    request: userservice_pb.CompareCredentialsRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/protos.ApiService/CompareCredentials',
-        request,
-        metadata || {},
-        this.methodInfoCompareCredentials,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/protos.ApiService/CompareCredentials',
-    request,
-    metadata || {},
-    this.methodInfoCompareCredentials);
   }
 
   methodInfoCreateUser = new grpcWeb.AbstractClientBase.MethodInfo(
@@ -321,24 +281,24 @@ export class ApiServiceClient {
 
   methodInfoGetAllUsers = new grpcWeb.AbstractClientBase.MethodInfo(
     userservice_pb.GetUsersResponse,
-    (request: google_protobuf_empty_pb.Empty) => {
+    (request: userservice_pb.GetAllUsersRequest) => {
       return request.serializeBinary();
     },
     userservice_pb.GetUsersResponse.deserializeBinary
   );
 
   getAllUsers(
-    request: google_protobuf_empty_pb.Empty,
+    request: userservice_pb.GetAllUsersRequest,
     metadata: grpcWeb.Metadata | null): Promise<userservice_pb.GetUsersResponse>;
 
   getAllUsers(
-    request: google_protobuf_empty_pb.Empty,
+    request: userservice_pb.GetAllUsersRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: userservice_pb.GetUsersResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.GetUsersResponse>;
 
   getAllUsers(
-    request: google_protobuf_empty_pb.Empty,
+    request: userservice_pb.GetAllUsersRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: userservice_pb.GetUsersResponse) => void) {

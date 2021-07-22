@@ -16,7 +16,7 @@ class ApproximationServiceStub(object):
         """
         self.FitCurves = channel.unary_unary(
                 '/protos.ApproximationService/FitCurves',
-                request_serializer=approximationservice__pb2.CurveFitRequest.SerializeToString,
+                request_serializer=approximationservice__pb2.InternalCurveFitRequest.SerializeToString,
                 response_deserializer=approximationservice__pb2.CurveFitResult.FromString,
                 )
 
@@ -35,7 +35,7 @@ def add_ApproximationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'FitCurves': grpc.unary_unary_rpc_method_handler(
                     servicer.FitCurves,
-                    request_deserializer=approximationservice__pb2.CurveFitRequest.FromString,
+                    request_deserializer=approximationservice__pb2.InternalCurveFitRequest.FromString,
                     response_serializer=approximationservice__pb2.CurveFitResult.SerializeToString,
             ),
     }
@@ -60,7 +60,7 @@ class ApproximationService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/protos.ApproximationService/FitCurves',
-            approximationservice__pb2.CurveFitRequest.SerializeToString,
+            approximationservice__pb2.InternalCurveFitRequest.SerializeToString,
             approximationservice__pb2.CurveFitResult.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

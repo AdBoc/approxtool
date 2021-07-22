@@ -52,6 +52,9 @@ export namespace UserResponse {
 }
 
 export class NewUserRequest extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): NewUserRequest;
+
   getUsername(): string;
   setUsername(value: string): NewUserRequest;
 
@@ -74,6 +77,37 @@ export class NewUserRequest extends jspb.Message {
 
 export namespace NewUserRequest {
   export type AsObject = {
+    accesstoken: string,
+    username: string,
+    password: string,
+    email: string,
+    status: Role,
+  }
+}
+
+export class InternalNewUserRequest extends jspb.Message {
+  getUsername(): string;
+  setUsername(value: string): InternalNewUserRequest;
+
+  getPassword(): string;
+  setPassword(value: string): InternalNewUserRequest;
+
+  getEmail(): string;
+  setEmail(value: string): InternalNewUserRequest;
+
+  getStatus(): Role;
+  setStatus(value: Role): InternalNewUserRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalNewUserRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalNewUserRequest): InternalNewUserRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalNewUserRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalNewUserRequest;
+  static deserializeBinaryFromReader(message: InternalNewUserRequest, reader: jspb.BinaryReader): InternalNewUserRequest;
+}
+
+export namespace InternalNewUserRequest {
+  export type AsObject = {
     username: string,
     password: string,
     email: string,
@@ -82,8 +116,8 @@ export namespace NewUserRequest {
 }
 
 export class ChangePrivilegeRequest extends jspb.Message {
-  getUserid(): number;
-  setUserid(value: number): ChangePrivilegeRequest;
+  getAccesstoken(): string;
+  setAccesstoken(value: string): ChangePrivilegeRequest;
 
   getNewstatus(): Role;
   setNewstatus(value: Role): ChangePrivilegeRequest;
@@ -97,6 +131,28 @@ export class ChangePrivilegeRequest extends jspb.Message {
 }
 
 export namespace ChangePrivilegeRequest {
+  export type AsObject = {
+    accesstoken: string,
+    newstatus: Role,
+  }
+}
+
+export class InternalChangePrivilegeRequest extends jspb.Message {
+  getUserid(): number;
+  setUserid(value: number): InternalChangePrivilegeRequest;
+
+  getNewstatus(): Role;
+  setNewstatus(value: Role): InternalChangePrivilegeRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalChangePrivilegeRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalChangePrivilegeRequest): InternalChangePrivilegeRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalChangePrivilegeRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalChangePrivilegeRequest;
+  static deserializeBinaryFromReader(message: InternalChangePrivilegeRequest, reader: jspb.BinaryReader): InternalChangePrivilegeRequest;
+}
+
+export namespace InternalChangePrivilegeRequest {
   export type AsObject = {
     userid: number,
     newstatus: Role,
@@ -124,6 +180,9 @@ export namespace GetUsersResponse {
 }
 
 export class DeleteUserRequest extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): DeleteUserRequest;
+
   getId(): number;
   setId(value: number): DeleteUserRequest;
 
@@ -137,33 +196,99 @@ export class DeleteUserRequest extends jspb.Message {
 
 export namespace DeleteUserRequest {
   export type AsObject = {
+    accesstoken: string,
     id: number,
   }
 }
 
-export class CompareCredentialsRequest extends jspb.Message {
-  getEmail(): string;
-  setEmail(value: string): CompareCredentialsRequest;
-
-  getPassword(): string;
-  setPassword(value: string): CompareCredentialsRequest;
+export class InternalDeleteUserRequest extends jspb.Message {
+  getId(): number;
+  setId(value: number): InternalDeleteUserRequest;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): CompareCredentialsRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: CompareCredentialsRequest): CompareCredentialsRequest.AsObject;
-  static serializeBinaryToWriter(message: CompareCredentialsRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): CompareCredentialsRequest;
-  static deserializeBinaryFromReader(message: CompareCredentialsRequest, reader: jspb.BinaryReader): CompareCredentialsRequest;
+  toObject(includeInstance?: boolean): InternalDeleteUserRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalDeleteUserRequest): InternalDeleteUserRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalDeleteUserRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalDeleteUserRequest;
+  static deserializeBinaryFromReader(message: InternalDeleteUserRequest, reader: jspb.BinaryReader): InternalDeleteUserRequest;
 }
 
-export namespace CompareCredentialsRequest {
+export namespace InternalDeleteUserRequest {
+  export type AsObject = {
+    id: number,
+  }
+}
+
+export class VerifyPasswordRequest extends jspb.Message {
+  getEmail(): string;
+  setEmail(value: string): VerifyPasswordRequest;
+
+  getPassword(): string;
+  setPassword(value: string): VerifyPasswordRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VerifyPasswordRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: VerifyPasswordRequest): VerifyPasswordRequest.AsObject;
+  static serializeBinaryToWriter(message: VerifyPasswordRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerifyPasswordRequest;
+  static deserializeBinaryFromReader(message: VerifyPasswordRequest, reader: jspb.BinaryReader): VerifyPasswordRequest;
+}
+
+export namespace VerifyPasswordRequest {
   export type AsObject = {
     email: string,
     password: string,
   }
 }
 
+export class VerifyPasswordResponse extends jspb.Message {
+  getUserId(): number;
+  setUserId(value: number): VerifyPasswordResponse;
+
+  getUsername(): string;
+  setUsername(value: string): VerifyPasswordResponse;
+
+  getUserRole(): string;
+  setUserRole(value: string): VerifyPasswordResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): VerifyPasswordResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: VerifyPasswordResponse): VerifyPasswordResponse.AsObject;
+  static serializeBinaryToWriter(message: VerifyPasswordResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerifyPasswordResponse;
+  static deserializeBinaryFromReader(message: VerifyPasswordResponse, reader: jspb.BinaryReader): VerifyPasswordResponse;
+}
+
+export namespace VerifyPasswordResponse {
+  export type AsObject = {
+    userId: number,
+    username: string,
+    userRole: string,
+  }
+}
+
+export class GetAllUsersRequest extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): GetAllUsersRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllUsersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllUsersRequest): GetAllUsersRequest.AsObject;
+  static serializeBinaryToWriter(message: GetAllUsersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllUsersRequest;
+  static deserializeBinaryFromReader(message: GetAllUsersRequest, reader: jspb.BinaryReader): GetAllUsersRequest;
+}
+
+export namespace GetAllUsersRequest {
+  export type AsObject = {
+    accesstoken: string,
+  }
+}
+
 export class SearchRequest extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): SearchRequest;
+
   getSearchquery(): string;
   setSearchquery(value: string): SearchRequest;
 
@@ -176,6 +301,25 @@ export class SearchRequest extends jspb.Message {
 }
 
 export namespace SearchRequest {
+  export type AsObject = {
+    accesstoken: string,
+    searchquery: string,
+  }
+}
+
+export class InternalSearchRequest extends jspb.Message {
+  getSearchquery(): string;
+  setSearchquery(value: string): InternalSearchRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalSearchRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalSearchRequest): InternalSearchRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalSearchRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalSearchRequest;
+  static deserializeBinaryFromReader(message: InternalSearchRequest, reader: jspb.BinaryReader): InternalSearchRequest;
+}
+
+export namespace InternalSearchRequest {
   export type AsObject = {
     searchquery: string,
   }

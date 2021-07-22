@@ -19,9 +19,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ModelServiceClient interface {
-	AddModel(ctx context.Context, in *NewModelRequest, opts ...grpc.CallOption) (*NewModelResponse, error)
-	DeleteModel(ctx context.Context, in *DeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetUserModels(ctx context.Context, in *GetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error)
+	AddModel(ctx context.Context, in *InternalNewModelRequest, opts ...grpc.CallOption) (*NewModelResponse, error)
+	DeleteModel(ctx context.Context, in *InternalDeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetUserModels(ctx context.Context, in *InternalGetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error)
 }
 
 type modelServiceClient struct {
@@ -32,7 +32,7 @@ func NewModelServiceClient(cc grpc.ClientConnInterface) ModelServiceClient {
 	return &modelServiceClient{cc}
 }
 
-func (c *modelServiceClient) AddModel(ctx context.Context, in *NewModelRequest, opts ...grpc.CallOption) (*NewModelResponse, error) {
+func (c *modelServiceClient) AddModel(ctx context.Context, in *InternalNewModelRequest, opts ...grpc.CallOption) (*NewModelResponse, error) {
 	out := new(NewModelResponse)
 	err := c.cc.Invoke(ctx, "/protos.ModelService/AddModel", in, out, opts...)
 	if err != nil {
@@ -41,7 +41,7 @@ func (c *modelServiceClient) AddModel(ctx context.Context, in *NewModelRequest, 
 	return out, nil
 }
 
-func (c *modelServiceClient) DeleteModel(ctx context.Context, in *DeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *modelServiceClient) DeleteModel(ctx context.Context, in *InternalDeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/protos.ModelService/DeleteModel", in, out, opts...)
 	if err != nil {
@@ -50,7 +50,7 @@ func (c *modelServiceClient) DeleteModel(ctx context.Context, in *DeleteModelReq
 	return out, nil
 }
 
-func (c *modelServiceClient) GetUserModels(ctx context.Context, in *GetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error) {
+func (c *modelServiceClient) GetUserModels(ctx context.Context, in *InternalGetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error) {
 	out := new(GetModelsResponse)
 	err := c.cc.Invoke(ctx, "/protos.ModelService/GetUserModels", in, out, opts...)
 	if err != nil {
@@ -63,9 +63,9 @@ func (c *modelServiceClient) GetUserModels(ctx context.Context, in *GetModelsReq
 // All implementations must embed UnimplementedModelServiceServer
 // for forward compatibility
 type ModelServiceServer interface {
-	AddModel(context.Context, *NewModelRequest) (*NewModelResponse, error)
-	DeleteModel(context.Context, *DeleteModelRequest) (*emptypb.Empty, error)
-	GetUserModels(context.Context, *GetModelsRequest) (*GetModelsResponse, error)
+	AddModel(context.Context, *InternalNewModelRequest) (*NewModelResponse, error)
+	DeleteModel(context.Context, *InternalDeleteModelRequest) (*emptypb.Empty, error)
+	GetUserModels(context.Context, *InternalGetModelsRequest) (*GetModelsResponse, error)
 	mustEmbedUnimplementedModelServiceServer()
 }
 
@@ -73,13 +73,13 @@ type ModelServiceServer interface {
 type UnimplementedModelServiceServer struct {
 }
 
-func (UnimplementedModelServiceServer) AddModel(context.Context, *NewModelRequest) (*NewModelResponse, error) {
+func (UnimplementedModelServiceServer) AddModel(context.Context, *InternalNewModelRequest) (*NewModelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddModel not implemented")
 }
-func (UnimplementedModelServiceServer) DeleteModel(context.Context, *DeleteModelRequest) (*emptypb.Empty, error) {
+func (UnimplementedModelServiceServer) DeleteModel(context.Context, *InternalDeleteModelRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteModel not implemented")
 }
-func (UnimplementedModelServiceServer) GetUserModels(context.Context, *GetModelsRequest) (*GetModelsResponse, error) {
+func (UnimplementedModelServiceServer) GetUserModels(context.Context, *InternalGetModelsRequest) (*GetModelsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserModels not implemented")
 }
 func (UnimplementedModelServiceServer) mustEmbedUnimplementedModelServiceServer() {}
@@ -96,7 +96,7 @@ func RegisterModelServiceServer(s grpc.ServiceRegistrar, srv ModelServiceServer)
 }
 
 func _ModelService_AddModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NewModelRequest)
+	in := new(InternalNewModelRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -108,13 +108,13 @@ func _ModelService_AddModel_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: "/protos.ModelService/AddModel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ModelServiceServer).AddModel(ctx, req.(*NewModelRequest))
+		return srv.(ModelServiceServer).AddModel(ctx, req.(*InternalNewModelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ModelService_DeleteModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteModelRequest)
+	in := new(InternalDeleteModelRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -126,13 +126,13 @@ func _ModelService_DeleteModel_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: "/protos.ModelService/DeleteModel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ModelServiceServer).DeleteModel(ctx, req.(*DeleteModelRequest))
+		return srv.(ModelServiceServer).DeleteModel(ctx, req.(*InternalDeleteModelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ModelService_GetUserModels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetModelsRequest)
+	in := new(InternalGetModelsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func _ModelService_GetUserModels_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/protos.ModelService/GetUserModels",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ModelServiceServer).GetUserModels(ctx, req.(*GetModelsRequest))
+		return srv.(ModelServiceServer).GetUserModels(ctx, req.(*InternalGetModelsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -6,12 +6,12 @@ option go_package = "./user";
 package protos;
 
 service UserService {
-  rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty) {}
-  rpc CompareCredentials(CompareCredentialsRequest) returns (google.protobuf.Empty) {}
-  rpc CreateUser(NewUserRequest) returns (UserResponse) {}
-  rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
+  rpc ChangeUserPrivilege(InternalChangePrivilegeRequest) returns (google.protobuf.Empty) {}
+  rpc VerifyPassword(VerifyPasswordRequest) returns (VerifyPasswordResponse) {}
+  rpc CreateUser(InternalNewUserRequest) returns (UserResponse) {}
+  rpc DeleteUser(InternalDeleteUserRequest) returns (google.protobuf.Empty) {}
   rpc GetAllUsers(google.protobuf.Empty) returns (GetUsersResponse) {}
-  rpc SearchForUsers(SearchRequest) returns (SearchResponse) {}
+  rpc SearchForUsers(InternalSearchRequest) returns (SearchResponse) {}
 }
 
 enum Role {
@@ -31,6 +31,14 @@ message UserResponse {
 }
 
 message NewUserRequest {
+  string accessToken = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
+  Role status = 5;
+}
+
+message InternalNewUserRequest {
   string username = 1;
   string password = 2;
   string email = 3;
@@ -38,6 +46,11 @@ message NewUserRequest {
 }
 
 message ChangePrivilegeRequest {
+  string accessToken = 1;
+  Role newStatus = 2;
+}
+
+message InternalChangePrivilegeRequest {
   uint32 userId = 1;
   Role newStatus = 2;
 }
@@ -47,15 +60,35 @@ message GetUsersResponse {
 }
 
 message DeleteUserRequest {
+  string accessToken = 1;
+  uint32 id = 2;
+}
+
+message InternalDeleteUserRequest {
   uint32 id = 1;
 }
 
-message CompareCredentialsRequest {
+message VerifyPasswordRequest {
   string email = 1;
   string password = 2;
 }
 
+message VerifyPasswordResponse {
+  uint32 user_id = 1;
+  string username = 2;
+  string user_role = 3;
+}
+
+message GetAllUsersRequest {
+  string accessToken = 1;
+}
+
 message SearchRequest {
+  string accessToken = 1;
+  string searchQuery = 2;
+}
+
+message InternalSearchRequest {
   string searchQuery = 1;
 }
 

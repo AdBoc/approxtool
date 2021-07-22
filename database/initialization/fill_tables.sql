@@ -27,7 +27,7 @@ INSERT INTO models VALUES (DEFAULT, 'logistic', 'a/(1+b*e**(-c*x))', '\frac{a}{\
 -- INSERT INTO models VALUES (DEFAULT, 'exponential plus linear', 'a+b*r**x+c*x', 'r^{x} \cdot b+c \cdot x+a', 1);
 -- INSERT INTO models VALUES (DEFAULT, 'log normal pdf', 'exp(-0.5*((ln(x)-a)**2/b)/x*b*sqrt(2.0*pi))', '', 1); --exp(-0.5*((ln(x)-mu)**2/sigma)/x*sigma*sqrt(2.0*pi)
 
-INSERT INTO users VALUES (DEFAULT, 'test@user.test', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLZf6q5ozBsJrMzfax6mg4u', 'user', 'user', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'test@user.test', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'user', 'user', DEFAULT);
 
 INSERT INTO models VALUES (DEFAULT, 'linear_fit', 'a*x+b', 'a \cdot x+b', 2);
 INSERT INTO models VALUES (DEFAULT, 'plynomial 2', 'a*x**2+b*x+c', 'a \cdot x^{2}+b \cdot x+c', 2);

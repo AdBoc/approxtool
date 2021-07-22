@@ -10,8 +10,9 @@ import {
   validateLoginForm
 } from './Login.utils';
 import styles from './styles.module.scss';
-import { CompareCredentialsRequest } from '../../protos/userservice_pb';
-import { apiSrv } from '../../constants/constants';
+import { LoginRequest } from '../../protos/authservice_pb';
+import { apiSrv } from '../../grpc-web';
+import { token } from '../../utils/token';
 
 export const Login = () => {
   const history = useHistory();
@@ -23,24 +24,24 @@ export const Login = () => {
     [e.target.name]: e.target.value
   }));
 
-  const handleLogin = (e: BaseSyntheticEvent) => {
+  const handleLogin = async (e: BaseSyntheticEvent) => {
     e.preventDefault();
     const errors = validateLoginForm(loginErrors, loginForm);
     setLoginErrors(errors);
     if (isError(Object.entries(errors))) return;
 
-    const request = new CompareCredentialsRequest();
+    const request = new LoginRequest();
     request.setEmail(loginForm.email);
     request.setPassword(loginForm.password);
-    apiSrv.login(request, null, (err, res) => {
-      if (err) {
-        console.error(err.code, err.message);
-        return;
-      }
-      console.log(res.toObject().authToken);
-      // localStorage.setItem('token', 'token');
-      // history.push('/');
-    });
+
+    try {
+      const res = await apiSrv.login(request, null);
+      token.setAccessToken = res.toObject().accessToken;
+      token.setRefreshToken = res.toObject().refreshToken;
+      history.push('/');
+    } catch (err) {
+      console.error(err.code, err.message);
+    }
   };
 
   return (

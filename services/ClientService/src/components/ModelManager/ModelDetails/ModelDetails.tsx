@@ -8,7 +8,11 @@ import {
   DeleteModelRequest,
   Model
 } from '../../../protos/modelservice_pb';
-import { apiSrv } from '../../../constants/constants';
+import {
+  apiSrv,
+  fetchWithAuthRetry
+} from '../../../grpc-web';
+import { token } from '../../../utils/token';
 
 interface Props {
   selectedModel: StateExpression | Model.AsObject;
@@ -17,17 +21,21 @@ interface Props {
 }
 
 export const ModelDetails: React.FC<Props> = ({selectedModel, closeModal, setModels}): JSX.Element => {
-  const handleDeleteModel = (modelId: number) => {
+  const handleDeleteModel = async (modelId: number) => {
     const request = new DeleteModelRequest();
     request.setModelid(modelId);
-    apiSrv.deleteModel(request, null, (err, _) => {
-      if (err) {
-        console.log(err.code, err.message);
-        return;
-      }
+
+    try {
+      await fetchWithAuthRetry(() => {
+        request.setAccesstoken(token.accessToken);
+        return apiSrv.deleteModel(request, null);
+      });
+
       setModels(prev => mutateModel.deleteModel(prev, modelId));
       closeModal();
-    });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleLatexToClipboard = async (expression: string) => {

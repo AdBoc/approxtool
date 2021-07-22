@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ApproximationServiceClient interface {
-	FitCurves(ctx context.Context, in *CurveFitRequest, opts ...grpc.CallOption) (*CurveFitResult, error)
+	FitCurves(ctx context.Context, in *InternalCurveFitRequest, opts ...grpc.CallOption) (*CurveFitResult, error)
 }
 
 type approximationServiceClient struct {
@@ -29,7 +29,7 @@ func NewApproximationServiceClient(cc grpc.ClientConnInterface) ApproximationSer
 	return &approximationServiceClient{cc}
 }
 
-func (c *approximationServiceClient) FitCurves(ctx context.Context, in *CurveFitRequest, opts ...grpc.CallOption) (*CurveFitResult, error) {
+func (c *approximationServiceClient) FitCurves(ctx context.Context, in *InternalCurveFitRequest, opts ...grpc.CallOption) (*CurveFitResult, error) {
 	out := new(CurveFitResult)
 	err := c.cc.Invoke(ctx, "/protos.ApproximationService/FitCurves", in, out, opts...)
 	if err != nil {
@@ -42,7 +42,7 @@ func (c *approximationServiceClient) FitCurves(ctx context.Context, in *CurveFit
 // All implementations must embed UnimplementedApproximationServiceServer
 // for forward compatibility
 type ApproximationServiceServer interface {
-	FitCurves(context.Context, *CurveFitRequest) (*CurveFitResult, error)
+	FitCurves(context.Context, *InternalCurveFitRequest) (*CurveFitResult, error)
 	mustEmbedUnimplementedApproximationServiceServer()
 }
 
@@ -50,7 +50,7 @@ type ApproximationServiceServer interface {
 type UnimplementedApproximationServiceServer struct {
 }
 
-func (UnimplementedApproximationServiceServer) FitCurves(context.Context, *CurveFitRequest) (*CurveFitResult, error) {
+func (UnimplementedApproximationServiceServer) FitCurves(context.Context, *InternalCurveFitRequest) (*CurveFitResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FitCurves not implemented")
 }
 func (UnimplementedApproximationServiceServer) mustEmbedUnimplementedApproximationServiceServer() {}
@@ -67,7 +67,7 @@ func RegisterApproximationServiceServer(s grpc.ServiceRegistrar, srv Approximati
 }
 
 func _ApproximationService_FitCurves_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CurveFitRequest)
+	in := new(InternalCurveFitRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func _ApproximationService_FitCurves_Handler(srv interface{}, ctx context.Contex
 		FullMethod: "/protos.ApproximationService/FitCurves",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApproximationServiceServer).FitCurves(ctx, req.(*CurveFitRequest))
+		return srv.(ApproximationServiceServer).FitCurves(ctx, req.(*InternalCurveFitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

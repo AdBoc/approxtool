@@ -19,7 +19,6 @@ func NewUserService(uc UseCase) *userService {
 
 func (us *userService) GetAllUsers(ctx context.Context, _ *emptypb.Empty) (*pb.GetUsersResponse, error) {
 	//TODO: Pagination
-
 	users, err := us.userUC.GetAll()
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -28,7 +27,7 @@ func (us *userService) GetAllUsers(ctx context.Context, _ *emptypb.Empty) (*pb.G
 	return users, nil
 }
 
-func (us *userService) CreateUser(ctx context.Context, newUser *pb.NewUserRequest) (*pb.UserResponse, error) {
+func (us *userService) CreateUser(ctx context.Context, newUser *pb.InternalNewUserRequest) (*pb.UserResponse, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -44,7 +43,7 @@ func (us *userService) CreateUser(ctx context.Context, newUser *pb.NewUserReques
 	return user, nil
 }
 
-func (us *userService) DeleteUser(ctx context.Context, userId *pb.DeleteUserRequest) (*emptypb.Empty, error) {
+func (us *userService) DeleteUser(ctx context.Context, userId *pb.InternalDeleteUserRequest) (*emptypb.Empty, error) {
 	if err := us.userUC.DeleteById(userId.Id); err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
@@ -52,7 +51,7 @@ func (us *userService) DeleteUser(ctx context.Context, userId *pb.DeleteUserRequ
 	return new(emptypb.Empty), nil
 }
 
-func (us *userService) ChangeUserPrivilege(ctx context.Context, userPrivilege *pb.ChangePrivilegeRequest) (*emptypb.Empty, error) {
+func (us *userService) ChangeUserPrivilege(ctx context.Context, userPrivilege *pb.InternalChangePrivilegeRequest) (*emptypb.Empty, error) {
 	err := us.userUC.ChangeUserStatus(userPrivilege.UserId, &userPrivilege.NewStatus)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -61,21 +60,25 @@ func (us *userService) ChangeUserPrivilege(ctx context.Context, userPrivilege *p
 	return new(emptypb.Empty), nil
 }
 
-func (us *userService) CompareCredentials(ctx context.Context, credentials *pb.CompareCredentialsRequest) (*emptypb.Empty, error) {
-	password, err := us.userUC.GetPasswordByEmail(credentials.Email)
+func (us *userService) VerifyPassword(ctx context.Context, credentials *pb.VerifyPasswordRequest) (*pb.VerifyPasswordResponse, error) {
+	userDetails, err := us.userUC.GetUserByEmail(credentials.Email)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(credentials.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(userDetails.password), []byte(credentials.Password))
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
 
-	return new(emptypb.Empty), nil
+	return &pb.VerifyPasswordResponse{
+		UserId:   userDetails.id,
+		Username: userDetails.username,
+		UserRole: userDetails.role.String(),
+	}, nil
 }
 
-func (us *userService) SearchForUsers(ctx context.Context, searchRequest *pb.SearchRequest) (*pb.SearchResponse, error) {
+func (us *userService) SearchForUsers(ctx context.Context, searchRequest *pb.InternalSearchRequest) (*pb.SearchResponse, error) {
 	users, err := us.userUC.SearchUserByName(searchRequest.SearchQuery)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())

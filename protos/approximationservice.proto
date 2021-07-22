@@ -4,13 +4,20 @@ option go_package = "./approx";
 package protos;
 
 service ApproximationService {
-  rpc FitCurves(CurveFitRequest) returns (CurveFitResult) {}
+  rpc FitCurves(InternalCurveFitRequest) returns (CurveFitResult) {}
 }
 
-message CurveFitRequest {
+message InternalCurveFitRequest {
   repeated float x_data = 1;
   repeated float y_data = 2;
   repeated Expression expressions = 3;
+}
+
+message CurveFitRequest {
+  string access_token = 1;
+  repeated float x_data = 2;
+  repeated float y_data = 3;
+  repeated Expression expressions = 4;
 }
 
 message CurveFitResult {

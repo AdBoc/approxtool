@@ -38,24 +38,24 @@ export class UserServiceClient {
 
   methodInfoChangeUserPrivilege = new grpcWeb.AbstractClientBase.MethodInfo(
     google_protobuf_empty_pb.Empty,
-    (request: userservice_pb.ChangePrivilegeRequest) => {
+    (request: userservice_pb.InternalChangePrivilegeRequest) => {
       return request.serializeBinary();
     },
     google_protobuf_empty_pb.Empty.deserializeBinary
   );
 
   changeUserPrivilege(
-    request: userservice_pb.ChangePrivilegeRequest,
+    request: userservice_pb.InternalChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
 
   changeUserPrivilege(
-    request: userservice_pb.ChangePrivilegeRequest,
+    request: userservice_pb.InternalChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   changeUserPrivilege(
-    request: userservice_pb.ChangePrivilegeRequest,
+    request: userservice_pb.InternalChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void) {
@@ -76,66 +76,66 @@ export class UserServiceClient {
     this.methodInfoChangeUserPrivilege);
   }
 
-  methodInfoCompareCredentials = new grpcWeb.AbstractClientBase.MethodInfo(
-    google_protobuf_empty_pb.Empty,
-    (request: userservice_pb.CompareCredentialsRequest) => {
+  methodInfoVerifyPassword = new grpcWeb.AbstractClientBase.MethodInfo(
+    userservice_pb.VerifyPasswordResponse,
+    (request: userservice_pb.VerifyPasswordRequest) => {
       return request.serializeBinary();
     },
-    google_protobuf_empty_pb.Empty.deserializeBinary
+    userservice_pb.VerifyPasswordResponse.deserializeBinary
   );
 
-  compareCredentials(
-    request: userservice_pb.CompareCredentialsRequest,
-    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
+  verifyPassword(
+    request: userservice_pb.VerifyPasswordRequest,
+    metadata: grpcWeb.Metadata | null): Promise<userservice_pb.VerifyPasswordResponse>;
 
-  compareCredentials(
-    request: userservice_pb.CompareCredentialsRequest,
+  verifyPassword(
+    request: userservice_pb.VerifyPasswordRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
+               response: userservice_pb.VerifyPasswordResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.VerifyPasswordResponse>;
 
-  compareCredentials(
-    request: userservice_pb.CompareCredentialsRequest,
+  verifyPassword(
+    request: userservice_pb.VerifyPasswordRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void) {
+               response: userservice_pb.VerifyPasswordResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/protos.UserService/CompareCredentials',
+          '/protos.UserService/VerifyPassword',
         request,
         metadata || {},
-        this.methodInfoCompareCredentials,
+        this.methodInfoVerifyPassword,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/protos.UserService/CompareCredentials',
+      '/protos.UserService/VerifyPassword',
     request,
     metadata || {},
-    this.methodInfoCompareCredentials);
+    this.methodInfoVerifyPassword);
   }
 
   methodInfoCreateUser = new grpcWeb.AbstractClientBase.MethodInfo(
     userservice_pb.UserResponse,
-    (request: userservice_pb.NewUserRequest) => {
+    (request: userservice_pb.InternalNewUserRequest) => {
       return request.serializeBinary();
     },
     userservice_pb.UserResponse.deserializeBinary
   );
 
   createUser(
-    request: userservice_pb.NewUserRequest,
+    request: userservice_pb.InternalNewUserRequest,
     metadata: grpcWeb.Metadata | null): Promise<userservice_pb.UserResponse>;
 
   createUser(
-    request: userservice_pb.NewUserRequest,
+    request: userservice_pb.InternalNewUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: userservice_pb.UserResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.UserResponse>;
 
   createUser(
-    request: userservice_pb.NewUserRequest,
+    request: userservice_pb.InternalNewUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: userservice_pb.UserResponse) => void) {
@@ -158,24 +158,24 @@ export class UserServiceClient {
 
   methodInfoDeleteUser = new grpcWeb.AbstractClientBase.MethodInfo(
     google_protobuf_empty_pb.Empty,
-    (request: userservice_pb.DeleteUserRequest) => {
+    (request: userservice_pb.InternalDeleteUserRequest) => {
       return request.serializeBinary();
     },
     google_protobuf_empty_pb.Empty.deserializeBinary
   );
 
   deleteUser(
-    request: userservice_pb.DeleteUserRequest,
+    request: userservice_pb.InternalDeleteUserRequest,
     metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
 
   deleteUser(
-    request: userservice_pb.DeleteUserRequest,
+    request: userservice_pb.InternalDeleteUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   deleteUser(
-    request: userservice_pb.DeleteUserRequest,
+    request: userservice_pb.InternalDeleteUserRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: google_protobuf_empty_pb.Empty) => void) {
@@ -238,24 +238,24 @@ export class UserServiceClient {
 
   methodInfoSearchForUsers = new grpcWeb.AbstractClientBase.MethodInfo(
     userservice_pb.SearchResponse,
-    (request: userservice_pb.SearchRequest) => {
+    (request: userservice_pb.InternalSearchRequest) => {
       return request.serializeBinary();
     },
     userservice_pb.SearchResponse.deserializeBinary
   );
 
   searchForUsers(
-    request: userservice_pb.SearchRequest,
+    request: userservice_pb.InternalSearchRequest,
     metadata: grpcWeb.Metadata | null): Promise<userservice_pb.SearchResponse>;
 
   searchForUsers(
-    request: userservice_pb.SearchRequest,
+    request: userservice_pb.InternalSearchRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: userservice_pb.SearchResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.SearchResponse>;
 
   searchForUsers(
-    request: userservice_pb.SearchRequest,
+    request: userservice_pb.InternalSearchRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: userservice_pb.SearchResponse) => void) {

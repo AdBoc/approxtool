@@ -2,7 +2,42 @@ import * as jspb from 'google-protobuf'
 
 
 
+export class InternalCurveFitRequest extends jspb.Message {
+  getXDataList(): Array<number>;
+  setXDataList(value: Array<number>): InternalCurveFitRequest;
+  clearXDataList(): InternalCurveFitRequest;
+  addXData(value: number, index?: number): InternalCurveFitRequest;
+
+  getYDataList(): Array<number>;
+  setYDataList(value: Array<number>): InternalCurveFitRequest;
+  clearYDataList(): InternalCurveFitRequest;
+  addYData(value: number, index?: number): InternalCurveFitRequest;
+
+  getExpressionsList(): Array<Expression>;
+  setExpressionsList(value: Array<Expression>): InternalCurveFitRequest;
+  clearExpressionsList(): InternalCurveFitRequest;
+  addExpressions(value?: Expression, index?: number): Expression;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalCurveFitRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalCurveFitRequest): InternalCurveFitRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalCurveFitRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalCurveFitRequest;
+  static deserializeBinaryFromReader(message: InternalCurveFitRequest, reader: jspb.BinaryReader): InternalCurveFitRequest;
+}
+
+export namespace InternalCurveFitRequest {
+  export type AsObject = {
+    xDataList: Array<number>,
+    yDataList: Array<number>,
+    expressionsList: Array<Expression.AsObject>,
+  }
+}
+
 export class CurveFitRequest extends jspb.Message {
+  getAccessToken(): string;
+  setAccessToken(value: string): CurveFitRequest;
+
   getXDataList(): Array<number>;
   setXDataList(value: Array<number>): CurveFitRequest;
   clearXDataList(): CurveFitRequest;
@@ -28,6 +63,7 @@ export class CurveFitRequest extends jspb.Message {
 
 export namespace CurveFitRequest {
   export type AsObject = {
+    accessToken: string,
     xDataList: Array<number>,
     yDataList: Array<number>,
     expressionsList: Array<Expression.AsObject>,

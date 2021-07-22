@@ -16,10 +16,12 @@ import {
   Role,
   SearchRequest
 } from '../../protos/userservice_pb';
+import { roles } from '../../constants/constants';
 import {
   apiSrv,
-  roles
-} from '../../constants/constants';
+  fetchWithAuthRetry
+} from '../../grpc-web';
+import { token } from '../../utils/token';
 
 export const UserManager: React.FC = (): JSX.Element => {
   const [userQuery, setUserQuery] = useState('');
@@ -30,43 +32,53 @@ export const UserManager: React.FC = (): JSX.Element => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const request = new SearchRequest();
-    request.setSearchquery(userQuery);
-    apiSrv.searchForUsers(request, null, (err, res) => {
-      if (err) {
-        console.log(err.code, err.message);
-        return;
-      }
-      setUsers(res.toObject().usersList);
-    });
+    async function fetchUsers() {
+      const request = new SearchRequest();
+      request.setSearchquery(userQuery);
+
+      const result = await fetchWithAuthRetry(() => {
+        request.setAccesstoken(token.accessToken);
+        return apiSrv.searchForUsers(request, null);
+      });
+
+      setUsers(result.toObject().usersList);
+    }
+
+    fetchUsers();
   }, [userQuery]);
 
-  const handleChangePrivilege = (userId: number) => {
+  const handleChangePrivilege = async (userId: number) => {
     const request = new ChangePrivilegeRequest();
-    request.setUserid(userId);
     request.setNewstatus(Role.ADMIN)
-    apiSrv.changeUserPrivilege(request, null, (err, _) => {
-      if (err) {
-        console.log(err.code, err.message);
-        return;
-      }
+
+    try {
+      await fetchWithAuthRetry(() => {
+        request.setAccesstoken(token.accessToken);
+        return apiSrv.changeUserPrivilege(request, null);
+      });
+
       setUsers(mutateUser.changePrivilege(users, userId));
       setSelectedUser(null);
-    });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const handleDeleteUser = (userId: number) => {
+  const handleDeleteUser = async (userId: number) => {
     const request = new DeleteUserRequest();
     request.setId(userId);
-    apiSrv.deleteUser(request, null, (err, _) => {
-      if (err) {
-        console.log(err.code, err.message);
-        return;
-      }
-      //mutate state
+
+    try {
+      await fetchWithAuthRetry(() => {
+        request.setAccesstoken(token.accessToken);
+        return apiSrv.deleteUser(request, null);
+      });
+
       setUsers(mutateUser.deleteUser(users, userId));
       setSelectedUser(null);
-    });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

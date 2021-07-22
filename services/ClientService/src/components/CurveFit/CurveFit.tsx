@@ -18,42 +18,44 @@ import {
   FitActionType,
   initialCurveState,
 } from '../../reducers/curveFitReducer';
-import {
-  fetchModels,
-  fetchResults,
-} from '../../temporary/sim-request/sim-request';
+import { fetchResults, } from '../../temporary/sim-request/sim-request';
 import { Graph } from '../../common-components/Graph';
-import { graphDataManager } from '../../utils/GraphData';
+import { graphDataManager } from '../../utils/graphData';
 import { getXYAxisMinMax } from '../../utils/curveFit';
 import { RateResult } from './CurveFit.utils';
 import { Button } from '../../common-components/Button/Button';
 import styles from './styles.module.scss';
 import { GetModelsRequest } from '../../protos/modelservice_pb';
-import { apiSrv } from '../../constants/constants';
 import {
   CurveFitRequest,
   Expression,
   RequestExpressionParameter
 } from '../../protos/approximationservice_pb';
+import {
+  apiSrv,
+  fetchWithAuthRetry,
+} from '../../grpc-web';
+import { useHistory } from 'react-router-dom';
+import { token } from '../../utils/token';
 
 export const CurveFit = () => {
+  const history = useHistory();
   const [state, dispatch] = useReducer(curveFitReducer, initialCurveState);
 
   const {isShowing: isDataModal, toggle: toggleDataModal} = useModal();
   const {isShowing: isModelsSelection, toggle: toggleModelsSelection} = useModal();
 
   useEffect(() => {
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      fetchModels().then(models => dispatch({type: FitActionType.SET_MODELS, models}));
-    } else {
+    async function fetchModels() {
       const request = new GetModelsRequest();
-      request.setUserid(1) //TODO: STATIC
-      apiSrv.getUserModels(request, null, (err, res) => {
-        if (err) {
-          console.log(err.code, err.message);
-          return;
-        }
-        const models = res.toObject().modelsList.map(model => {
+
+      try {
+        const response = await fetchWithAuthRetry(() => {
+          request.setAccesstoken(token.accessToken);
+          return apiSrv.getUserModels(request, null)
+        });
+
+        const models = response.toObject().modelsList.map(model => {
           const defaultParams = expressionParams(model.expression).map(param => ({
             paramName: param,
             paramValue: 1,
@@ -67,12 +69,17 @@ export const CurveFit = () => {
             params: defaultParams
           }
         });
-        dispatch({type: FitActionType.SET_MODELS, models})
-      });
-    }
-  }, []);
 
-  const handleApproximation = () => {
+        dispatch({type: FitActionType.SET_MODELS, models})
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchModels();
+  }, [history]);
+
+  const handleApproximation = async () => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
       fetchResults().then(results => {
         results.forEach(RateResult);
@@ -117,19 +124,18 @@ export const CurveFit = () => {
       request.setXDataList(xData);
       request.setYDataList(yData);
 
-      apiSrv.fitCurves(request, null, (err, res) => {
-        if (err) {
-          console.log(err.code, err.message);
-          return;
-        }
+      try {
+        const result = await fetchWithAuthRetry(() => {
+          request.setAccessToken(token.accessToken);
+          return apiSrv.fitCurves(request, null);
+        });
 
-        const fitResult = res.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
-
+        const fitResult = result.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
         fitResult.forEach(RateResult);
-
         dispatch({type: FitActionType.SET_RESULT, result: fitResult});
-      });
-
+      } catch (e) {
+        console.error(e)
+      }
       graphDataManager.clearExpressions();
     }
   };

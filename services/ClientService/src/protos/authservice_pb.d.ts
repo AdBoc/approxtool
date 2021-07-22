@@ -2,9 +2,53 @@ import * as jspb from 'google-protobuf'
 
 
 
+export class RefreshRequest extends jspb.Message {
+  getAccessToken(): string;
+  setAccessToken(value: string): RefreshRequest;
+
+  getRefreshToken(): string;
+  setRefreshToken(value: string): RefreshRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RefreshRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: RefreshRequest): RefreshRequest.AsObject;
+  static serializeBinaryToWriter(message: RefreshRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RefreshRequest;
+  static deserializeBinaryFromReader(message: RefreshRequest, reader: jspb.BinaryReader): RefreshRequest;
+}
+
+export namespace RefreshRequest {
+  export type AsObject = {
+    accessToken: string,
+    refreshToken: string,
+  }
+}
+
+export class RefreshResponse extends jspb.Message {
+  getAccessToken(): string;
+  setAccessToken(value: string): RefreshResponse;
+
+  getRefreshToken(): string;
+  setRefreshToken(value: string): RefreshResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): RefreshResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RefreshResponse): RefreshResponse.AsObject;
+  static serializeBinaryToWriter(message: RefreshResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RefreshResponse;
+  static deserializeBinaryFromReader(message: RefreshResponse, reader: jspb.BinaryReader): RefreshResponse;
+}
+
+export namespace RefreshResponse {
+  export type AsObject = {
+    accessToken: string,
+    refreshToken: string,
+  }
+}
+
 export class GetSessionRequest extends jspb.Message {
-  getAuthToken(): string;
-  setAuthToken(value: string): GetSessionRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): GetSessionRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetSessionRequest.AsObject;
@@ -16,7 +60,7 @@ export class GetSessionRequest extends jspb.Message {
 
 export namespace GetSessionRequest {
   export type AsObject = {
-    authToken: string,
+    accessToken: string,
   }
 }
 
@@ -24,8 +68,8 @@ export class GetSessionResponse extends jspb.Message {
   getUserId(): number;
   setUserId(value: number): GetSessionResponse;
 
-  getUsername(): string;
-  setUsername(value: string): GetSessionResponse;
+  getUserRole(): string;
+  setUserRole(value: string): GetSessionResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetSessionResponse.AsObject;
@@ -38,7 +82,7 @@ export class GetSessionResponse extends jspb.Message {
 export namespace GetSessionResponse {
   export type AsObject = {
     userId: number,
-    username: string,
+    userRole: string,
   }
 }
 
@@ -64,9 +108,34 @@ export namespace LoginRequest {
   }
 }
 
+export class InternalLoginRequest extends jspb.Message {
+  getUserId(): number;
+  setUserId(value: number): InternalLoginRequest;
+
+  getUserRole(): string;
+  setUserRole(value: string): InternalLoginRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalLoginRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalLoginRequest): InternalLoginRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalLoginRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalLoginRequest;
+  static deserializeBinaryFromReader(message: InternalLoginRequest, reader: jspb.BinaryReader): InternalLoginRequest;
+}
+
+export namespace InternalLoginRequest {
+  export type AsObject = {
+    userId: number,
+    userRole: string,
+  }
+}
+
 export class LoginResponse extends jspb.Message {
-  getAuthToken(): string;
-  setAuthToken(value: string): LoginResponse;
+  getAccessToken(): string;
+  setAccessToken(value: string): LoginResponse;
+
+  getRefreshToken(): string;
+  setRefreshToken(value: string): LoginResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LoginResponse.AsObject;
@@ -78,13 +147,17 @@ export class LoginResponse extends jspb.Message {
 
 export namespace LoginResponse {
   export type AsObject = {
-    authToken: string,
+    accessToken: string,
+    refreshToken: string,
   }
 }
 
 export class LogoutRequest extends jspb.Message {
-  getAuthToken(): string;
-  setAuthToken(value: string): LogoutRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): LogoutRequest;
+
+  getRefreshToken(): string;
+  setRefreshToken(value: string): LogoutRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): LogoutRequest.AsObject;
@@ -96,7 +169,8 @@ export class LogoutRequest extends jspb.Message {
 
 export namespace LogoutRequest {
   export type AsObject = {
-    authToken: string,
+    accessToken: string,
+    refreshToken: string,
   }
 }
 

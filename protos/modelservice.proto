@@ -6,9 +6,9 @@ option go_package = "./model";
 package protos;
 
 service ModelService {
-  rpc AddModel(NewModelRequest) returns (NewModelResponse) {}
-  rpc DeleteModel(DeleteModelRequest) returns (google.protobuf.Empty) {}
-  rpc GetUserModels(GetModelsRequest) returns (GetModelsResponse) {}
+  rpc AddModel(InternalNewModelRequest) returns (NewModelResponse) {}
+  rpc DeleteModel(InternalDeleteModelRequest) returns (google.protobuf.Empty) {}
+  rpc GetUserModels(InternalGetModelsRequest) returns (GetModelsResponse) {}
 }
 
 message Model {
@@ -18,8 +18,12 @@ message Model {
   string lexExpression = 4;
 }
 
-message GetModelsRequest {
+message InternalGetModelsRequest {
   uint32 userId = 1;
+}
+
+message GetModelsRequest {
+  string accessToken = 1;
 }
 
 message GetModelsResponse {
@@ -27,19 +31,31 @@ message GetModelsResponse {
 }
 
 message NewModelRequest {
-  uint32 userId = 1;
+  string accessToken = 1;
   string name = 2;
   string expression = 3;
   string lexExpression = 4;
+}
+
+message InternalNewModelRequest {
+  string name = 1;
+  string expression = 2;
+  string lexExpression = 3;
+  uint32 userId = 4;
 }
 
 message NewModelResponse {
   uint32 id = 1;
   string name = 2;
   string expression = 3;
-  string lexExpression = 4;
+  string lexExpression = 4; 
+}
+
+message InternalDeleteModelRequest {
+  uint32 modelId = 1;
 }
 
 message DeleteModelRequest {
-  uint32 modelId = 1;
+  string accessToken = 1;
+  uint32 modelId = 2;
 }

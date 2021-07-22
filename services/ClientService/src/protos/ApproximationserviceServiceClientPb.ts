@@ -37,24 +37,24 @@ export class ApproximationServiceClient {
 
   methodInfoFitCurves = new grpcWeb.AbstractClientBase.MethodInfo(
     approximationservice_pb.CurveFitResult,
-    (request: approximationservice_pb.CurveFitRequest) => {
+    (request: approximationservice_pb.InternalCurveFitRequest) => {
       return request.serializeBinary();
     },
     approximationservice_pb.CurveFitResult.deserializeBinary
   );
 
   fitCurves(
-    request: approximationservice_pb.CurveFitRequest,
+    request: approximationservice_pb.InternalCurveFitRequest,
     metadata: grpcWeb.Metadata | null): Promise<approximationservice_pb.CurveFitResult>;
 
   fitCurves(
-    request: approximationservice_pb.CurveFitRequest,
+    request: approximationservice_pb.InternalCurveFitRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: approximationservice_pb.CurveFitResult) => void): grpcWeb.ClientReadableStream<approximationservice_pb.CurveFitResult>;
 
   fitCurves(
-    request: approximationservice_pb.CurveFitRequest,
+    request: approximationservice_pb.InternalCurveFitRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: approximationservice_pb.CurveFitResult) => void) {

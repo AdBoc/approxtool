@@ -24,15 +24,14 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ApiServiceClient interface {
 	// Auth Service
-	GetSession(ctx context.Context, in *auth.GetSessionRequest, opts ...grpc.CallOption) (*auth.GetSessionResponse, error)
 	Login(ctx context.Context, in *auth.LoginRequest, opts ...grpc.CallOption) (*auth.LoginResponse, error)
+	RefreshToken(ctx context.Context, in *auth.RefreshRequest, opts ...grpc.CallOption) (*auth.RefreshResponse, error)
 	Logout(ctx context.Context, in *auth.LogoutRequest, opts ...grpc.CallOption) (*auth.LogoutResponse, error)
 	// User Service
 	ChangeUserPrivilege(ctx context.Context, in *user.ChangePrivilegeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	CompareCredentials(ctx context.Context, in *user.CompareCredentialsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CreateUser(ctx context.Context, in *user.NewUserRequest, opts ...grpc.CallOption) (*user.UserResponse, error)
 	DeleteUser(ctx context.Context, in *user.DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetAllUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*user.GetUsersResponse, error)
+	GetAllUsers(ctx context.Context, in *user.GetAllUsersRequest, opts ...grpc.CallOption) (*user.GetUsersResponse, error)
 	SearchForUsers(ctx context.Context, in *user.SearchRequest, opts ...grpc.CallOption) (*user.SearchResponse, error)
 	// Model Service
 	AddModel(ctx context.Context, in *model.NewModelRequest, opts ...grpc.CallOption) (*model.NewModelResponse, error)
@@ -50,18 +49,18 @@ func NewApiServiceClient(cc grpc.ClientConnInterface) ApiServiceClient {
 	return &apiServiceClient{cc}
 }
 
-func (c *apiServiceClient) GetSession(ctx context.Context, in *auth.GetSessionRequest, opts ...grpc.CallOption) (*auth.GetSessionResponse, error) {
-	out := new(auth.GetSessionResponse)
-	err := c.cc.Invoke(ctx, "/protos.ApiService/GetSession", in, out, opts...)
+func (c *apiServiceClient) Login(ctx context.Context, in *auth.LoginRequest, opts ...grpc.CallOption) (*auth.LoginResponse, error) {
+	out := new(auth.LoginResponse)
+	err := c.cc.Invoke(ctx, "/protos.ApiService/Login", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *apiServiceClient) Login(ctx context.Context, in *auth.LoginRequest, opts ...grpc.CallOption) (*auth.LoginResponse, error) {
-	out := new(auth.LoginResponse)
-	err := c.cc.Invoke(ctx, "/protos.ApiService/Login", in, out, opts...)
+func (c *apiServiceClient) RefreshToken(ctx context.Context, in *auth.RefreshRequest, opts ...grpc.CallOption) (*auth.RefreshResponse, error) {
+	out := new(auth.RefreshResponse)
+	err := c.cc.Invoke(ctx, "/protos.ApiService/RefreshToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -86,15 +85,6 @@ func (c *apiServiceClient) ChangeUserPrivilege(ctx context.Context, in *user.Cha
 	return out, nil
 }
 
-func (c *apiServiceClient) CompareCredentials(ctx context.Context, in *user.CompareCredentialsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/protos.ApiService/CompareCredentials", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *apiServiceClient) CreateUser(ctx context.Context, in *user.NewUserRequest, opts ...grpc.CallOption) (*user.UserResponse, error) {
 	out := new(user.UserResponse)
 	err := c.cc.Invoke(ctx, "/protos.ApiService/CreateUser", in, out, opts...)
@@ -113,7 +103,7 @@ func (c *apiServiceClient) DeleteUser(ctx context.Context, in *user.DeleteUserRe
 	return out, nil
 }
 
-func (c *apiServiceClient) GetAllUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*user.GetUsersResponse, error) {
+func (c *apiServiceClient) GetAllUsers(ctx context.Context, in *user.GetAllUsersRequest, opts ...grpc.CallOption) (*user.GetUsersResponse, error) {
 	out := new(user.GetUsersResponse)
 	err := c.cc.Invoke(ctx, "/protos.ApiService/GetAllUsers", in, out, opts...)
 	if err != nil {
@@ -172,15 +162,14 @@ func (c *apiServiceClient) FitCurves(ctx context.Context, in *approx.CurveFitReq
 // for forward compatibility
 type ApiServiceServer interface {
 	// Auth Service
-	GetSession(context.Context, *auth.GetSessionRequest) (*auth.GetSessionResponse, error)
 	Login(context.Context, *auth.LoginRequest) (*auth.LoginResponse, error)
+	RefreshToken(context.Context, *auth.RefreshRequest) (*auth.RefreshResponse, error)
 	Logout(context.Context, *auth.LogoutRequest) (*auth.LogoutResponse, error)
 	// User Service
 	ChangeUserPrivilege(context.Context, *user.ChangePrivilegeRequest) (*emptypb.Empty, error)
-	CompareCredentials(context.Context, *user.CompareCredentialsRequest) (*emptypb.Empty, error)
 	CreateUser(context.Context, *user.NewUserRequest) (*user.UserResponse, error)
 	DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error)
-	GetAllUsers(context.Context, *emptypb.Empty) (*user.GetUsersResponse, error)
+	GetAllUsers(context.Context, *user.GetAllUsersRequest) (*user.GetUsersResponse, error)
 	SearchForUsers(context.Context, *user.SearchRequest) (*user.SearchResponse, error)
 	// Model Service
 	AddModel(context.Context, *model.NewModelRequest) (*model.NewModelResponse, error)
@@ -195,11 +184,11 @@ type ApiServiceServer interface {
 type UnimplementedApiServiceServer struct {
 }
 
-func (UnimplementedApiServiceServer) GetSession(context.Context, *auth.GetSessionRequest) (*auth.GetSessionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSession not implemented")
-}
 func (UnimplementedApiServiceServer) Login(context.Context, *auth.LoginRequest) (*auth.LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedApiServiceServer) RefreshToken(context.Context, *auth.RefreshRequest) (*auth.RefreshResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
 func (UnimplementedApiServiceServer) Logout(context.Context, *auth.LogoutRequest) (*auth.LogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
@@ -207,16 +196,13 @@ func (UnimplementedApiServiceServer) Logout(context.Context, *auth.LogoutRequest
 func (UnimplementedApiServiceServer) ChangeUserPrivilege(context.Context, *user.ChangePrivilegeRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeUserPrivilege not implemented")
 }
-func (UnimplementedApiServiceServer) CompareCredentials(context.Context, *user.CompareCredentialsRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CompareCredentials not implemented")
-}
 func (UnimplementedApiServiceServer) CreateUser(context.Context, *user.NewUserRequest) (*user.UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedApiServiceServer) DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
-func (UnimplementedApiServiceServer) GetAllUsers(context.Context, *emptypb.Empty) (*user.GetUsersResponse, error) {
+func (UnimplementedApiServiceServer) GetAllUsers(context.Context, *user.GetAllUsersRequest) (*user.GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
 }
 func (UnimplementedApiServiceServer) SearchForUsers(context.Context, *user.SearchRequest) (*user.SearchResponse, error) {
@@ -247,24 +233,6 @@ func RegisterApiServiceServer(s grpc.ServiceRegistrar, srv ApiServiceServer) {
 	s.RegisterService(&ApiService_ServiceDesc, srv)
 }
 
-func _ApiService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(auth.GetSessionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ApiServiceServer).GetSession(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protos.ApiService/GetSession",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServiceServer).GetSession(ctx, req.(*auth.GetSessionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ApiService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(auth.LoginRequest)
 	if err := dec(in); err != nil {
@@ -279,6 +247,24 @@ func _ApiService_Login_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ApiServiceServer).Login(ctx, req.(*auth.LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ApiService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(auth.RefreshRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ApiServiceServer).RefreshToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.ApiService/RefreshToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ApiServiceServer).RefreshToken(ctx, req.(*auth.RefreshRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -315,24 +301,6 @@ func _ApiService_ChangeUserPrivilege_Handler(srv interface{}, ctx context.Contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ApiServiceServer).ChangeUserPrivilege(ctx, req.(*user.ChangePrivilegeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ApiService_CompareCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(user.CompareCredentialsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ApiServiceServer).CompareCredentials(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protos.ApiService/CompareCredentials",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServiceServer).CompareCredentials(ctx, req.(*user.CompareCredentialsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -374,7 +342,7 @@ func _ApiService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _ApiService_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(user.GetAllUsersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -386,7 +354,7 @@ func _ApiService_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: "/protos.ApiService/GetAllUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServiceServer).GetAllUsers(ctx, req.(*emptypb.Empty))
+		return srv.(ApiServiceServer).GetAllUsers(ctx, req.(*user.GetAllUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -489,12 +457,12 @@ var ApiService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ApiServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetSession",
-			Handler:    _ApiService_GetSession_Handler,
-		},
-		{
 			MethodName: "Login",
 			Handler:    _ApiService_Login_Handler,
+		},
+		{
+			MethodName: "RefreshToken",
+			Handler:    _ApiService_RefreshToken_Handler,
 		},
 		{
 			MethodName: "Logout",
@@ -503,10 +471,6 @@ var ApiService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangeUserPrivilege",
 			Handler:    _ApiService_ChangeUserPrivilege_Handler,
-		},
-		{
-			MethodName: "CompareCredentials",
-			Handler:    _ApiService_CompareCredentials_Handler,
 		},
 		{
 			MethodName: "CreateUser",

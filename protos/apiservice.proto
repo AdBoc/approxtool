@@ -11,16 +11,15 @@ package protos;
 
 service ApiService {
     // Auth Service
-    rpc GetSession (GetSessionRequest) returns (GetSessionResponse) {}
     rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc RefreshToken (RefreshRequest) returns (RefreshResponse) {}
     rpc Logout (LogoutRequest) returns (LogoutResponse) {}
     
     // User Service
     rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty) {}
-    rpc CompareCredentials(CompareCredentialsRequest) returns (google.protobuf.Empty) {}
     rpc CreateUser(NewUserRequest) returns (UserResponse) {}
     rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
-    rpc GetAllUsers(google.protobuf.Empty) returns (GetUsersResponse) {}
+    rpc GetAllUsers(GetAllUsersRequest) returns (GetUsersResponse) {}
     rpc SearchForUsers(SearchRequest) returns (SearchResponse) {}
 
     // Model Service

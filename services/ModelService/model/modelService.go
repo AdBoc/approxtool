@@ -16,7 +16,7 @@ func NewModelService(uc UseCase) *modelService {
 	return &modelService{UnimplementedModelServiceServer: pb.UnimplementedModelServiceServer{}, modelUc: uc}
 }
 
-func (us *modelService) GetUserModels(ctx context.Context, userId *pb.GetModelsRequest) (*pb.GetModelsResponse, error) {
+func (us *modelService) GetUserModels(ctx context.Context, userId *pb.InternalGetModelsRequest) (*pb.GetModelsResponse, error) {
 	users, err := us.modelUc.GetUserModels(userId.UserId)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -25,8 +25,8 @@ func (us *modelService) GetUserModels(ctx context.Context, userId *pb.GetModelsR
 	return users, nil
 }
 
-func (us *modelService) AddModel(ctx context.Context, newModel *pb.NewModelRequest) (*pb.NewModelResponse, error) {
-	model, err := us.modelUc.AddModel(newModel);
+func (us *modelService) AddModel(ctx context.Context, newModel *pb.InternalNewModelRequest) (*pb.NewModelResponse, error) {
+	model, err := us.modelUc.AddModel(newModel)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
@@ -35,7 +35,7 @@ func (us *modelService) AddModel(ctx context.Context, newModel *pb.NewModelReque
 }
 
 
-func (us *modelService) DeleteModel(ctx context.Context, model *pb.DeleteModelRequest) (*emptypb.Empty, error) {
+func (us *modelService) DeleteModel(ctx context.Context, model *pb.InternalDeleteModelRequest) (*emptypb.Empty, error) {
 	if err := us.modelUc.DeleteModel(model.ModelId); err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}

@@ -4,18 +4,30 @@ option go_package = "./auth";
 package protos;
 
 service AuthService {
+    rpc RefreshToken (RefreshRequest) returns (RefreshResponse) {}
     rpc GetSession (GetSessionRequest) returns (GetSessionResponse) {}
-    rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc Login (InternalLoginRequest) returns (LoginResponse) {}
     rpc Logout (LogoutRequest) returns (LogoutResponse) {}
 }
 
-message GetSessionRequest {
-    string auth_token = 1;
+message RefreshRequest {
+    string access_token = 1;
+    string refresh_token = 2;
 }
 
+message RefreshResponse {
+    string access_token = 1;
+    string refresh_token = 2;
+}
+
+message GetSessionRequest {
+    string access_token = 1;
+}
+
+// this could be enum
 message GetSessionResponse {
     uint32 user_id = 1;
-    string username = 2;
+    string user_role = 2;
 }
 
 message LoginRequest {
@@ -23,12 +35,19 @@ message LoginRequest {
     string password = 2;
 }
 
+message InternalLoginRequest {
+    uint32 user_id = 1;
+    string user_role = 2;
+}
+
 message LoginResponse {
-    string auth_token = 1;
+    string access_token = 1;
+    string refresh_token = 2;
 }
 
 message LogoutRequest {
-    string auth_token = 1;
+    string access_token = 1;
+    string refresh_token = 2;
 }
 
 message LogoutResponse {

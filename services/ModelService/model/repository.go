@@ -35,7 +35,7 @@ func (m *modelPGRepository) GetUserModels(userId uint32) (*pb.GetModelsResponse,
 	return list, nil
 }
 
-func (m *modelPGRepository) AddModel(newModel *pb.NewModelRequest) (*pb.NewModelResponse, error) {
+func (m *modelPGRepository) AddModel(newModel *pb.InternalNewModelRequest) (*pb.NewModelResponse, error) {
 	var model pb.NewModelResponse
 
 	if err := m.db.QueryRow(

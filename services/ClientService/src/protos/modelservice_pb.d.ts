@@ -33,9 +33,27 @@ export namespace Model {
   }
 }
 
-export class GetModelsRequest extends jspb.Message {
+export class InternalGetModelsRequest extends jspb.Message {
   getUserid(): number;
-  setUserid(value: number): GetModelsRequest;
+  setUserid(value: number): InternalGetModelsRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalGetModelsRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalGetModelsRequest): InternalGetModelsRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalGetModelsRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalGetModelsRequest;
+  static deserializeBinaryFromReader(message: InternalGetModelsRequest, reader: jspb.BinaryReader): InternalGetModelsRequest;
+}
+
+export namespace InternalGetModelsRequest {
+  export type AsObject = {
+    userid: number,
+  }
+}
+
+export class GetModelsRequest extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): GetModelsRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetModelsRequest.AsObject;
@@ -47,7 +65,7 @@ export class GetModelsRequest extends jspb.Message {
 
 export namespace GetModelsRequest {
   export type AsObject = {
-    userid: number,
+    accesstoken: string,
   }
 }
 
@@ -72,8 +90,8 @@ export namespace GetModelsResponse {
 }
 
 export class NewModelRequest extends jspb.Message {
-  getUserid(): number;
-  setUserid(value: number): NewModelRequest;
+  getAccesstoken(): string;
+  setAccesstoken(value: string): NewModelRequest;
 
   getName(): string;
   setName(value: string): NewModelRequest;
@@ -94,10 +112,40 @@ export class NewModelRequest extends jspb.Message {
 
 export namespace NewModelRequest {
   export type AsObject = {
-    userid: number,
+    accesstoken: string,
     name: string,
     expression: string,
     lexexpression: string,
+  }
+}
+
+export class InternalNewModelRequest extends jspb.Message {
+  getName(): string;
+  setName(value: string): InternalNewModelRequest;
+
+  getExpression(): string;
+  setExpression(value: string): InternalNewModelRequest;
+
+  getLexexpression(): string;
+  setLexexpression(value: string): InternalNewModelRequest;
+
+  getUserid(): number;
+  setUserid(value: number): InternalNewModelRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalNewModelRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalNewModelRequest): InternalNewModelRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalNewModelRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalNewModelRequest;
+  static deserializeBinaryFromReader(message: InternalNewModelRequest, reader: jspb.BinaryReader): InternalNewModelRequest;
+}
+
+export namespace InternalNewModelRequest {
+  export type AsObject = {
+    name: string,
+    expression: string,
+    lexexpression: string,
+    userid: number,
   }
 }
 
@@ -131,7 +179,28 @@ export namespace NewModelResponse {
   }
 }
 
+export class InternalDeleteModelRequest extends jspb.Message {
+  getModelid(): number;
+  setModelid(value: number): InternalDeleteModelRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalDeleteModelRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalDeleteModelRequest): InternalDeleteModelRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalDeleteModelRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalDeleteModelRequest;
+  static deserializeBinaryFromReader(message: InternalDeleteModelRequest, reader: jspb.BinaryReader): InternalDeleteModelRequest;
+}
+
+export namespace InternalDeleteModelRequest {
+  export type AsObject = {
+    modelid: number,
+  }
+}
+
 export class DeleteModelRequest extends jspb.Message {
+  getAccesstoken(): string;
+  setAccesstoken(value: string): DeleteModelRequest;
+
   getModelid(): number;
   setModelid(value: number): DeleteModelRequest;
 
@@ -145,6 +214,7 @@ export class DeleteModelRequest extends jspb.Message {
 
 export namespace DeleteModelRequest {
   export type AsObject = {
+    accesstoken: string,
     modelid: number,
   }
 }

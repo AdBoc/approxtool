@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 import { useModal } from '../../hooks/useModal';
 import { Modal } from '../../common-components/Modal/Modal';
 import { Button } from '../../common-components/Button/Button';
-import { graphDataManager } from '../../utils/GraphData';
+import { graphDataManager } from '../../utils/graphData';
 import {
   CurveFitActions,
   FitActionType

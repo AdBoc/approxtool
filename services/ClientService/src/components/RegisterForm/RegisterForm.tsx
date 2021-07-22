@@ -16,7 +16,11 @@ import {
   NewUserRequest,
   Role
 } from '../../protos/userservice_pb';
-import { apiSrv } from '../../constants/constants';
+import {
+  apiSrv,
+  fetchWithAuthRetry
+} from '../../grpc-web';
+import { token } from '../../utils/token';
 
 interface Props {
   handleClose: () => void;
@@ -32,7 +36,7 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
     [e.target.name]: e.target.value
   }));
 
-  const handleRegister = (e: BaseSyntheticEvent) => {
+  const handleRegister = async (e: BaseSyntheticEvent) => {
     e.preventDefault();
     const errors = validateRegisterForm(registerErrors, registerForm);
     setRegisterErrors(errors);
@@ -43,14 +47,18 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
     request.setEmail(registerForm.email);
     request.setPassword(registerForm.password);
     request.setStatus(Role.BASIC_USER);
-    apiSrv.createUser(request, null, (err, res) => {
-      if (err) {
-        console.error(err.code, err.message);
-        return;
-      }
-      if (setUsers) setUsers(prev => mutateUser.addUser(prev, res.toObject()));
+
+    try {
+      const result = await fetchWithAuthRetry(() => {
+        request.setAccesstoken(token.accessToken);
+        return apiSrv.createUser(request, null);
+      });
+
+      if (setUsers) setUsers(prev => mutateUser.addUser(prev, result.toObject()));
       handleClose();
-    });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

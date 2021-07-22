@@ -2,7 +2,7 @@ import React, {
   useEffect,
   useRef
 } from 'react';
-import * as d3 from 'd3';
+import * as d3 from 'd3'; // TODO: IMPORT ONLY REQUIRED
 import { GraphExpression } from '../../types/stateExpression';
 import { Point } from '../../types';
 import styles from './styles.module.scss';
