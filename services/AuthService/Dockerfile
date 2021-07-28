@@ -23,10 +23,10 @@ RUN go build -o AuthService
 WORKDIR /dist
 
 # Copy binary from build to main folder
-RUN cp /build/AuthService .
+RUN cp /build/AuthService /build/.env .
 
 # Build a small image
 FROM scratch
-COPY --from=builder /dist/AuthService /
+COPY --from=builder /dist /
 EXPOSE 9091
 ENTRYPOINT ["/AuthService"]

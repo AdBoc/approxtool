@@ -28,8 +28,6 @@ func (s *server) Run() {
 	grpcServer := grpc.NewServer()
 	userService.RegisterUserServiceServer(grpcServer, user.NewUserService(userPgRepo))
 
-	log.Printf("Serving on port %s ...", s.port)
-
 	if err := grpcServer.Serve(l); err != nil {
 		log.Fatalf("Failed to serve gRPC server on port %s: %s", s.port, err)
 	}

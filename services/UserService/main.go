@@ -3,16 +3,13 @@ package main
 import (
 	"usersrv/server"
 	"usersrv/services"
-)
-
-const (
-	port = ":9092"
+	"os"
 )
 
 func main() {
 	pgxPool := services.NewPgxConn()
 	defer pgxPool.Close()
 
-	s := server.NewServer(pgxPool, port)
+	s := server.NewServer(pgxPool, os.Getenv("PORT"))
 	s.Run()
 }

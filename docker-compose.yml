@@ -27,18 +27,21 @@ services:
       - user_svc
       - model_svc
       - approx_svc
+    environment:
+      PORT: ':9090'
+      AUTH_ADDR: 'auth_svc:9091'
+      USER_ADDR: 'user_svc:9092'
+      MODEL_ADDR: 'model_svc:9093'
+      APPROX_ADDR: 'approx_svc:9094'
   auth_svc:
     build:
       context: ./services/AuthService
     restart: always
     depends_on:
       - redis
-  model_svc:
-    build:
-      context: ./services/ModelService
-    depends_on:
-      postgres:
-        condition: service_healthy
+    environment:
+      PORT: ':9091'
+      REDIS_ADDR: 'redis:6379'
   user_svc:
     build:
       context: ./services/UserService
@@ -46,9 +49,31 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    environment:
+      PORT: ':9092'
+      DB_HOST: 'postgres'
+      DB_USER: 'postgres'
+      DB_PASS: 'postgres'
+      DB_NAME: 'approx_tool'
+      DB_PORT: '5432'
+  model_svc:
+    build:
+      context: ./services/ModelService
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: ':9093'
+      DB_HOST: 'postgres'
+      DB_USER: 'postgres'
+      DB_PASS: 'postgres'
+      DB_NAME: 'approx_tool'
+      DB_PORT: '5432'
   approx_svc:
     build:
       context: ./services/ApproxService
+    environment:
+      PORT: ':9094'
   postgres:
     image: postgres:13.3
     environment:

@@ -5,7 +5,7 @@ import numpy as np
 import approximationservice_pb2
 import approximationservice_pb2_grpc
 import grpc
-import logging
+import os
 
 from fit_curve import fit_curves
 
@@ -21,11 +21,10 @@ class Servicer(approximationservice_pb2_grpc.ApproximationServiceServicer):
 
 
 async def serve() -> None:
-    listen_addr = '[::]:9094'
+    PORT = f"[::]{os.getenv('PORT')}"
     server = grpc.aio.server()
     approximationservice_pb2_grpc.add_ApproximationServiceServicer_to_server(Servicer(), server)
-    server.add_insecure_port(listen_addr)
-    logging.info("Starting server on %s", listen_addr)
+    server.add_insecure_port(PORT)
     await server.start()
     try:
         await server.wait_for_termination()

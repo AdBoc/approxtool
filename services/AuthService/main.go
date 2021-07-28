@@ -4,35 +4,33 @@ import (
 	"authsrv/protos/auth"
 	"authsrv/server"
 	"github.com/go-redis/redis/v8"
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
 )
 
-const (
-	port = ":9091"
-)
-
 func main() {
-	os.Setenv("ACCESS_SECRET", "____VERY-SECRET-ACCESS-SECRET____") // TODO: Externalize secret
-	os.Setenv("REFRESH_SECRET", "____VERY-SECRET-REFRESH-SECRET____")
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading .evn files")
+	}
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr: "redis:6379",
+		Addr: os.Getenv("REDIS_ADDR"),
 	})
 
-	log.Println("Trying to serve AuthService")
-	lis, err := net.Listen("tcp", "0.0.0.0"+port)
+	serverPort := os.Getenv("PORT")
+	lis, err := net.Listen("tcp", "0.0.0.0"+serverPort)
 	if err != nil {
-		log.Fatalf("Failed to listen on port %s (%v)", port, err)
+		log.Fatalf("Failed to listen on port %s (%v)", serverPort, err)
 	}
 
 	s := grpc.NewServer()
 	auth.RegisterAuthServiceServer(s, &server.Server{RedisClient: rdb})
-	log.Printf("Serving on port %s ...", port)
 
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("Failed to serve on port %s (%v)", port, err)
+		log.Fatalf("Failed to serve on port %s (%v)", serverPort, err)
 	}
 }

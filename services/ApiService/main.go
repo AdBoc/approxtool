@@ -10,10 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
-)
-
-const (
-	port = ":9090"
+	"os"
 )
 
 func dialService(addr string) *grpc.ClientConn {
@@ -29,34 +26,26 @@ func dialService(addr string) *grpc.ClientConn {
 
 func main() {
 	// Connect to AuthService
-	log.Println("Connecting to AuthService")
-	authAddr := "auth_svc:9091"
+	authAddr := os.Getenv("AUTH_ADDR")
 	authClient := auth.NewAuthServiceClient(dialService(authAddr))
-	log.Println("Done!")
 
 	// Connect to UserService
-	log.Println("Connecting to UserService")
-	userAddr := "user_svc:9092"
+	userAddr := os.Getenv("USER_ADDR")
 	userClient := user.NewUserServiceClient(dialService(userAddr))
-	log.Println("Done!")
 
 	// Connect to ModelService
-	log.Println("Connecting to ModelService")
-	modelAddr := "model_svc:9093"
+	modelAddr := os.Getenv("MODEL_ADDR")
 	modelClient := model.NewModelServiceClient(dialService(modelAddr))
-	log.Println("Done!")
 
 	// Connect to ApproxService
-	log.Println("Connecting to ApproxService")
-	approxAddr := "approx_svc:9094"
+	approxAddr := os.Getenv("APPROX_ADDR")
 	approxClient := approx.NewApproximationServiceClient(dialService(approxAddr))
-	log.Println("Done!")
 
 	// Server Listener
-	log.Println("Serving ApiService")
-	lis, err := net.Listen("tcp", "0.0.0.0"+port)
+	serverPort := os.Getenv("PORT")
+	lis, err := net.Listen("tcp", "0.0.0.0"+serverPort)
 	if err != nil {
-		log.Fatalf("Failed to listen on port %s (%v)", port, err)
+		log.Fatalf("Failed to listen on port %s (%v)", serverPort, err)
 	}
 
 	// Serve ApiService
@@ -70,9 +59,8 @@ func main() {
 			ApproxClient: approxClient,
 		},
 	)
-	log.Printf("Serving on port %s ...", port)
 
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("Failed to serve on port %s (%v)", port, err)
+		log.Fatalf("Failed to serve on port %s (%v)", serverPort, err)
 	}
 }

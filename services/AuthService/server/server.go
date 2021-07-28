@@ -21,7 +21,6 @@ func (s *Server) GetSession(ctx context.Context, request *auth.GetSessionRequest
 		return nil, status.Error(codes.Unauthenticated, "invalid token")
 	}
 
-	// Look for access token in redis
 	if err = token.LookupToken(s.RedisClient, parsedToken.Uuid); err != nil {
 		return nil, status.Error(codes.Unauthenticated, "no access token was found")
 	}
