@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "authservice.proto";
+import "userservice.proto";
+import "modelservice.proto";
+import "approximationservice.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "./api";
+package protos;
+
+service ApiService {
+    // Auth Service
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc RefreshToken (RefreshRequest) returns (RefreshResponse) {}
+    rpc Logout (LogoutRequest) returns (LogoutResponse) {}
+    
+    // User Service
+    rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty) {}
+    rpc CreateUser(NewUserRequest) returns (UserResponse) {}
+    rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
+    rpc GetAllUsers(GetAllUsersRequest) returns (GetUsersResponse) {}
+    rpc SearchForUsers(SearchRequest) returns (SearchResponse) {}
+
+    // Model Service
+    rpc AddModel(NewModelRequest) returns (NewModelResponse) {}
+    rpc DeleteModel(DeleteModelRequest) returns (google.protobuf.Empty) {}
+    rpc GetUserModels(GetModelsRequest) returns (GetModelsResponse) {}
+
+    // Approx Service
+    rpc FitCurves(CurveFitRequest) returns (CurveFitResult) {}
+}

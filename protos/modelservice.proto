@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "./model";
+package protos;
+
+service ModelService {
+  rpc AddModel(InternalNewModelRequest) returns (NewModelResponse) {}
+  rpc DeleteModel(InternalDeleteModelRequest) returns (google.protobuf.Empty) {}
+  rpc GetUserModels(InternalGetModelsRequest) returns (GetModelsResponse) {}
+}
+
+message Model {
+  uint32 id = 1;
+  string name = 2;
+  string expression = 3;
+  string lexExpression = 4;
+}
+
+message InternalGetModelsRequest {
+  uint32 userId = 1;
+}
+
+message GetModelsRequest {
+  string accessToken = 1;
+}
+
+message GetModelsResponse {
+  repeated Model models = 1;
+}
+
+message NewModelRequest {
+  string accessToken = 1;
+  string name = 2;
+  string expression = 3;
+  string lexExpression = 4;
+}
+
+message InternalNewModelRequest {
+  string name = 1;
+  string expression = 2;
+  string lexExpression = 3;
+  uint32 userId = 4;
+}
+
+message NewModelResponse {
+  uint32 id = 1;
+  string name = 2;
+  string expression = 3;
+  string lexExpression = 4; 
+}
+
+message InternalDeleteModelRequest {
+  uint32 modelId = 1;
+}
+
+message DeleteModelRequest {
+  string accessToken = 1;
+  uint32 modelId = 2;
+}

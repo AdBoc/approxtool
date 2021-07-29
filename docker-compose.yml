@@ -1,7 +1,56 @@
 services:
+  client_svc:
+    build:
+      context: ./services/ClientService
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - envoy
+  envoy:
+    build:
+      context: ./envoy
+    ports:
+      - "8080:8080"
+      - "9901:9901"
+    restart: always
+    depends_on:
+      - api_svc
+  api_svc:
+    build:
+      context: ./services/ApiService
+    ports:
+      - "9090:9090"
+    restart: always
+    depends_on:
+      - auth_svc
+      - user_svc
+      - model_svc
+      - approx_svc
+  auth_svc:
+    build:
+      context: ./services/AuthService
+    restart: always
+    depends_on:
+      - redis
+  model_svc:
+    build:
+      context: ./services/ModelService
+    depends_on:
+      postgres:
+        condition: service_healthy
+  user_svc:
+    build:
+      context: ./services/UserService
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+  approx_svc:
+    build:
+      context: ./services/ApproxService
   postgres:
     image: postgres:13.3
-    restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -10,52 +59,13 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgres/data
-      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      - ./sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+      - ./database/initialization/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./database/initialization/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
-  envoy:
-    build:
-      context: ./envoy
-      dockerfile: dockerfile
-    ports:
-      - "8080:8080"
-      - "9901:9901"
-  usersrv:
-    build:
-      context: ./server/usersrv
-      dockerfile: dockerfile
-    ports:
-      - "9000:9000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-  modelsrv:
-    build:
-      context: ./server/modelsrv
-      dockerfile: dockerfile
-    ports:
-      - "9001:9001"
-    depends_on:
-      postgres:
-        condition: service_healthy
-  approxsrv:
-    build:
-      context: ./server/approxsrv
-      dockerfile: dockerfile
-    ports:
-      - "9002:9002"
-    depends_on:
-      - envoy
-      - postgres
-  client:
-    build:
-      context: ./client
-      dockerfile: dockerfile
-    ports:
-      - "3000:3000"
-volumes:
-  postgres:
+    restart: always
+  redis:
+    image: "redis:alpine"
