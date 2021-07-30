@@ -2,40 +2,40 @@ import React, {
   useEffect,
   useReducer
 } from 'react';
+import { useHistory } from 'react-router-dom';
+import {
+  apiSrv,
+  fetchWithAuthRetry,
+} from '../../grpc-web';
+import { RateResult } from './CurveFit.utils';
+import { GetModelsRequest } from '../../protos/modelservice_pb';
+import { token } from '../../utils/token';
 import {
   expressionParams,
   parsePointsForGraph,
   parsePointsForRequest,
 } from '../../utils/dataParsing';
-import { useModal } from '../../hooks/useModal';
-import { SideBar } from '../SideBar';
-import { DataHandler } from '../DataHandler';
-import { Models } from '../Models';
-import { Modal } from '../../common-components/Modal/Modal';
-import { FitResults } from '../FitResults';
 import {
   curveFitReducer,
   FitActionType,
   initialCurveState,
 } from '../../reducers/curveFitReducer';
-import { fetchTempResults, } from '../../temporary/sim-request/sim-request';
-import { Graph } from '../../common-components/Graph';
+import { useModal } from '../../hooks/useModal';
 import { graphDataManager } from '../../utils/graphData';
 import { getXYAxisMinMax } from '../../utils/curveFit';
-import { RateResult } from './CurveFit.utils';
+import { Modal } from '../../common-components/Modal/Modal';
+import { Graph } from '../../common-components/Graph';
 import { Button } from '../../common-components/Button/Button';
-import { GetModelsRequest } from '../../protos/modelservice_pb';
+import { SideBar } from '../SideBar';
+import { DataHandler } from '../DataHandler';
+import { Models } from '../Models';
+import { FitResults } from '../FitResults';
+import { fetchTempResults, } from '../../temporary/sim-request/sim-request';
 import {
   CurveFitRequest,
   Expression,
   RequestExpressionParameter
 } from '../../protos/approximationservice_pb';
-import {
-  apiSrv,
-  fetchWithAuthRetry,
-} from '../../grpc-web';
-import { useHistory } from 'react-router-dom';
-import { token } from '../../utils/token';
 import styles from './styles.module.scss';
 
 export const CurveFit = () => {

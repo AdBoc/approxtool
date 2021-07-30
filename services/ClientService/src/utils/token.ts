@@ -1,3 +1,10 @@
+type TokenData = {
+  exp: number;
+  user_id: number;
+  user_role: string;
+  username: string; // TODO: should be uuid?
+};
+
 class Token {
   private refreshTokenName = 'refresh_token';
   private accessTokenName = 'access_token';
@@ -20,12 +27,16 @@ class Token {
     this.refreshToken = refreshToken;
   };
 
+  public get decodedTokenData() {
+    return JSON.parse(atob(this.accessToken.split('.')[1])) as TokenData;
+  };
+
   public removeTokens() {
     localStorage.removeItem(this.refreshTokenName);
     localStorage.removeItem(this.accessTokenName);
     this.refreshToken = '';
     this.accessToken = '';
-  }
+  };
 }
 
 export const token = new Token();

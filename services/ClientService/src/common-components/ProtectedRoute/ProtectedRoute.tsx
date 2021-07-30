@@ -5,6 +5,5 @@ import {
 } from 'react-router-dom';
 import { token } from '../../utils/token';
 
-export const ProtectedRoute: React.FC<{ [x: string]: any }> = ({children, ...rest}) => {
-  return !token.accessToken ? <Redirect to="/login"/> : <Route {...rest}>{children}</Route>;
-}
+export const ProtectedRoute: React.FC<{ [k: string]: any }> = ({children, ...rest}) => !token.accessToken ?
+  <Redirect to="/login"/> : <Route {...rest}>{children}</Route>;

@@ -20,3 +20,9 @@ CREATE TABLE public.models (
     lex_expression VARCHAR(200) NOT NULL,
     user_id integer REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE ROLE approx_user WITH LOGIN PASSWORD 'approx_pass';
+CREATE ROLE model_user WITH LOGIN PASSWORD 'model_pass';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users TO approx_user;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE models TO model_user;

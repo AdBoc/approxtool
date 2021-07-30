@@ -51,7 +51,7 @@ export async function fetchWithAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
         throw new Error('Auth Error');
       }
     }
-    throw new Error(e)
+    throw (e);
   }
 }
 
