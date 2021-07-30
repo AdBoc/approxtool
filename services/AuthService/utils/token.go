@@ -22,9 +22,11 @@ type parsedDetails struct {
 func CreateToken(redisClient *redis.Client, userId uint32, userRole string) (string, string, error) {
 	var ctx = context.Background()
 
-	atExpiry := time.Now().Add(time.Minute * 1).Unix() //atExpires := time.Now().Add(time.Minute * 15).Unix()
+// 	atExpiry := time.Now().Add(time.Minute * 1).Unix()
+	atExpiry := time.Now().Add(time.Minute * 15).Unix() // Production
 	atUuid := uuid.New()
-	rtExpiry := time.Now().Add(time.Minute * 2).Unix() //rtExpires := time.Now().Add(time.Hour * 24 * 7).Unix()
+// 	rtExpiry := time.Now().Add(time.Minute * 2).Unix()
+	rtExpiry := time.Now().Add(time.Hour * 24 * 7).Unix() // Production
 	rtUuid := uuid.New()
 
 	// CREATE ACCESS TOKEN

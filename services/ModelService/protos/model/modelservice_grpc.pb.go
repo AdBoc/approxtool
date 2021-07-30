@@ -22,6 +22,7 @@ type ModelServiceClient interface {
 	AddModel(ctx context.Context, in *InternalNewModelRequest, opts ...grpc.CallOption) (*NewModelResponse, error)
 	DeleteModel(ctx context.Context, in *InternalDeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetUserModels(ctx context.Context, in *InternalGetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error)
+	AddDefaultModels(ctx context.Context, in *AddDefaultModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type modelServiceClient struct {
@@ -59,6 +60,15 @@ func (c *modelServiceClient) GetUserModels(ctx context.Context, in *InternalGetM
 	return out, nil
 }
 
+func (c *modelServiceClient) AddDefaultModels(ctx context.Context, in *AddDefaultModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/protos.ModelService/AddDefaultModels", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ModelServiceServer is the server API for ModelService service.
 // All implementations must embed UnimplementedModelServiceServer
 // for forward compatibility
@@ -66,6 +76,7 @@ type ModelServiceServer interface {
 	AddModel(context.Context, *InternalNewModelRequest) (*NewModelResponse, error)
 	DeleteModel(context.Context, *InternalDeleteModelRequest) (*emptypb.Empty, error)
 	GetUserModels(context.Context, *InternalGetModelsRequest) (*GetModelsResponse, error)
+	AddDefaultModels(context.Context, *AddDefaultModelRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedModelServiceServer()
 }
 
@@ -81,6 +92,9 @@ func (UnimplementedModelServiceServer) DeleteModel(context.Context, *InternalDel
 }
 func (UnimplementedModelServiceServer) GetUserModels(context.Context, *InternalGetModelsRequest) (*GetModelsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserModels not implemented")
+}
+func (UnimplementedModelServiceServer) AddDefaultModels(context.Context, *AddDefaultModelRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddDefaultModels not implemented")
 }
 func (UnimplementedModelServiceServer) mustEmbedUnimplementedModelServiceServer() {}
 
@@ -149,6 +163,24 @@ func _ModelService_GetUserModels_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ModelService_AddDefaultModels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddDefaultModelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).AddDefaultModels(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.ModelService/AddDefaultModels",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).AddDefaultModels(ctx, req.(*AddDefaultModelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ModelService_ServiceDesc is the grpc.ServiceDesc for ModelService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -167,6 +199,10 @@ var ModelService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserModels",
 			Handler:    _ModelService_GetUserModels_Handler,
+		},
+		{
+			MethodName: "AddDefaultModels",
+			Handler:    _ModelService_AddDefaultModels_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

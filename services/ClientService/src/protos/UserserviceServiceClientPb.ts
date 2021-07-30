@@ -276,5 +276,45 @@ export class UserServiceClient {
     this.methodInfoSearchForUsers);
   }
 
+  methodInfoChangePassword = new grpcWeb.AbstractClientBase.MethodInfo(
+    google_protobuf_empty_pb.Empty,
+    (request: userservice_pb.InternalChangePasswordRequest) => {
+      return request.serializeBinary();
+    },
+    google_protobuf_empty_pb.Empty.deserializeBinary
+  );
+
+  changePassword(
+    request: userservice_pb.InternalChangePasswordRequest,
+    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
+
+  changePassword(
+    request: userservice_pb.InternalChangePasswordRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
+
+  changePassword(
+    request: userservice_pb.InternalChangePasswordRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/protos.UserService/ChangePassword',
+        request,
+        metadata || {},
+        this.methodInfoChangePassword,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/protos.UserService/ChangePassword',
+    request,
+    metadata || {},
+    this.methodInfoChangePassword);
+  }
+
 }
 

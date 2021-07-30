@@ -18,13 +18,12 @@ import {
   FitActionType,
   initialCurveState,
 } from '../../reducers/curveFitReducer';
-import { fetchResults, } from '../../temporary/sim-request/sim-request';
+import { fetchTempResults, } from '../../temporary/sim-request/sim-request';
 import { Graph } from '../../common-components/Graph';
 import { graphDataManager } from '../../utils/graphData';
 import { getXYAxisMinMax } from '../../utils/curveFit';
 import { RateResult } from './CurveFit.utils';
 import { Button } from '../../common-components/Button/Button';
-import styles from './styles.module.scss';
 import { GetModelsRequest } from '../../protos/modelservice_pb';
 import {
   CurveFitRequest,
@@ -37,6 +36,7 @@ import {
 } from '../../grpc-web';
 import { useHistory } from 'react-router-dom';
 import { token } from '../../utils/token';
+import styles from './styles.module.scss';
 
 export const CurveFit = () => {
   const history = useHistory();
@@ -81,7 +81,7 @@ export const CurveFit = () => {
 
   const handleApproximation = async () => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      fetchResults().then(results => {
+      fetchTempResults().then(results => {
         results.forEach(RateResult);
         dispatch({type: FitActionType.SET_RESULT, result: results});
         graphDataManager.clearExpressions();

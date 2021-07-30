@@ -34,10 +34,17 @@ func (us *modelService) AddModel(ctx context.Context, newModel *pb.InternalNewMo
 	return model, nil
 }
 
-
 func (us *modelService) DeleteModel(ctx context.Context, model *pb.InternalDeleteModelRequest) (*emptypb.Empty, error) {
 	if err := us.modelUc.DeleteModel(model.ModelId); err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
+	}
+
+	return new(emptypb.Empty), nil
+}
+
+func (us *modelService) AddDefaultModels(ctx context.Context, request *pb.AddDefaultModelRequest) (*emptypb.Empty, error) {
+	if err := us.modelUc.AddDefaultModels(request.UserId); err != nil {
+		return nil, err
 	}
 
 	return new(emptypb.Empty), nil

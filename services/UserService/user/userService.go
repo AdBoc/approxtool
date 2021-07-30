@@ -17,8 +17,17 @@ func NewUserService(uc UseCase) *userService {
 	return &userService{UnimplementedUserServiceServer: pb.UnimplementedUserServiceServer{}, userUC: uc}
 }
 
+func hashPassword(newPassword string) (string, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+
+	return string(hashedPassword), nil
+}
+
 func (us *userService) GetAllUsers(ctx context.Context, _ *emptypb.Empty) (*pb.GetUsersResponse, error) {
-	//TODO: Pagination
+	//TODO: Pagination ?
 	users, err := us.userUC.GetAll()
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -28,12 +37,12 @@ func (us *userService) GetAllUsers(ctx context.Context, _ *emptypb.Empty) (*pb.G
 }
 
 func (us *userService) CreateUser(ctx context.Context, newUser *pb.InternalNewUserRequest) (*pb.UserResponse, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost)
+	hashedPassword, err := hashPassword(newUser.Password)
 	if err != nil {
-		return nil, grpc_errors.ErrorResponse(err, err.Error())
+		return nil, err
 	}
 
-	newUser.Password = string(hashedPassword)
+	newUser.Password = hashedPassword
 
 	user, err := us.userUC.Create(newUser)
 	if err != nil {
@@ -85,4 +94,19 @@ func (us *userService) SearchForUsers(ctx context.Context, searchRequest *pb.Int
 	}
 
 	return users, nil
+}
+
+func (us *userService) ChangePassword(ctx context.Context, request *pb.InternalChangePasswordRequest) (*emptypb.Empty, error) {
+	hashedPassword, err := hashPassword(request.NewPassword)
+	if err != nil {
+		return nil, err
+	}
+
+	request.NewPassword = hashedPassword
+
+	if err := us.userUC.ChangeUserPassword(request.UserId, request.NewPassword); err != nil {
+		return nil, err
+	}
+
+	return new(emptypb.Empty), nil
 }

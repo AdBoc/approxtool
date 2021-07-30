@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	pb "modelsrv/protos/model"
 )
@@ -49,6 +50,20 @@ func (m *modelPGRepository) AddModel(newModel *pb.InternalNewModelRequest) (*pb.
 
 func (m *modelPGRepository) DeleteModel(id uint32) error {
 	if _, err := m.db.Exec(context.Background(), deleteModelByIdQuery, id); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *modelPGRepository) AddDefaultModels(userId uint32) error {
+	batch := &pgx.Batch{}
+
+	for _, model := range models {
+		batch.Queue(insertNewModelQuery, model.name, model.expression, model.lexExpression, userId)
+	}
+
+	if err := m.db.SendBatch(context.Background(), batch).Close(); err != nil {
 		return err
 	}
 

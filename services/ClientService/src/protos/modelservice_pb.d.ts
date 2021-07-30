@@ -219,3 +219,21 @@ export namespace DeleteModelRequest {
   }
 }
 
+export class AddDefaultModelRequest extends jspb.Message {
+  getUserid(): number;
+  setUserid(value: number): AddDefaultModelRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AddDefaultModelRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: AddDefaultModelRequest): AddDefaultModelRequest.AsObject;
+  static serializeBinaryToWriter(message: AddDefaultModelRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AddDefaultModelRequest;
+  static deserializeBinaryFromReader(message: AddDefaultModelRequest, reader: jspb.BinaryReader): AddDefaultModelRequest;
+}
+
+export namespace AddDefaultModelRequest {
+  export type AsObject = {
+    userid: number,
+  }
+}
+

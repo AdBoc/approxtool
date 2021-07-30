@@ -1,5 +1,6 @@
 import * as jspb from 'google-protobuf'
 
+import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 
 
 export class RefreshRequest extends jspb.Message {
@@ -171,24 +172,6 @@ export namespace LogoutRequest {
   export type AsObject = {
     accessToken: string,
     refreshToken: string,
-  }
-}
-
-export class LogoutResponse extends jspb.Message {
-  getSuccess(): boolean;
-  setSuccess(value: boolean): LogoutResponse;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): LogoutResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: LogoutResponse): LogoutResponse.AsObject;
-  static serializeBinaryToWriter(message: LogoutResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): LogoutResponse;
-  static deserializeBinaryFromReader(message: LogoutResponse, reader: jspb.BinaryReader): LogoutResponse;
-}
-
-export namespace LogoutResponse {
-  export type AsObject = {
-    success: boolean,
   }
 }
 

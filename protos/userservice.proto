@@ -12,6 +12,7 @@ service UserService {
   rpc DeleteUser(InternalDeleteUserRequest) returns (google.protobuf.Empty) {}
   rpc GetAllUsers(google.protobuf.Empty) returns (GetUsersResponse) {}
   rpc SearchForUsers(InternalSearchRequest) returns (SearchResponse) {}
+  rpc ChangePassword(InternalChangePasswordRequest) returns (google.protobuf.Empty) {}
 }
 
 enum Role {
@@ -94,4 +95,15 @@ message InternalSearchRequest {
 
 message SearchResponse {
   repeated UserResponse users = 1;
+}
+
+message InternalChangePasswordRequest {
+  uint32 userId = 1;
+  string newPassword = 2;
+}
+
+message ChangePasswordRequest {
+  string access_token = 1;
+  uint32 userId = 2;
+  string newPassword = 3;
 }

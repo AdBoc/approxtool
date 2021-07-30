@@ -47,7 +47,7 @@ export async function fetchWithAuthRetry<T>(fn: () => Promise<T>): Promise<T> {
         return await fn();
       } catch (e) {
         token.removeTokens();
-        window.location.href = "/"; // TODO: Try using react history
+        window.location.href = '/'; // TODO: Try using react history
         throw new Error('Auth Error');
       }
     }

@@ -107,3 +107,11 @@ func (u *userPGRepository) SearchUserByName(userQuery string) (*pb.SearchRespons
 
 	return list, nil
 }
+
+func (u *userPGRepository) ChangeUserPassword(userId uint32, newPassword string) error {
+	if _, err := u.db.Query(context.Background(), changeUserPassword, newPassword, userId); err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -6,6 +6,7 @@ import (
 	"context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // Login Not Secured
@@ -30,12 +31,13 @@ func (s *Server) Login(ctx context.Context, request *auth.LoginRequest) (*auth.L
 }
 
 // Logout Not Secured
-func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*auth.LogoutResponse, error) {
-	resp, err := s.AuthClient.Logout(context.Background(), request)
+func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*emptypb.Empty, error) {
+	_, err := s.AuthClient.Logout(context.Background(), request)
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
+
+	return new(emptypb.Empty), nil
 }
 
 // RefreshToken Not Secured

@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"os"
 )
 
@@ -40,13 +41,13 @@ func (s *Server) Login(ctx context.Context, request *auth.InternalLoginRequest) 
 	return &auth.LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken}, nil
 }
 
-func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*auth.LogoutResponse, error) {
+func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*emptypb.Empty, error) {
 	err := token.DeleteToken(s.RedisClient, request.AccessToken, os.Getenv("ACCESS_SECRET"))
 	if err != nil {
-		return &auth.LogoutResponse{Success: false}, err
+		return nil, err
 	}
 
-	return &auth.LogoutResponse{Success: true}, nil
+	return new(emptypb.Empty), nil
 }
 
 func (s *Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest) (*auth.RefreshResponse, error) {

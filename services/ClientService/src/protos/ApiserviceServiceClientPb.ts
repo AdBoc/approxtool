@@ -120,28 +120,28 @@ export class ApiServiceClient {
   }
 
   methodInfoLogout = new grpcWeb.AbstractClientBase.MethodInfo(
-    authservice_pb.LogoutResponse,
+    google_protobuf_empty_pb.Empty,
     (request: authservice_pb.LogoutRequest) => {
       return request.serializeBinary();
     },
-    authservice_pb.LogoutResponse.deserializeBinary
+    google_protobuf_empty_pb.Empty.deserializeBinary
   );
 
   logout(
     request: authservice_pb.LogoutRequest,
-    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.LogoutResponse>;
+    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
 
   logout(
     request: authservice_pb.LogoutRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: authservice_pb.LogoutResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.LogoutResponse>;
+               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   logout(
     request: authservice_pb.LogoutRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: authservice_pb.LogoutResponse) => void) {
+               response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
@@ -357,6 +357,46 @@ export class ApiServiceClient {
     request,
     metadata || {},
     this.methodInfoSearchForUsers);
+  }
+
+  methodInfoChangePassword = new grpcWeb.AbstractClientBase.MethodInfo(
+    google_protobuf_empty_pb.Empty,
+    (request: userservice_pb.ChangePasswordRequest) => {
+      return request.serializeBinary();
+    },
+    google_protobuf_empty_pb.Empty.deserializeBinary
+  );
+
+  changePassword(
+    request: userservice_pb.ChangePasswordRequest,
+    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
+
+  changePassword(
+    request: userservice_pb.ChangePasswordRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
+
+  changePassword(
+    request: userservice_pb.ChangePasswordRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/protos.ApiService/ChangePassword',
+        request,
+        metadata || {},
+        this.methodInfoChangePassword,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/protos.ApiService/ChangePassword',
+    request,
+    metadata || {},
+    this.methodInfoChangePassword);
   }
 
   methodInfoAddModel = new grpcWeb.AbstractClientBase.MethodInfo(

@@ -14,6 +14,7 @@
 import * as grpcWeb from 'grpc-web';
 
 import * as authservice_pb from './authservice_pb';
+import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 
 
 export class AuthServiceClient {
@@ -156,28 +157,28 @@ export class AuthServiceClient {
   }
 
   methodInfoLogout = new grpcWeb.AbstractClientBase.MethodInfo(
-    authservice_pb.LogoutResponse,
+    google_protobuf_empty_pb.Empty,
     (request: authservice_pb.LogoutRequest) => {
       return request.serializeBinary();
     },
-    authservice_pb.LogoutResponse.deserializeBinary
+    google_protobuf_empty_pb.Empty.deserializeBinary
   );
 
   logout(
     request: authservice_pb.LogoutRequest,
-    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.LogoutResponse>;
+    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
 
   logout(
     request: authservice_pb.LogoutRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: authservice_pb.LogoutResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.LogoutResponse>;
+               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   logout(
     request: authservice_pb.LogoutRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: authservice_pb.LogoutResponse) => void) {
+               response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +

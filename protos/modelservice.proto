@@ -9,6 +9,7 @@ service ModelService {
   rpc AddModel(InternalNewModelRequest) returns (NewModelResponse) {}
   rpc DeleteModel(InternalDeleteModelRequest) returns (google.protobuf.Empty) {}
   rpc GetUserModels(InternalGetModelsRequest) returns (GetModelsResponse) {}
+  rpc AddDefaultModels(AddDefaultModelRequest) returns (google.protobuf.Empty) {}
 }
 
 message Model {
@@ -58,4 +59,8 @@ message InternalDeleteModelRequest {
 message DeleteModelRequest {
   string accessToken = 1;
   uint32 modelId = 2;
+}
+
+message AddDefaultModelRequest {
+  uint32 userId = 1;
 }

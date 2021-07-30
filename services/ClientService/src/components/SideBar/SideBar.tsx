@@ -5,8 +5,8 @@ import {
 } from 'react-router-dom';
 import { apiSrv } from '../../grpc-web';
 import { LogoutRequest } from '../../protos/authservice_pb';
-import styles from './styles.module.scss';
 import { token } from '../../utils/token';
+import styles from './styles.module.scss';
 
 export const SideBar = (): JSX.Element => {
   const history = useHistory();

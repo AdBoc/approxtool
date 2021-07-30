@@ -16,4 +16,5 @@ type UseCase interface {
 	DeleteById(userId uint32) error
 	ChangeUserStatus(userId uint32, status *pb.Role) error
 	SearchUserByName(userQuery string) (*pb.SearchResponse, error)
+	ChangeUserPassword(userId uint32, newPassword string) error
 }

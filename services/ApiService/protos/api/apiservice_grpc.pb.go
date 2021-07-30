@@ -26,13 +26,14 @@ type ApiServiceClient interface {
 	// Auth Service
 	Login(ctx context.Context, in *auth.LoginRequest, opts ...grpc.CallOption) (*auth.LoginResponse, error)
 	RefreshToken(ctx context.Context, in *auth.RefreshRequest, opts ...grpc.CallOption) (*auth.RefreshResponse, error)
-	Logout(ctx context.Context, in *auth.LogoutRequest, opts ...grpc.CallOption) (*auth.LogoutResponse, error)
+	Logout(ctx context.Context, in *auth.LogoutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// User Service
 	ChangeUserPrivilege(ctx context.Context, in *user.ChangePrivilegeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CreateUser(ctx context.Context, in *user.NewUserRequest, opts ...grpc.CallOption) (*user.UserResponse, error)
 	DeleteUser(ctx context.Context, in *user.DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetAllUsers(ctx context.Context, in *user.GetAllUsersRequest, opts ...grpc.CallOption) (*user.GetUsersResponse, error)
 	SearchForUsers(ctx context.Context, in *user.SearchRequest, opts ...grpc.CallOption) (*user.SearchResponse, error)
+	ChangePassword(ctx context.Context, in *user.ChangePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Model Service
 	AddModel(ctx context.Context, in *model.NewModelRequest, opts ...grpc.CallOption) (*model.NewModelResponse, error)
 	DeleteModel(ctx context.Context, in *model.DeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -67,8 +68,8 @@ func (c *apiServiceClient) RefreshToken(ctx context.Context, in *auth.RefreshReq
 	return out, nil
 }
 
-func (c *apiServiceClient) Logout(ctx context.Context, in *auth.LogoutRequest, opts ...grpc.CallOption) (*auth.LogoutResponse, error) {
-	out := new(auth.LogoutResponse)
+func (c *apiServiceClient) Logout(ctx context.Context, in *auth.LogoutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/protos.ApiService/Logout", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -121,6 +122,15 @@ func (c *apiServiceClient) SearchForUsers(ctx context.Context, in *user.SearchRe
 	return out, nil
 }
 
+func (c *apiServiceClient) ChangePassword(ctx context.Context, in *user.ChangePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/protos.ApiService/ChangePassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *apiServiceClient) AddModel(ctx context.Context, in *model.NewModelRequest, opts ...grpc.CallOption) (*model.NewModelResponse, error) {
 	out := new(model.NewModelResponse)
 	err := c.cc.Invoke(ctx, "/protos.ApiService/AddModel", in, out, opts...)
@@ -164,13 +174,14 @@ type ApiServiceServer interface {
 	// Auth Service
 	Login(context.Context, *auth.LoginRequest) (*auth.LoginResponse, error)
 	RefreshToken(context.Context, *auth.RefreshRequest) (*auth.RefreshResponse, error)
-	Logout(context.Context, *auth.LogoutRequest) (*auth.LogoutResponse, error)
+	Logout(context.Context, *auth.LogoutRequest) (*emptypb.Empty, error)
 	// User Service
 	ChangeUserPrivilege(context.Context, *user.ChangePrivilegeRequest) (*emptypb.Empty, error)
 	CreateUser(context.Context, *user.NewUserRequest) (*user.UserResponse, error)
 	DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error)
 	GetAllUsers(context.Context, *user.GetAllUsersRequest) (*user.GetUsersResponse, error)
 	SearchForUsers(context.Context, *user.SearchRequest) (*user.SearchResponse, error)
+	ChangePassword(context.Context, *user.ChangePasswordRequest) (*emptypb.Empty, error)
 	// Model Service
 	AddModel(context.Context, *model.NewModelRequest) (*model.NewModelResponse, error)
 	DeleteModel(context.Context, *model.DeleteModelRequest) (*emptypb.Empty, error)
@@ -190,7 +201,7 @@ func (UnimplementedApiServiceServer) Login(context.Context, *auth.LoginRequest) 
 func (UnimplementedApiServiceServer) RefreshToken(context.Context, *auth.RefreshRequest) (*auth.RefreshResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
-func (UnimplementedApiServiceServer) Logout(context.Context, *auth.LogoutRequest) (*auth.LogoutResponse, error) {
+func (UnimplementedApiServiceServer) Logout(context.Context, *auth.LogoutRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedApiServiceServer) ChangeUserPrivilege(context.Context, *user.ChangePrivilegeRequest) (*emptypb.Empty, error) {
@@ -207,6 +218,9 @@ func (UnimplementedApiServiceServer) GetAllUsers(context.Context, *user.GetAllUs
 }
 func (UnimplementedApiServiceServer) SearchForUsers(context.Context, *user.SearchRequest) (*user.SearchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchForUsers not implemented")
+}
+func (UnimplementedApiServiceServer) ChangePassword(context.Context, *user.ChangePasswordRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangePassword not implemented")
 }
 func (UnimplementedApiServiceServer) AddModel(context.Context, *model.NewModelRequest) (*model.NewModelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddModel not implemented")
@@ -377,6 +391,24 @@ func _ApiService_SearchForUsers_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ApiService_ChangePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(user.ChangePasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ApiServiceServer).ChangePassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.ApiService/ChangePassword",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ApiServiceServer).ChangePassword(ctx, req.(*user.ChangePasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ApiService_AddModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(model.NewModelRequest)
 	if err := dec(in); err != nil {
@@ -487,6 +519,10 @@ var ApiService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SearchForUsers",
 			Handler:    _ApiService_SearchForUsers_Handler,
+		},
+		{
+			MethodName: "ChangePassword",
+			Handler:    _ApiService_ChangePassword_Handler,
 		},
 		{
 			MethodName: "AddModel",

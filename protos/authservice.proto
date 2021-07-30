@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
 option go_package = "./auth";
 package protos;
 
@@ -7,7 +8,7 @@ service AuthService {
     rpc RefreshToken (RefreshRequest) returns (RefreshResponse) {}
     rpc GetSession (GetSessionRequest) returns (GetSessionResponse) {}
     rpc Login (InternalLoginRequest) returns (LoginResponse) {}
-    rpc Logout (LogoutRequest) returns (LogoutResponse) {}
+    rpc Logout (LogoutRequest) returns (google.protobuf.Empty) {}
 }
 
 message RefreshRequest {
@@ -48,8 +49,4 @@ message LoginResponse {
 message LogoutRequest {
     string access_token = 1;
     string refresh_token = 2;
-}
-
-message LogoutResponse {
-    bool success = 1;
 }

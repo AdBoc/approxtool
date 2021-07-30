@@ -345,6 +345,54 @@ export namespace SearchResponse {
   }
 }
 
+export class InternalChangePasswordRequest extends jspb.Message {
+  getUserid(): number;
+  setUserid(value: number): InternalChangePasswordRequest;
+
+  getNewpassword(): string;
+  setNewpassword(value: string): InternalChangePasswordRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalChangePasswordRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalChangePasswordRequest): InternalChangePasswordRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalChangePasswordRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalChangePasswordRequest;
+  static deserializeBinaryFromReader(message: InternalChangePasswordRequest, reader: jspb.BinaryReader): InternalChangePasswordRequest;
+}
+
+export namespace InternalChangePasswordRequest {
+  export type AsObject = {
+    userid: number,
+    newpassword: string,
+  }
+}
+
+export class ChangePasswordRequest extends jspb.Message {
+  getAccessToken(): string;
+  setAccessToken(value: string): ChangePasswordRequest;
+
+  getUserid(): number;
+  setUserid(value: number): ChangePasswordRequest;
+
+  getNewpassword(): string;
+  setNewpassword(value: string): ChangePasswordRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ChangePasswordRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ChangePasswordRequest): ChangePasswordRequest.AsObject;
+  static serializeBinaryToWriter(message: ChangePasswordRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ChangePasswordRequest;
+  static deserializeBinaryFromReader(message: ChangePasswordRequest, reader: jspb.BinaryReader): ChangePasswordRequest;
+}
+
+export namespace ChangePasswordRequest {
+  export type AsObject = {
+    accessToken: string,
+    userid: number,
+    newpassword: string,
+  }
+}
+
 export enum Role { 
   BASIC_USER = 0,
   ADMIN = 1,

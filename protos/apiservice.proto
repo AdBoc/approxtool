@@ -13,7 +13,7 @@ service ApiService {
     // Auth Service
     rpc Login (LoginRequest) returns (LoginResponse) {}
     rpc RefreshToken (RefreshRequest) returns (RefreshResponse) {}
-    rpc Logout (LogoutRequest) returns (LogoutResponse) {}
+    rpc Logout (LogoutRequest) returns (google.protobuf.Empty) {}
     
     // User Service
     rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty) {}
@@ -21,6 +21,7 @@ service ApiService {
     rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
     rpc GetAllUsers(GetAllUsersRequest) returns (GetUsersResponse) {}
     rpc SearchForUsers(SearchRequest) returns (SearchResponse) {}
+    rpc ChangePassword(ChangePasswordRequest) returns (google.protobuf.Empty) {}
 
     // Model Service
     rpc AddModel(NewModelRequest) returns (NewModelResponse) {}
