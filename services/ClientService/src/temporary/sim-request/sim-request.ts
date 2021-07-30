@@ -43,6 +43,48 @@ const MODELS: FitStateExpression[] = [
       }
     ]
   },
+  {
+    id: 2,
+    name: 'Linear2',
+    expression: 'a * x + b',
+    lexexpression: 'a \\cdot x+b',
+    isSelected: false,
+    params: [
+      {
+        paramName: 'a',
+        paramValue: 1.48,
+        minBound: -Infinity,
+        maxBound: Infinity,
+      },
+      {
+        paramName: 'b',
+        paramValue: 3,
+        minBound: -Infinity,
+        maxBound: Infinity,
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: 'Linear3',
+    expression: 'a * x + b',
+    lexexpression: 'a \\cdot x+b',
+    isSelected: false,
+    params: [
+      {
+        paramName: 'a',
+        paramValue: 1.48,
+        minBound: -Infinity,
+        maxBound: Infinity,
+      },
+      {
+        paramName: 'b',
+        paramValue: 3,
+        minBound: -Infinity,
+        maxBound: Infinity,
+      }
+    ]
+  },
 ];
 
 const RESULTS: FitRes[] = [

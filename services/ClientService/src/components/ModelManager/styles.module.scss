@@ -1,14 +1,28 @@
-.model {
-  text-align: center;
-  padding: 1rem;
-  border: 1px solid black;
-  width: fit-content;
-  min-width: 10rem;
-  margin: 1rem auto;
-  background-color: #efefef;
-  cursor: pointer;
+.tableRow {
+  display: grid;
+  grid-template-columns: 1fr 2fr 4fr 1fr;
+  justify-items: center;
+  align-items: center;
+  margin: 0 1em;
+
+  &:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
 
   &:hover {
-    background-color: #dcdcdc;
+    background-color: rgba(0, 0, 0, 0.1);
   }
+}
+
+.tableHeader {
+  padding: 0.25em 0;
+  border-bottom: 1px solid black;
+}
+
+.texExpression {
+  border-radius: 5px;
+  padding: .25em .75rem;
+  font-size: 1.1rem;
+  margin: 0.1em;
+  cursor: pointer;
 }
