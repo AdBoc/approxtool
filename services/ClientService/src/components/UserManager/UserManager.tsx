@@ -144,11 +144,11 @@ export const UserManager: React.FC = (): JSX.Element => {
           <Button type="button" text="Change Password" onClick={() => setRenderPasswordInput(prev => !prev)}/>
         )}
         <Button type="button" text="Close Modal" onClick={handleCloseModal}/>
-        <Button
+        {token.decodedTokenData.user_id !== selectedUser!.id && <Button
           text="Delete user"
           className={styles.dangerousButton}
           onClick={() => handleDeleteUser(selectedUser!.id)}
-        />
+        />}
       </Modal>
       <Modal isShowing={isRegisterForm} className={styles.modalRegisterWrapper}>
         <RegisterForm setUsers={setUsers} handleClose={toggleRegisterForm}/>

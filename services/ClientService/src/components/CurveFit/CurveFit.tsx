@@ -12,7 +12,6 @@ import { GetModelsRequest } from '../../protos/modelservice_pb';
 import { token } from '../../utils/token';
 import {
   expressionParams,
-  parsePointsForGraph,
   parsePointsForRequest,
 } from '../../utils/dataParsing';
 import {
@@ -22,7 +21,6 @@ import {
 } from '../../reducers/curveFitReducer';
 import { useModal } from '../../hooks/useModal';
 import { graphDataManager } from '../../utils/graphData';
-import { getXYAxisMinMax } from '../../utils/curveFit';
 import { Modal } from '../../common-components/Modal/Modal';
 import { Graph } from '../../common-components/Graph';
 import { Button } from '../../common-components/Button/Button';
@@ -140,16 +138,6 @@ export const CurveFit = () => {
     }
   };
 
-  const updateGraphPoints = () => {
-    toggleDataModal();
-    if (!state.rawPoints.length) return;
-    const graphPoints = parsePointsForGraph(state.rawPoints);
-    const [xMin, xMax, yMin, yMax] = getXYAxisMinMax(graphPoints);
-    graphDataManager.setXMinMax(xMin, xMax);
-    dispatch({type: FitActionType.RAW_POINTS_TO_GRAPH_POINTS, graphPoints});
-    dispatch({type: FitActionType.SET_DOMAINS, xDomain: [xMin, xMax], yDomain: [yMin, yMax]});
-  };
-
   return (
     <>
       <SideBar/>
@@ -184,7 +172,7 @@ export const CurveFit = () => {
           <Button text="Fit" type="button" onClick={handleApproximation}/>
         </div>
         <Modal isShowing={isDataModal}>
-          <DataHandler state={state} toggleModal={updateGraphPoints} dispatch={dispatch}/>
+          <DataHandler state={state} toggleModal={toggleDataModal} dispatch={dispatch}/>
         </Modal>
         <Modal isShowing={isModelsSelection}>
           <Models expressions={state.allModels} closeModelsModal={toggleModelsSelection} dispatch={dispatch}/>
