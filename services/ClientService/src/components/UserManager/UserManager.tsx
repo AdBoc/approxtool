@@ -27,9 +27,9 @@ import styles from './styles.module.scss';
 
 export const UserManager: React.FC = (): JSX.Element => {
   const [userQuery, setUserQuery] = useState('');
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [renderPasswordInput, setRenderPasswordInput] = useState<boolean | string>(false);
+  const [userId, setUserId] = useState<number | null>(null);
 
   const {isShowing: isRegisterForm, toggle: toggleRegisterForm} = useModal();
 
@@ -68,7 +68,7 @@ export const UserManager: React.FC = (): JSX.Element => {
       });
 
       setUsers(mutateUser.changePrivilege(users, userId));
-      handleCloseModal();
+      closeChangePassModal();
     } catch (e) {
       console.error(e);
     }
@@ -85,7 +85,7 @@ export const UserManager: React.FC = (): JSX.Element => {
       });
 
       setUsers(mutateUser.deleteUser(users, userId));
-      handleCloseModal();
+      closeChangePassModal();
     } catch (e) {
       console.error(e);
     }
@@ -108,11 +108,16 @@ export const UserManager: React.FC = (): JSX.Element => {
       console.error(e);
     }
 
-    handleCloseModal();
+    closeChangePassModal();
   };
 
-  const handleCloseModal = () => {
-    setSelectedUser(null);
+  const openChangePassModal = (userId: number) => {
+    setUserId(userId);
+    setRenderPasswordInput(true);
+  }
+
+  const closeChangePassModal = () => {
+    setUserId(null);
     setRenderPasswordInput(false);
   };
 
@@ -124,37 +129,46 @@ export const UserManager: React.FC = (): JSX.Element => {
         value={userQuery}
         handler={e => setUserQuery(e.target.value)}
       />
+      <div className={`${styles.tableRow} ${styles.tableHeader}`}>
+        <p>Username</p>
+        <p>Email</p>
+        <p>Status</p>
+        <p>Operations</p>
+      </div>
       {users.map((user) => (
-        <div key={user.id} className={styles.user} onClick={() => setSelectedUser(user)}>
+        <div key={user.id} className={styles.tableRow}>
           <p>Username: {user.username}</p>
           <p>Email: {user.email}</p>
           <p>Status: {roles[user.status]}</p>
+          <div className={styles.userOperations}>
+            {user.status === Role.BASIC_USER && (
+              <button
+                type="button"
+                className={styles.operation}
+                onClick={() => handleChangePrivilege(user.id)}
+              >
+                Give Admin
+              </button>
+            )}
+            <button type="button" onClick={() => openChangePassModal(user.id)}>Change Password</button>
+            {token.decodedTokenData.user_id !== user.id && (
+              <button type="button" className={styles.operation}
+                      onClick={() => handleDeleteUser(user.id)}>Delete</button>
+            )}
+          </div>
         </div>
       ))}
-      <Modal isShowing={Boolean(selectedUser)}>
-        <p>{selectedUser?.email}</p>
-        {selectedUser?.status === Role.BASIC_USER &&
-        <Button text="Give admin role" onClick={() => handleChangePrivilege(selectedUser!.id)}/>}
-        {renderPasswordInput ? (
-          <div className={styles.passwordForm}>
-            <InputField label="New Password" handler={(e) => setRenderPasswordInput(e.target.value)}/>
-            <p>Password must have 6 min characters</p>
-            <Button type="submit" text="Send" onClick={() => handleChangePassword(selectedUser!.id)}/>
-          </div>
-        ) : (
-          <Button type="button" text="Change Password" onClick={() => setRenderPasswordInput(prev => !prev)}/>
-        )}
-        <Button type="button" text="Close Modal" onClick={handleCloseModal}/>
-        {token.decodedTokenData.user_id !== selectedUser?.id && <Button
-          text="Delete user"
-          className={styles.dangerousButton}
-          onClick={() => handleDeleteUser(selectedUser!.id)}
-        />}
-      </Modal>
       <Modal isShowing={isRegisterForm} className={styles.modalRegisterWrapper}>
         <RegisterForm setUsers={setUsers} handleClose={toggleRegisterForm}/>
+      </Modal>
+      <Modal isShowing={Boolean(renderPasswordInput)}>
+        <div className={styles.passwordForm}>
+          <InputField label="New Password" handler={(e) => setRenderPasswordInput(e.target.value)}/>
+          <p>Password must have 6 min characters</p>
+          <Button type="submit" text="Send" onClick={() => handleChangePassword(userId!)}/>
+          <Button type="button" text="Cancel" onClick={closeChangePassModal}/>
+        </div>
       </Modal>
     </div>
   );
 };
-

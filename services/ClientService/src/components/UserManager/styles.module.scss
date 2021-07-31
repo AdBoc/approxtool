@@ -9,30 +9,39 @@
   padding: 0.75rem;
 }
 
-.user {
-  display: flex;
-  justify-content: center;
-  column-gap: 1rem;
-  padding: 0.5rem 0;
-  margin: 0.25rem 0;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #dbdbdb;
-  }
-}
-
-.dangerousButton {
-  background-color: colors.$error-button;
-  border: 1px solid colors.$error-border;
-
-  &:hover {
-    background-color: colors.$error-hover;
-  }
-}
-
 .passwordForm {
   border: 1px solid colors.$input-border;
   border-radius: 4px;
   padding: 1.25rem;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 1fr 2fr 4fr 1fr;
+  justify-items: center;
+  align-items: center;
+  margin: 0 1em;
+
+  &:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.tableHeader {
+  padding: 0.25em 0;
+  border-bottom: 1px solid black;
+}
+
+.userOperations {
+  display: flex;
+  flex-direction: column;
+}
+
+.operation {
+  margin: 0.1em 0;
+  padding: 0.2em;
 }
