@@ -121,7 +121,10 @@ export const Graph: React.FC<Props> = React.memo((
       funcLine.attr('transform', transform);
     }
 
-    d3.select('svg').call(zoom as any);
+    const zoomer = d3.select('svg').call(zoom as any);
+
+    //reset button
+    d3.select('#reset').on('click', () => zoomer.call(zoom.transform as any, d3.zoomIdentity));
 
     // add clip path to the svg
     d3.select('svg').append('defs').append('clipPath').attr('id', 'clip')
@@ -137,6 +140,7 @@ export const Graph: React.FC<Props> = React.memo((
   return (
     <div id="func-chart" className={`${styles.funcChart} ${className && className}`}>
       <svg ref={chartRef}/>
+      <button id="reset">Reset position</button>
     </div>
   );
 }, () => false);
