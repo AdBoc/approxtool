@@ -132,6 +132,7 @@ export const UserManager: React.FC = (): JSX.Element => {
         </div>
       ))}
       <Modal isShowing={Boolean(selectedUser)}>
+        <p>{selectedUser?.email}</p>
         {selectedUser?.status === Role.BASIC_USER &&
         <Button text="Give admin role" onClick={() => handleChangePrivilege(selectedUser!.id)}/>}
         {renderPasswordInput ? (
@@ -144,7 +145,7 @@ export const UserManager: React.FC = (): JSX.Element => {
           <Button type="button" text="Change Password" onClick={() => setRenderPasswordInput(prev => !prev)}/>
         )}
         <Button type="button" text="Close Modal" onClick={handleCloseModal}/>
-        {token.decodedTokenData.user_id !== selectedUser!.id && <Button
+        {token.decodedTokenData.user_id !== selectedUser?.id && <Button
           text="Delete user"
           className={styles.dangerousButton}
           onClick={() => handleDeleteUser(selectedUser!.id)}

@@ -40,7 +40,7 @@ export const EditModelParams: React.FC<Props> = ({model, dispatch, closeModal}):
       </div>
       {paramsForm.map((param, index) => (
         <div key={param.paramName}>
-          <span>Param: {param.paramName} -</span>
+          <p>Param: <b>{param.paramName}</b></p>
           <InputField
             label="Initial Guess"
             name="paramValue"

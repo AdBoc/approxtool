@@ -28,7 +28,10 @@ import { SideBar } from '../SideBar';
 import { DataHandler } from '../DataHandler';
 import { Models } from '../Models';
 import { FitResults } from '../FitResults';
-import { fetchTempResults, } from '../../temporary/sim-request/sim-request';
+import {
+  fetchTempModels,
+  fetchTempResults,
+} from '../../temporary/sim-request/sim-request';
 import {
   CurveFitRequest,
   Expression,
@@ -45,32 +48,37 @@ export const CurveFit = () => {
 
   useEffect(() => {
     async function fetchModels() {
-      const request = new GetModelsRequest();
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        fetchTempModels().then(models => dispatch({type: FitActionType.SET_MODELS, models}));
+      } else {
+        const request = new GetModelsRequest();
 
-      try {
-        const response = await fetchWithAuthRetry(() => {
-          request.setAccesstoken(token.accessToken);
-          return apiSrv.getUserModels(request, null)
-        });
+        try {
+          const response = await fetchWithAuthRetry(() => {
+            request.setAccesstoken(token.accessToken);
+            return apiSrv.getUserModels(request, null)
+          });
 
-        const models = response.toObject().modelsList.map(model => {
-          const defaultParams = expressionParams(model.expression).map(param => ({
-            paramName: param,
-            paramValue: 1,
-            minBound: -Infinity,
-            maxBound: Infinity,
-          }));
+          const models = response.toObject().modelsList.map(model => {
+            const defaultParams = expressionParams(model.expression).map(param => ({
+              paramName: param,
+              paramValue: 1,
+              minBound: -Infinity,
+              maxBound: Infinity,
+            }));
 
-          return {
-            ...model,
-            isSelected: false,
-            params: defaultParams
-          }
-        });
+            return {
+              ...model,
+              isSelected: false,
+              params: defaultParams
+            }
+          });
 
-        dispatch({type: FitActionType.SET_MODELS, models})
-      } catch (e) {
-        console.error(e);
+          dispatch({type: FitActionType.SET_MODELS, models});
+        } catch
+          (e) {
+          console.error(e);
+        }
       }
     }
 

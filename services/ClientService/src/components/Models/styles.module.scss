@@ -3,6 +3,12 @@
   column-gap: 1rem;
 }
 
+.modelWrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 2em;
+}
+
 .model {
   display: flex;
   justify-content: center;
@@ -10,9 +16,6 @@
   text-align: center;
   border: 1px solid #878787;
   border-radius: 6px;
-
-  //min-width: 20rem;
-  width: 20rem;
 
   padding: 0.75rem;
   margin: 0.5em 0;
@@ -22,6 +25,8 @@
   font-size: 1.1rem;
 
   cursor: pointer;
+
+  flex-grow: 1;
 
   button {
     margin: 0 0 0 auto;

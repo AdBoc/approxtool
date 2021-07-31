@@ -6,5 +6,5 @@ interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLB
 }
 
 export const Button: React.FC<Props> = ({text, className, ...props}): JSX.Element => (
-  <button className={`${styles.button} ${className}`} {...props}>{text}</button>
+  <button className={`${styles.button} ${className ? className : ''}`} {...props}>{text}</button>
 );
