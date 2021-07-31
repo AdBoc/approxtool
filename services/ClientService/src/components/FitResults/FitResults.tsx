@@ -47,6 +47,20 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
     }
   };
 
+  const handleParamsToExcel = async () => {
+    //\n -> to next column
+    //\t -> lower
+    let formattedText = '';
+    for (const result of Object.values(highlightedResult!.parametersList)) {
+      formattedText += `${result.name}\t${result.value}\n`;
+    }
+    try {
+      await navigator.clipboard.writeText(formattedText);
+    } catch (e) {
+      console.error('Failed to copy');
+    }
+  };
+
   return (
     <>
       <div className={styles.resultsWrapper}>
@@ -62,7 +76,8 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
                 className={styles.drawButton}
                 text="Draw"
                 value={result.modelId}
-                onClick={(e) => drawExpression(e, result)}/>}
+                onClick={(e) => drawExpression(e, result)}
+            />}
           </div>
         ))}
       </div>
@@ -80,12 +95,14 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
         <p>BIC: {highlightedResult?.bic}</p>
         <p>AIC: {highlightedResult?.aic}</p>
         <h2>Parameters</h2>
-        {highlightedResult?.parametersList.map(parameter =>
-          <div key={parameter.name} className={styles.parameters}>
-            <span>{parameter.name}: {parameter.value}</span>
-            <span>Std Err: {parameter.stderr}</span>
-          </div>
-        )}
+        <div className={styles.parametersWrapper} onClick={handleParamsToExcel}>
+          {highlightedResult?.parametersList.map(parameter =>
+            <div key={parameter.name} className={styles.parameters}>
+              <span>{parameter.name}: {parameter.value}</span>
+              <span>Std Err: {parameter.stderr}</span>
+            </div>
+          )}
+        </div>
         <Button text="Close" type="submit" onClick={toggle}/>
       </Modal>
     </>
