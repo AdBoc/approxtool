@@ -1,0 +1,34 @@
+.navbar {
+  display: flex;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 0 .5em;
+
+  background-color: #f8f9fa;
+}
+
+.navbarElement {
+  text-decoration: none;
+  color: #3b3b3b;
+  padding: .5em;
+
+  &:hover {
+    color: black;
+  }
+}
+
+.mainLink {
+  font-size: 1.25em;
+}
+
+.logoutButton {
+  margin-left: auto;
+  border: none;
+  background-color: inherit;
+  font-size: 1.05em;
+  cursor: pointer;
+}

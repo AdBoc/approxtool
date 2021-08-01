@@ -1,3 +1,7 @@
+:root {
+    --nav-size: 2.75em;
+}
+
 *, :after, :before {
     box-sizing: border-box;
 }

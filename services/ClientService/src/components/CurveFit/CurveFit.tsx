@@ -24,7 +24,6 @@ import { graphDataManager } from '../../utils/graphData';
 import { Modal } from '../../common-components/Modal/Modal';
 import { Graph } from '../../common-components/Graph';
 import { Button } from '../../common-components/Button/Button';
-import { SideBar } from '../SideBar';
 import { DataHandler } from '../DataHandler';
 import { Models } from '../Models';
 import { FitResults } from '../FitResults';
@@ -147,50 +146,47 @@ export const CurveFit = () => {
   };
 
   return (
-    <>
-      <SideBar/>
-      <div className={styles.curveFitWrapper}>
-        <div className={styles.graphWrapper}>
-          {Boolean(state.graphPoints.length) && (
-            <Graph
-              responsive
-              graphExpression={state.graphExpression}
-              points={state.graphPoints}
-              xScaleDomain={state.xDomain}
-              yScaleDomain={state.yDomain}
-            />
-          )}
-          {Boolean(state.fitResult.length) && (
-            <FitResults results={state.fitResult} dispatch={dispatch}/>
-          )}
-        </div>
-        <div className={styles.fittingButtons}>
-          <p>1. Provide data by pasting it into the table or selecting csv file</p>
-          <Button text="Enter data" type="button" onClick={toggleDataModal}/>
-          <p>
-            2. Select models for fitting,
-            add temporary models (will be lost on page reload),
-            set parameters initial guess and bounds values (Initial guess value is always 1, bounds are -Infinite,
-            Infinite)
-          </p>
-          <Button text="Select models" type="button" onClick={toggleModelsSelection}/>
-          <p>3. Send fit request.</p>
-          <p>
-            Green is valid calculation.
-            Yellow color indicates that the result should only be used with caution.
-            It indicates that the calculation succeeded, but with reservations.
-            Red color means that calculation failed and threw exception
-            (Likely generated NaN values, make sure that models and its bounds are correct).
-          </p>
-          <Button text="Fit" type="button" onClick={handleApproximation}/>
-        </div>
-        <Modal isShowing={isDataModal}>
-          <DataHandler state={state} toggleModal={toggleDataModal} dispatch={dispatch}/>
-        </Modal>
-        <Modal isShowing={isModelsSelection}>
-          <Models expressions={state.allModels} closeModelsModal={toggleModelsSelection} dispatch={dispatch}/>
-        </Modal>
+    <div>
+      <div className={styles.graphWrapper}>
+        {Boolean(state.graphPoints.length) && (
+          <Graph
+            responsive
+            graphExpression={state.graphExpression}
+            points={state.graphPoints}
+            xScaleDomain={state.xDomain}
+            yScaleDomain={state.yDomain}
+          />
+        )}
+        {Boolean(state.fitResult.length) && (
+          <FitResults results={state.fitResult} dispatch={dispatch}/>
+        )}
       </div>
-    </>
+      <div className={styles.fittingButtons}>
+        <p>1. Provide data by pasting it into the table or selecting csv file</p>
+        <Button text="Enter data" type="button" onClick={toggleDataModal}/>
+        <p>
+          2. Select models for fitting,
+          add temporary models (will be lost on page reload),
+          set parameters initial guess and bounds values (Initial guess value is always 1, bounds are -Infinite,
+          Infinite)
+        </p>
+        <Button text="Select models" type="button" onClick={toggleModelsSelection}/>
+        <p>3. Send fit request.</p>
+        <p>
+          Green is valid calculation.
+          Yellow color indicates that the result should only be used with caution.
+          It indicates that the calculation succeeded, but with reservations.
+          Red color means that calculation failed and threw exception
+          (Likely generated NaN values, make sure that models and its bounds are correct).
+        </p>
+        <Button text="Fit" type="button" onClick={handleApproximation}/>
+      </div>
+      <Modal isShowing={isDataModal}>
+        <DataHandler state={state} toggleModal={toggleDataModal} dispatch={dispatch}/>
+      </Modal>
+      <Modal isShowing={isModelsSelection}>
+        <Models expressions={state.allModels} closeModelsModal={toggleModelsSelection} dispatch={dispatch}/>
+      </Modal>
+    </div>
   );
 };
