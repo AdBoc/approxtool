@@ -1,5 +1,10 @@
 @use '../../styles/colors';
 
+.modalWrapper {
+  display: flex;
+  column-gap: 1.5em;
+}
+
 .texExpression {
   border: 1px solid black;
   border-radius: 5px;
@@ -34,9 +39,13 @@
   justify-content: center;
 }
 
-.paramsLabel {
-  text-align: center;
-  margin: 0.25rem 0 0.5rem 0.25rem;
+.paramsWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.paramsInput {
+  margin: .25em .5em;
   width: 5rem;
-  padding: 0.25rem;
+  padding: .25rem;
 }

@@ -152,8 +152,13 @@ export const CurveFit = () => {
       <div className={styles.curveFitWrapper}>
         <div className={styles.graphWrapper}>
           {Boolean(state.graphPoints.length) && (
-            <Graph graphExpression={state.graphExpression} points={state.graphPoints} xScaleDomain={state.xDomain}
-                   yScaleDomain={state.yDomain}/>
+            <Graph
+              responsive
+              graphExpression={state.graphExpression}
+              points={state.graphPoints}
+              xScaleDomain={state.xDomain}
+              yScaleDomain={state.yDomain}
+            />
           )}
           {Boolean(state.fitResult.length) && (
             <FitResults results={state.fitResult} dispatch={dispatch}/>

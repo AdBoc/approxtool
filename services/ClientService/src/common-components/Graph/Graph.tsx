@@ -9,11 +9,12 @@ import styles from './styles.module.scss';
 import './graph.css';
 
 export interface Props {
-  graphExpression?: GraphExpression | null;
-  className?: string;
-  points?: Point[];
   xScaleDomain: [number, number];
   yScaleDomain: [number, number];
+  className?: string;
+  graphExpression?: GraphExpression | null;
+  points?: Point[];
+  responsive?: boolean;
 }
 
 export const Graph: React.FC<Props> = React.memo((
@@ -22,22 +23,33 @@ export const Graph: React.FC<Props> = React.memo((
     graphExpression = {id: 1, name: '', points: []},
     className,
     xScaleDomain,
-    yScaleDomain
+    yScaleDomain,
+    responsive = false,
   }
 ): JSX.Element => {
   const chartRef = useRef<SVGSVGElement>(null);
   const expression = graphExpression || {id: 1, name: '', points: []};
+  const height = responsive ? 500 : 100;
+
 
   useEffect(() => {
     const margin = {top: 20, right: 30, bottom: 30, left: 50};
-    const width = parseInt(d3.select('#func-chart').style('width')) - margin.left - margin.right;
-    const height = parseInt(d3.select('#func-chart').style('height')) - margin.top - margin.bottom;
+    // const height = responsive ? 500 : parseInt(d3.select('#func-chart').style('height')) - margin.top - margin.bottom;
+    const width = responsive ? parseInt(d3.select('#func-chart').style('width')) - margin.left - margin.right : 200;
 
-    const svg = d3.select(chartRef.current)
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
-      .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    let svg: any;
+    if (responsive) {
+      svg = d3.select(chartRef.current)
+        .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    } else {
+      svg = d3.select(chartRef.current)
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    }
 
     //add x axis
     const xScale = d3.scaleLinear()
@@ -67,9 +79,12 @@ export const Graph: React.FC<Props> = React.memo((
       .enter()
       .append('circle')
       .attr('r', 3)
+      // @ts-ignore
       .attr('cx', d => xScale(d[0]))
+      // @ts-ignore
       .attr('cy', d => yScale(d[1]))
       .on('mouseover', () => tooltip.style('visibility', 'visible'))
+      // @ts-ignore
       .on('mousemove', (e, d) => {
         tooltip.style('top', (e.pageY - 10) + 'px').style('left', (e.pageX + 15) + 'px');
         tooltip.text(`x: ${d[0]}, y: ${d[1]}`);
@@ -115,7 +130,9 @@ export const Graph: React.FC<Props> = React.memo((
       yAxisGroup.call(yAxis.scale(new_y));
 
       chartPoints.data(points)
+        // @ts-ignore
         .attr('cx', d => new_x(d[0]))
+        // @ts-ignore
         .attr('cy', d => new_y(d[1]));
 
       funcLine.attr('transform', transform);
@@ -135,10 +152,10 @@ export const Graph: React.FC<Props> = React.memo((
       svg.remove();
       tooltip.remove();
     };
-  }, [expression.points, points, xScaleDomain, yScaleDomain]);
+  }, [expression.points, points, xScaleDomain, yScaleDomain, height, responsive]);
 
   return (
-    <div id="func-chart" className={`${styles.funcChart} ${className && className}`}>
+    <div id="func-chart" className={`${styles.funcChart} ${className && className} ${!responsive && styles.funcFixedSize}`}>
       <svg ref={chartRef}/>
       <button id="reset">Reset position</button>
     </div>

@@ -1,8 +1,10 @@
 .funcChart {
-  //width: 100vw;
-  //height: 100vh;
   width: 80vw;
-  height: 50vh;
+  margin: auto;
   display: block;
   cursor: move;
+}
+
+.funcFixedSize {
+  width: auto;
 }

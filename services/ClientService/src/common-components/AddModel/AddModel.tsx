@@ -10,20 +10,18 @@ import { expressionParams } from '../../utils/dataParsing';
 import { extraExprValidation } from './AddModel.utils';
 import { NewExpression } from '../../types/stateExpression';
 import { InputField } from '../InputField/InputField';
-import { Graph } from '../Graph';
 import {
   calculatePoints,
   getYAxisMinMax
 } from '../../utils/curveFit';
-import { Modal } from '../Modal/Modal';
 import { Button } from '../Button/Button';
-import { useModal } from '../../hooks/useModal';
-import styles from './styles.module.scss';
-import 'katex/dist/katex.min.css';
 import {
   GenericObject,
   Point
 } from '../../types';
+import styles from './styles.module.scss';
+import 'katex/dist/katex.min.css';
+import { Graph } from '../Graph';
 
 interface Props {
   modelSubmit: (expr: NewExpression) => void;
@@ -38,8 +36,6 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
     expression: '',
     lexexpression: '',
   });
-
-  const {isShowing: isGraph, show, hide} = useModal();
 
   useEffect(() => {
     if (!modelForm.expression) return setModelForm(prev => ({...prev, lexExpression: ''}));
@@ -63,25 +59,28 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
     }
   }, [modelForm.expression, modelForm.name]);
 
+  useEffect(() => {
+    if (errors.length || !modelForm.expression) return;
+
+    const calculatedPoints = calculatePoints(modelForm.expression, parameters);
+    if (!calculatedPoints) {
+      setErrors(prev => [...prev, 'Expression cannot be evaluated']);
+      return;
+    }
+
+    setGraphPoints(calculatedPoints);
+  }, [modelForm.expression, parameters, errors.length]);
+
+
   const yScaleDomain = useMemo(() => getYAxisMinMax(graphPoints), [graphPoints]);
 
   const handleInput = (e: BaseSyntheticEvent) => setModelForm(prev => ({...prev, [e.target.name]: e.target.value}));
 
-  const handleChangeParameter = (e: BaseSyntheticEvent) => setParameters(prev => ({
-    ...prev,
-    [e.target.name]: parseFloat(e.target.value),
-  })); //TODO: Make sure user inputs float
+  const handleChangeParameter = (e: BaseSyntheticEvent) => {
+    const newParam = parseFloat(e.target.value);
+    if (isNaN(newParam)) return;
 
-  const drawGraph = () => {
-    if (errors.length) return;
-
-    const calculatedPoints = calculatePoints(modelForm.expression, parameters);
-    if (!calculatedPoints) {
-      setErrors(prev => [...prev, 'Internal App Error: Expression cannot be evaluated']);
-      return;
-    }
-    setGraphPoints(calculatedPoints);
-    show();
+    setParameters(prev => ({...prev, [e.target.name]: parseFloat(e.target.value)}));
   };
 
   const handleModelSubmit = () => {
@@ -94,22 +93,17 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
   };
 
   return (
-    <>
+    <div className={styles.modalWrapper}>
       <div>
         <InputField label="Name" name="name" value={modelForm.name} handler={handleInput}/>
         <InputField label="Expression" name="expression" value={modelForm.expression} handler={handleInput}/>
-        {modelForm.lexexpression &&
-        <>
-            <TexMath
-                block
-                className={`${styles.texExpression} ${errors.length ? styles.texError : styles.texValid}`}
-                math={modelForm.lexexpression}
-            />
-            <label>Show graph
-                <input type="checkbox" checked={isGraph} onChange={drawGraph}/>
-            </label>
-        </>
-        }
+        {modelForm.lexexpression && (
+          <TexMath
+            block
+            className={`${styles.texExpression} ${errors.length ? styles.texError : styles.texValid}`}
+            math={modelForm.lexexpression}
+          />
+        )}
         <div className={styles.textWrapper}>
           {errors.map(error => <p key={error} className={styles.textError}>{error}</p>)}
         </div>
@@ -118,34 +112,29 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
         </div>}
         <Button text="Submit" type="submit" onClick={handleModelSubmit}/>
       </div>
-      <Modal isShowing={isGraph} className={styles.graphModal}>
-        <div className={styles.graphFlex}>
-          <Graph
-            graphExpression={{id: 1, name: modelForm.name, points: graphPoints}}
-            yScaleDomain={yScaleDomain}
-            xScaleDomain={[-100, 100]}
-          />
-          <div>
-            {Object.entries(parameters).map(([paramName, paramVal]) => (
-              <div key={paramName}>
-                <label>{paramName}:
-                  <input
-                    className={styles.paramsLabel}
-                    type="number"
-                    name={paramName}
-                    value={paramVal}
-                    onChange={handleChangeParameter}
-                  />
-                </label>
-              </div>
-            ))}
+      <div>
+        <p>Params:</p>
+        {Object.entries(parameters).map(([paramName, paramVal]) => (
+          <div key={paramName} className={styles.paramsWrapper}>
+            <label htmlFor={paramName}>{paramName}:</label>
+            <input
+              id={paramName}
+              className={styles.paramsInput}
+              type="number"
+              name={paramName}
+              value={paramVal}
+              onChange={handleChangeParameter}
+            />
           </div>
-        </div>
-        <Button text="Update graph" type="button" onClick={drawGraph}/>
-        <Button text="Hide graph" type="submit" onClick={hide}/>
-      </Modal>
-    </>
+        ))}
+      </div>
+      <div className={styles.graphWrapper}>
+        <Graph
+          graphExpression={{id: 1, name: modelForm.name, points: graphPoints}}
+          yScaleDomain={yScaleDomain}
+          xScaleDomain={[-100, 100]}
+        />
+      </div>
+    </div>
   );
 };
-
-//TODO: ALL CALC METHODS INTO CLASS?
