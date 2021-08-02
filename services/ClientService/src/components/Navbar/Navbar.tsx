@@ -3,24 +3,20 @@ import {
   Link,
   useHistory
 } from 'react-router-dom';
-import { apiSrv } from '../../grpc-web';
-import { LogoutRequest } from '../../protos/authservice_pb';
 import { token } from '../../utils/token';
 import styles from './styles.module.scss';
+import { apiService } from '../../grpc-web/apiService';
 
 export const Navbar: React.FC = (): JSX.Element => {
   const history = useHistory();
 
   const handleLogout = async () => {
-    const request = new LogoutRequest();
-    request.setAccessToken(token.accessToken);
-    request.setRefreshToken(token.refreshToken);
     try {
-      await apiSrv.logout(request, null);
+      await apiService.Logout();
       token.removeTokens();
       history.push('/login');
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err.code, err.message);
     }
   };
 

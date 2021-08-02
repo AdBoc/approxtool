@@ -2,17 +2,7 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import {
-  apiSrv,
-  fetchWithAuthRetry
-} from '../../grpc-web';
-import {
-  ChangePasswordRequest,
-  ChangePrivilegeRequest,
-  DeleteUserRequest,
-  Role,
-  SearchRequest
-} from '../../protos/userservice_pb';
+import { Role } from '../../protos/userservice_pb';
 import { roles } from '../../constants/constants';
 import { token } from '../../utils/token';
 import { Modal } from '../../common-components/Modal/Modal';
@@ -24,6 +14,7 @@ import { InputField } from '../../common-components/InputField/InputField';
 import { User } from '../../types';
 import { fetchTempUsers } from '../../temporary/sim-request/sim-request';
 import styles from './styles.module.scss';
+import { apiService } from '../../grpc-web/apiService';
 
 export const UserManager: React.FC = (): JSX.Element => {
   const [userQuery, setUserQuery] = useState('');
@@ -38,16 +29,9 @@ export const UserManager: React.FC = (): JSX.Element => {
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         fetchTempUsers().then(users => setUsers(users));
       } else {
-        const request = new SearchRequest();
-        request.setSearchquery(userQuery);
-
         try {
-          const result = await fetchWithAuthRetry(() => {
-            request.setAccesstoken(token.accessToken);
-            return apiSrv.searchForUsers(request, null);
-          });
-
-          setUsers(result.toObject().usersList);
+          const response = await apiService.SearchForUsers(userQuery);
+          setUsers(response.toObject().usersList);
         } catch (e) {
           console.error(e);
         }
@@ -58,36 +42,22 @@ export const UserManager: React.FC = (): JSX.Element => {
   }, [userQuery]);
 
   const handleChangePrivilege = async (userId: number) => {
-    const request = new ChangePrivilegeRequest();
-    request.setNewstatus(Role.ADMIN)
-
     try {
-      await fetchWithAuthRetry(() => {
-        request.setAccesstoken(token.accessToken);
-        return apiSrv.changeUserPrivilege(request, null);
-      });
-
+      await apiService.ChangeUserPrivilege(userId);
       setUsers(mutateUser.changePrivilege(users, userId));
       closeChangePassModal();
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err.code, err.message);
     }
   };
 
   const handleDeleteUser = async (userId: number) => {
-    const request = new DeleteUserRequest();
-    request.setId(userId);
-
     try {
-      await fetchWithAuthRetry(() => {
-        request.setAccesstoken(token.accessToken);
-        return apiSrv.deleteUser(request, null);
-      });
-
+      await apiService.DeleteUser(userId);
       setUsers(mutateUser.deleteUser(users, userId));
       closeChangePassModal();
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err.code, err.message);
     }
   };
 
@@ -95,20 +65,13 @@ export const UserManager: React.FC = (): JSX.Element => {
     if (typeof renderPasswordInput !== 'string') return;
     if (renderPasswordInput.length < 6) return;
 
-    const request = new ChangePasswordRequest();
-    request.setUserid(userId)
-    request.setNewpassword(renderPasswordInput.toString());
-
     try {
-      await fetchWithAuthRetry(() => {
-        request.setAccessToken(token.accessToken);
-        return apiSrv.changePassword(request, null);
-      });
-    } catch (e) {
-      console.error(e);
+      await apiService.ChangePassword(userId, renderPasswordInput);
+    } catch (err) {
+      console.error(err.code, err.message);
+    } finally {
+      closeChangePassModal();
     }
-
-    closeChangePassModal();
   };
 
   const openChangePassModal = (userId: number) => {

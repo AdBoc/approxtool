@@ -21,7 +21,7 @@ func parsePgToGRPCStatusCode(err error) codes.Code {
 }
 
 func ErrorResponse(err error, msg string) error {
-	return status.Errorf(parsePgToGRPCStatusCode(err), fmt.Sprintf("%s %v", msg, err))
+	return status.Errorf(parsePgToGRPCStatusCode(err), fmt.Sprintf("message: %s, original error: %v", msg, err))
 }
 
 //to long char error: value too long for type character varying(50) (SQLSTATE 22001) ERROR: value too long for type character varying(50) (SQLSTATE 22001)"

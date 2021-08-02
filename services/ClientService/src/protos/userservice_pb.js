@@ -1245,7 +1245,8 @@ proto.protos.ChangePrivilegeRequest.prototype.toObject = function(opt_includeIns
 proto.protos.ChangePrivilegeRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     accesstoken: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    newstatus: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    userid: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    newstatus: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -1287,6 +1288,10 @@ proto.protos.ChangePrivilegeRequest.deserializeBinaryFromReader = function(msg, 
       msg.setAccesstoken(value);
       break;
     case 2:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setUserid(value);
+      break;
+    case 3:
       var value = /** @type {!proto.protos.Role} */ (reader.readEnum());
       msg.setNewstatus(value);
       break;
@@ -1326,10 +1331,17 @@ proto.protos.ChangePrivilegeRequest.serializeBinaryToWriter = function(message, 
       f
     );
   }
+  f = message.getUserid();
+  if (f !== 0) {
+    writer.writeUint32(
+      2,
+      f
+    );
+  }
   f = message.getNewstatus();
   if (f !== 0.0) {
     writer.writeEnum(
-      2,
+      3,
       f
     );
   }
@@ -1355,11 +1367,29 @@ proto.protos.ChangePrivilegeRequest.prototype.setAccesstoken = function(value) {
 
 
 /**
- * optional Role newStatus = 2;
+ * optional uint32 userId = 2;
+ * @return {number}
+ */
+proto.protos.ChangePrivilegeRequest.prototype.getUserid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.protos.ChangePrivilegeRequest} returns this
+ */
+proto.protos.ChangePrivilegeRequest.prototype.setUserid = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional Role newStatus = 3;
  * @return {!proto.protos.Role}
  */
 proto.protos.ChangePrivilegeRequest.prototype.getNewstatus = function() {
-  return /** @type {!proto.protos.Role} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+  return /** @type {!proto.protos.Role} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
 
@@ -1368,7 +1398,7 @@ proto.protos.ChangePrivilegeRequest.prototype.getNewstatus = function() {
  * @return {!proto.protos.ChangePrivilegeRequest} returns this
  */
 proto.protos.ChangePrivilegeRequest.prototype.setNewstatus = function(value) {
-  return jspb.Message.setProto3EnumField(this, 2, value);
+  return jspb.Message.setProto3EnumField(this, 3, value);
 };
 
 

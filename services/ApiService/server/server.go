@@ -24,7 +24,7 @@ func (s *Server) secureRpc(accessToken string) (*auth.GetSessionResponse, error)
 	token, err := s.AuthClient.GetSession(context.Background(), &auth.GetSessionRequest{AccessToken: accessToken})
 	if err != nil {
 		log.Println(err)
-		return nil, status.Error(codes.Unauthenticated, "invalid token")
+		return nil, err
 	}
 
 	return token, nil
@@ -34,7 +34,7 @@ func (s *Server) secureAdminRpc(accessToken string) (*auth.GetSessionResponse, e
 	token, err := s.AuthClient.GetSession(context.Background(), &auth.GetSessionRequest{AccessToken: accessToken})
 	if err != nil {
 		log.Println(err)
-		return nil, status.Error(codes.Unauthenticated, "invalid token")
+		return nil, err
 	}
 	if token.UserRole != "ADMIN" {
 		return nil, status.Error(codes.Unauthenticated, "no admin privileges")

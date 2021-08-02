@@ -1,9 +1,9 @@
 package main
 
 import (
+	"os"
 	"usersrv/server"
 	"usersrv/services"
-	"os"
 )
 
 func main() {

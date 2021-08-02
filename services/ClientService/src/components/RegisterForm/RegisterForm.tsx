@@ -12,15 +12,7 @@ import styles from './styles.module.scss';
 import { Button } from '../../common-components/Button/Button';
 import { mutateUser } from '../UserManager/UserManager.utils';
 import { User } from '../../types';
-import {
-  NewUserRequest,
-  Role
-} from '../../protos/userservice_pb';
-import {
-  apiSrv,
-  fetchWithAuthRetry
-} from '../../grpc-web';
-import { token } from '../../utils/token';
+import { apiService } from '../../grpc-web/apiService';
 
 interface Props {
   handleClose: () => void;
@@ -38,26 +30,19 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
 
   const handleRegister = async (e: BaseSyntheticEvent) => {
     e.preventDefault();
+    const {email, name, password} = registerForm;
+
     const errors = validateRegisterForm(registerErrors, registerForm);
     setRegisterErrors(errors);
     if (isError(Object.entries(errors))) return;
 
-    const request = new NewUserRequest();
-    request.setUsername(registerForm.name);
-    request.setEmail(registerForm.email);
-    request.setPassword(registerForm.password);
-    request.setStatus(Role.BASIC_USER);
-
     try {
-      const result = await fetchWithAuthRetry(() => {
-        request.setAccesstoken(token.accessToken);
-        return apiSrv.createUser(request, null);
-      });
-
-      if (setUsers) setUsers(prev => mutateUser.addUser(prev, result.toObject()));
-      handleClose();
+      const response = await apiService.CreateUser(email, name, password);
+      if (setUsers) setUsers(prev => mutateUser.addUser(prev, response.toObject()));
     } catch (e) {
       console.error(e);
+    } finally {
+      handleClose();
     }
   };
 

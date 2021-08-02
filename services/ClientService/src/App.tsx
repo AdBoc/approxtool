@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import { CurveFit } from './components/CurveFit';
 import { ErrorPage } from './components/ErrorPage';
-import { AuthScreen } from './components/Menu';
+import { AuthView } from './components/AuthView';
 import { ProtectedRoute } from './common-components/ProtectedRoute/ProtectedRoute';
 import { ModelManager } from './components/ModelManager';
 import { UserManager } from './components/UserManager/UserManager';
@@ -25,7 +25,7 @@ function App(): JSX.Element {
           <UserManager/>
         </ProtectedRoute>
         <Route exact path="/login">
-          <AuthScreen/>
+          <AuthView/>
         </Route>
         <Route path="*">
           <ErrorPage/>

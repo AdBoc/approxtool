@@ -12,10 +12,10 @@ func NewPgxConn() *pgxpool.Pool {
 	ctx := context.Background()
 
 	dbUser := os.Getenv("DB_USER")
-    dbPass := os.Getenv("DB_PASS")
+	dbPass := os.Getenv("DB_PASS")
 	dbHost := os.Getenv("DB_HOST")
-    dbName := os.Getenv("DB_NAME")
-    dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+	dbPort := os.Getenv("DB_PORT")
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbUser, dbPass, dbHost, dbPort, dbName)
 
 	poolCfg, err := pgxpool.ParseConfig(dsn)

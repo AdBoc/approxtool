@@ -6,6 +6,9 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"log"
 	"os"
 	"time"
 )
@@ -22,11 +25,11 @@ type parsedDetails struct {
 func CreateToken(redisClient *redis.Client, userId uint32, userRole string) (string, string, error) {
 	var ctx = context.Background()
 
-// 	atExpiry := time.Now().Add(time.Minute * 1).Unix()
-	atExpiry := time.Now().Add(time.Minute * 15).Unix() // Production
+		atExpiry := time.Now().Add(time.Minute * 1).Unix()
+// 	atExpiry := time.Now().Add(time.Minute * 15).Unix()
 	atUuid := uuid.New()
-// 	rtExpiry := time.Now().Add(time.Minute * 2).Unix()
-	rtExpiry := time.Now().Add(time.Hour * 24 * 7).Unix() // Production
+// 		rtExpiry := time.Now().Add(time.Minute * 2).Unix()
+	rtExpiry := time.Now().Add(time.Hour * 24 * 7).Unix()
 	rtUuid := uuid.New()
 
 	// CREATE ACCESS TOKEN
@@ -38,7 +41,7 @@ func CreateToken(redisClient *redis.Client, userId uint32, userRole string) (str
 	})
 	accessTokenString, err := accessToken.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
 	if err != nil {
-		return "", "", err
+		return "", "", status.Error(codes.Unauthenticated, "token creation error")
 	}
 
 	// CREATE REFRESH TOKEN
@@ -50,7 +53,7 @@ func CreateToken(redisClient *redis.Client, userId uint32, userRole string) (str
 	})
 	refreshTokenString, err := refreshToken.SignedString([]byte(os.Getenv("REFRESH_SECRET")))
 	if err != nil {
-		return "", "", err
+		return "", "", status.Error(codes.Unauthenticated, "token creation error")
 	}
 
 	// Convert Unix to UTC
@@ -60,11 +63,11 @@ func CreateToken(redisClient *redis.Client, userId uint32, userRole string) (str
 
 	err = redisClient.Set(ctx, atUuid.String(), userId, atUtc.Sub(now)).Err()
 	if err != nil {
-		return "", "", err
+		return "", "", status.Error(codes.Unauthenticated, "token set error")
 	}
 	err = redisClient.Set(ctx, rtUuid.String(), userId, rtUtc.Sub(now)).Err()
 	if err != nil {
-		return "", "", err
+		return "", "", status.Error(codes.Unauthenticated, "token set error")
 	}
 
 	return accessTokenString, refreshTokenString, nil
@@ -73,7 +76,7 @@ func CreateToken(redisClient *redis.Client, userId uint32, userRole string) (str
 func LookupToken(redisClient *redis.Client, uuid string) error {
 	_, err := redisClient.Get(context.Background(), uuid).Result()
 	if err != nil {
-		return err
+		return status.Error(codes.Unauthenticated, "no access token found")
 	}
 
 	return nil
@@ -88,8 +91,15 @@ func DecodeToken(token string, secret string) (*parsedDetails, error) {
 
 		return []byte(secret), nil
 	})
+
 	if err != nil {
-		return nil, fmt.Errorf("token parsing error")
+	    log.Println("decode/parse token error", err, token)
+		v, _ := err.(*jwt.ValidationError)
+		if v.Errors == jwt.ValidationErrorExpired {
+			return nil, status.Error(codes.Unauthenticated, "token is expired")
+		} else {
+			return nil, status.Error(codes.Unauthenticated, "token format error")
+		}
 	}
 
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
@@ -101,19 +111,19 @@ func DecodeToken(token string, secret string) (*parsedDetails, error) {
 		}, nil
 	}
 
-	return nil, fmt.Errorf("invalid token")
+	return nil, status.Error(codes.Unauthenticated, "token claims error")
 }
 
 // DeleteToken Delete token from redis store
 func DeleteToken(redisClient *redis.Client, token string, secret string) error {
 	parsedToken, err := DecodeToken(token, secret)
 	if err != nil {
-		return err
+		return status.Error(codes.Unauthenticated, "token format error")
 	}
 
 	_, err = redisClient.Del(context.Background(), parsedToken.Uuid).Result()
 	if err != nil {
-		return err
+		return status.Error(codes.Unauthenticated, "token delete error")
 	}
 
 	return nil

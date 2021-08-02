@@ -15,9 +15,13 @@ class Servicer(approximationservice_pb2_grpc.ApproximationServiceServicer):
         x_data = np.array(request.x_data)
         y_data = np.array(request.y_data)
 
-        result = fit_curves(x_data, y_data, request.expressions)
-
-        return approximationservice_pb2.CurveFitResult(fit_result=result)
+        try:
+            result = fit_curves(x_data, y_data, request.expressions)
+            return approximationservice_pb2.CurveFitResult(fit_result=result)
+        except Exception:
+            context.set_details("uncaught error")
+            context.set_code(13)
+            return approximationservice_pb2.CurveFitResult()
 
 
 async def serve() -> None:

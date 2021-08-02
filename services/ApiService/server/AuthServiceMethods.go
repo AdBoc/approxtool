@@ -4,8 +4,6 @@ import (
 	"apisrv/protos/auth"
 	"apisrv/protos/user"
 	"context"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -44,7 +42,7 @@ func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*empt
 func (s Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest) (*auth.RefreshResponse, error) {
 	tokens, err := s.AuthClient.RefreshToken(context.Background(), request)
 	if err != nil {
-		return nil, status.Error(codes.Unauthenticated, "error refreshing tokens")
+		return nil, err
 	}
 
 	return &auth.RefreshResponse{

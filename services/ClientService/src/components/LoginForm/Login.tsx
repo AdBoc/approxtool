@@ -10,8 +10,7 @@ import {
   validateLoginForm
 } from './Login.utils';
 import styles from './styles.module.scss';
-import { LoginRequest } from '../../protos/authservice_pb';
-import { apiSrv } from '../../grpc-web';
+import { apiService } from '../../grpc-web/apiService';
 import { token } from '../../utils/token';
 
 export const Login = () => {
@@ -30,14 +29,11 @@ export const Login = () => {
     setLoginErrors(errors);
     if (isError(Object.entries(errors))) return;
 
-    const request = new LoginRequest();
-    request.setEmail(loginForm.email);
-    request.setPassword(loginForm.password);
-
+    const {email, password} = loginForm;
     try {
-      const res = await apiSrv.login(request, null);
-      token.setAccessToken = res.toObject().accessToken;
-      token.setRefreshToken = res.toObject().refreshToken;
+      const response = await apiService.Login(email, password);
+      token.setAccessToken = response.toObject().accessToken;
+      token.setRefreshToken = response.toObject().refreshToken;
       history.push('/');
     } catch (err) {
       console.error(err.code, err.message);

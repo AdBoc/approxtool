@@ -48,7 +48,8 @@ message InternalNewUserRequest {
 
 message ChangePrivilegeRequest {
   string accessToken = 1;
-  Role newStatus = 2;
+  uint32 userId = 2;
+  Role newStatus = 3;
 }
 
 message InternalChangePrivilegeRequest {

@@ -119,6 +119,9 @@ export class ChangePrivilegeRequest extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): ChangePrivilegeRequest;
 
+  getUserid(): number;
+  setUserid(value: number): ChangePrivilegeRequest;
+
   getNewstatus(): Role;
   setNewstatus(value: Role): ChangePrivilegeRequest;
 
@@ -133,6 +136,7 @@ export class ChangePrivilegeRequest extends jspb.Message {
 export namespace ChangePrivilegeRequest {
   export type AsObject = {
     accesstoken: string,
+    userid: number,
     newstatus: Role,
   }
 }

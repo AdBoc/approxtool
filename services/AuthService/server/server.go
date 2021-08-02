@@ -5,8 +5,6 @@ import (
 	token "authsrv/utils"
 	"context"
 	"github.com/go-redis/redis/v8"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"os"
 )
@@ -19,11 +17,11 @@ type Server struct {
 func (s *Server) GetSession(ctx context.Context, request *auth.GetSessionRequest) (*auth.GetSessionResponse, error) {
 	parsedToken, err := token.DecodeToken(request.AccessToken, os.Getenv("ACCESS_SECRET"))
 	if err != nil {
-		return nil, status.Error(codes.Unauthenticated, "invalid token")
+		return nil, err
 	}
 
 	if err = token.LookupToken(s.RedisClient, parsedToken.Uuid); err != nil {
-		return nil, status.Error(codes.Unauthenticated, "no access token was found")
+		return nil, err
 	}
 
 	return &auth.GetSessionResponse{
@@ -35,7 +33,7 @@ func (s *Server) GetSession(ctx context.Context, request *auth.GetSessionRequest
 func (s *Server) Login(ctx context.Context, request *auth.InternalLoginRequest) (*auth.LoginResponse, error) {
 	accessToken, refreshToken, err := token.CreateToken(s.RedisClient, request.UserId, request.UserRole)
 	if err != nil {
-		return nil, status.Error(codes.Unauthenticated, "Error creating token")
+		return nil, err
 	}
 
 	return &auth.LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken}, nil
@@ -54,7 +52,7 @@ func (s *Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest)
 	// Validate token
 	decodedToken, err := token.DecodeToken(request.RefreshToken, os.Getenv("REFRESH_SECRET"))
 	if err != nil {
-		return nil, status.Error(codes.Unauthenticated, "invalid token")
+		return nil, err
 	}
 
 	// Delete tokens
@@ -65,7 +63,7 @@ func (s *Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest)
 	// Create new tokens
 	acToken, rtToken, err := token.CreateToken(s.RedisClient, decodedToken.UserId, decodedToken.UserRole)
 	if err != nil {
-		return nil, status.Error(codes.Unauthenticated, "token could not be created")
+		return nil, err
 	}
 
 	return &auth.RefreshResponse{

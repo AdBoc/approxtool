@@ -3,13 +3,7 @@ import React, {
   useReducer
 } from 'react';
 import { useHistory } from 'react-router-dom';
-import {
-  apiSrv,
-  fetchWithAuthRetry,
-} from '../../grpc-web';
 import { RateResult } from './CurveFit.utils';
-import { GetModelsRequest } from '../../protos/modelservice_pb';
-import { token } from '../../utils/token';
 import {
   expressionParams,
   parsePointsForRequest,
@@ -32,11 +26,11 @@ import {
   fetchTempResults,
 } from '../../temporary/sim-request/sim-request';
 import {
-  CurveFitRequest,
   Expression,
   RequestExpressionParameter
 } from '../../protos/approximationservice_pb';
 import styles from './styles.module.scss';
+import { apiService } from '../../grpc-web/apiService';
 
 export const CurveFit = () => {
   const history = useHistory();
@@ -50,13 +44,8 @@ export const CurveFit = () => {
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         fetchTempModels().then(models => dispatch({type: FitActionType.SET_MODELS, models}));
       } else {
-        const request = new GetModelsRequest();
-
         try {
-          const response = await fetchWithAuthRetry(() => {
-            request.setAccesstoken(token.accessToken);
-            return apiSrv.getUserModels(request, null)
-          });
+          const response = await apiService.GetUserModels();
 
           const models = response.toObject().modelsList.map(model => {
             const defaultParams = expressionParams(model.expression).map(param => ({
@@ -75,8 +64,8 @@ export const CurveFit = () => {
 
           dispatch({type: FitActionType.SET_MODELS, models});
         } catch
-          (e) {
-          console.error(e);
+          (err) {
+          console.error(err.code, err.message);
         }
       }
     }
@@ -123,23 +112,13 @@ export const CurveFit = () => {
 
       const [xData, yData] = parsePointsForRequest(state.rawPoints); //TODO: ADD TO CLASS?
 
-      const request = new CurveFitRequest();
-
-      request.setExpressionsList(expressions);
-      request.setXDataList(xData);
-      request.setYDataList(yData);
-
       try {
-        const result = await fetchWithAuthRetry(() => {
-          request.setAccessToken(token.accessToken);
-          return apiSrv.fitCurves(request, null);
-        });
-
-        const fitResult = result.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
+        const response = await apiService.FitCurves(expressions, xData, yData);
+        const fitResult = response.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
         fitResult.forEach(RateResult);
         dispatch({type: FitActionType.SET_RESULT, result: fitResult});
-      } catch (e) {
-        console.error(e)
+      } catch (err) {
+        console.error(err.code, err.message);
       }
       graphDataManager.clearExpressions();
     }

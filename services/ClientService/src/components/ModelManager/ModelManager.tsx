@@ -9,20 +9,11 @@ import { Button } from '../../common-components/Button/Button';
 import styles from './styles.module.scss';
 import { NewExpression } from '../../types/stateExpression';
 import { mutateModel } from './ModelManager.utils';
-import {
-  DeleteModelRequest,
-  GetModelsRequest,
-  Model,
-  NewModelRequest
-} from '../../protos/modelservice_pb';
-import {
-  apiSrv,
-  fetchWithAuthRetry
-} from '../../grpc-web';
-import { token } from '../../utils/token';
+import { Model } from '../../protos/modelservice_pb';
 import { fetchTempModels, } from '../../temporary/sim-request/sim-request';
 import TexMath from '@matejmazur/react-katex';
 import './katex.css';
+import { apiService } from '../../grpc-web/apiService';
 
 export const ModelManager: React.FC = (): JSX.Element => {
   const [models, setModels] = useState<Model.AsObject[]>([]);
@@ -33,16 +24,11 @@ export const ModelManager: React.FC = (): JSX.Element => {
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         fetchTempModels().then(models => setModels(models));
       } else {
-        const request = new GetModelsRequest();
         try {
-          const result = await fetchWithAuthRetry(() => {
-            request.setAccesstoken(token.accessToken);
-            return apiSrv.getUserModels(request, null);
-          });
-
-          setModels(result.toObject().modelsList);
-        } catch (e) {
-          console.error(e);
+          const response = await apiService.GetUserModels()
+          setModels(response.toObject().modelsList);
+        } catch (err) {
+          console.error(err.code, err.message);
         }
       }
     }
@@ -50,38 +36,23 @@ export const ModelManager: React.FC = (): JSX.Element => {
     fetchModels();
   }, []);
 
-  const modelSubmit = async (newExpr: NewExpression) => {
-    const request = new NewModelRequest();
-    request.setName(newExpr.name);
-    request.setExpression(newExpr.expression);
-    request.setLexexpression(newExpr.lexexpression);
-
+  const modelSubmit = async ({name, expression, lexexpression}: NewExpression) => {
     try {
-      const result = await fetchWithAuthRetry(() => {
-        request.setAccesstoken(token.accessToken);
-        return apiSrv.addModel(request, null)
-      });
-
-      setModels(prev => mutateModel.addModel(prev, result.toObject()));
+      const response = await apiService.AddModel(name, expression, lexexpression)
+      setModels(prev => mutateModel.addModel(prev, response.toObject()));
+    } catch (err) {
+      console.error(err.code, err.message);
+    } finally {
       toggleAddModel();
-    } catch (e) {
-      console.error(e);
     }
   };
 
   const handleDeleteModel = async (modelId: number) => {
-    const request = new DeleteModelRequest();
-    request.setModelid(modelId);
-
     try {
-      await fetchWithAuthRetry(() => {
-        request.setAccesstoken(token.accessToken);
-        return apiSrv.deleteModel(request, null);
-      });
-
+      await apiService.DeleteModel(modelId);
       setModels(prev => mutateModel.deleteModel(prev, modelId));
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err.code, err.message);
     }
   };
 
