@@ -196,46 +196,6 @@ export class UserServiceClient {
     this.methodInfoDeleteUser);
   }
 
-  methodInfoGetAllUsers = new grpcWeb.AbstractClientBase.MethodInfo(
-    userservice_pb.GetUsersResponse,
-    (request: google_protobuf_empty_pb.Empty) => {
-      return request.serializeBinary();
-    },
-    userservice_pb.GetUsersResponse.deserializeBinary
-  );
-
-  getAllUsers(
-    request: google_protobuf_empty_pb.Empty,
-    metadata: grpcWeb.Metadata | null): Promise<userservice_pb.GetUsersResponse>;
-
-  getAllUsers(
-    request: google_protobuf_empty_pb.Empty,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: userservice_pb.GetUsersResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.GetUsersResponse>;
-
-  getAllUsers(
-    request: google_protobuf_empty_pb.Empty,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: userservice_pb.GetUsersResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/protos.UserService/GetAllUsers',
-        request,
-        metadata || {},
-        this.methodInfoGetAllUsers,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/protos.UserService/GetAllUsers',
-    request,
-    metadata || {},
-    this.methodInfoGetAllUsers);
-  }
-
   methodInfoSearchForUsers = new grpcWeb.AbstractClientBase.MethodInfo(
     userservice_pb.SearchResponse,
     (request: userservice_pb.InternalSearchRequest) => {

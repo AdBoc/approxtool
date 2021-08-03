@@ -23,7 +23,6 @@ type UserServiceClient interface {
 	VerifyPassword(ctx context.Context, in *VerifyPasswordRequest, opts ...grpc.CallOption) (*VerifyPasswordResponse, error)
 	CreateUser(ctx context.Context, in *InternalNewUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	DeleteUser(ctx context.Context, in *InternalDeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetAllUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUsersResponse, error)
 	SearchForUsers(ctx context.Context, in *InternalSearchRequest, opts ...grpc.CallOption) (*SearchResponse, error)
 	ChangePassword(ctx context.Context, in *InternalChangePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
@@ -72,15 +71,6 @@ func (c *userServiceClient) DeleteUser(ctx context.Context, in *InternalDeleteUs
 	return out, nil
 }
 
-func (c *userServiceClient) GetAllUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUsersResponse, error) {
-	out := new(GetUsersResponse)
-	err := c.cc.Invoke(ctx, "/protos.UserService/GetAllUsers", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userServiceClient) SearchForUsers(ctx context.Context, in *InternalSearchRequest, opts ...grpc.CallOption) (*SearchResponse, error) {
 	out := new(SearchResponse)
 	err := c.cc.Invoke(ctx, "/protos.UserService/SearchForUsers", in, out, opts...)
@@ -107,7 +97,6 @@ type UserServiceServer interface {
 	VerifyPassword(context.Context, *VerifyPasswordRequest) (*VerifyPasswordResponse, error)
 	CreateUser(context.Context, *InternalNewUserRequest) (*UserResponse, error)
 	DeleteUser(context.Context, *InternalDeleteUserRequest) (*emptypb.Empty, error)
-	GetAllUsers(context.Context, *emptypb.Empty) (*GetUsersResponse, error)
 	SearchForUsers(context.Context, *InternalSearchRequest) (*SearchResponse, error)
 	ChangePassword(context.Context, *InternalChangePasswordRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedUserServiceServer()
@@ -128,9 +117,6 @@ func (UnimplementedUserServiceServer) CreateUser(context.Context, *InternalNewUs
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *InternalDeleteUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
-}
-func (UnimplementedUserServiceServer) GetAllUsers(context.Context, *emptypb.Empty) (*GetUsersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
 }
 func (UnimplementedUserServiceServer) SearchForUsers(context.Context, *InternalSearchRequest) (*SearchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchForUsers not implemented")
@@ -223,24 +209,6 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).GetAllUsers(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protos.UserService/GetAllUsers",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetAllUsers(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _UserService_SearchForUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(InternalSearchRequest)
 	if err := dec(in); err != nil {
@@ -299,10 +267,6 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _UserService_DeleteUser_Handler,
-		},
-		{
-			MethodName: "GetAllUsers",
-			Handler:    _UserService_GetAllUsers_Handler,
 		},
 		{
 			MethodName: "SearchForUsers",

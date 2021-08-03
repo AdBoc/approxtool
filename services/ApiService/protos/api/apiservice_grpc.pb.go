@@ -31,7 +31,6 @@ type ApiServiceClient interface {
 	ChangeUserPrivilege(ctx context.Context, in *user.ChangePrivilegeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CreateUser(ctx context.Context, in *user.NewUserRequest, opts ...grpc.CallOption) (*user.UserResponse, error)
 	DeleteUser(ctx context.Context, in *user.DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetAllUsers(ctx context.Context, in *user.GetAllUsersRequest, opts ...grpc.CallOption) (*user.GetUsersResponse, error)
 	SearchForUsers(ctx context.Context, in *user.SearchRequest, opts ...grpc.CallOption) (*user.SearchResponse, error)
 	ChangePassword(ctx context.Context, in *user.ChangePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Model Service
@@ -104,15 +103,6 @@ func (c *apiServiceClient) DeleteUser(ctx context.Context, in *user.DeleteUserRe
 	return out, nil
 }
 
-func (c *apiServiceClient) GetAllUsers(ctx context.Context, in *user.GetAllUsersRequest, opts ...grpc.CallOption) (*user.GetUsersResponse, error) {
-	out := new(user.GetUsersResponse)
-	err := c.cc.Invoke(ctx, "/protos.ApiService/GetAllUsers", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *apiServiceClient) SearchForUsers(ctx context.Context, in *user.SearchRequest, opts ...grpc.CallOption) (*user.SearchResponse, error) {
 	out := new(user.SearchResponse)
 	err := c.cc.Invoke(ctx, "/protos.ApiService/SearchForUsers", in, out, opts...)
@@ -179,7 +169,6 @@ type ApiServiceServer interface {
 	ChangeUserPrivilege(context.Context, *user.ChangePrivilegeRequest) (*emptypb.Empty, error)
 	CreateUser(context.Context, *user.NewUserRequest) (*user.UserResponse, error)
 	DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error)
-	GetAllUsers(context.Context, *user.GetAllUsersRequest) (*user.GetUsersResponse, error)
 	SearchForUsers(context.Context, *user.SearchRequest) (*user.SearchResponse, error)
 	ChangePassword(context.Context, *user.ChangePasswordRequest) (*emptypb.Empty, error)
 	// Model Service
@@ -212,9 +201,6 @@ func (UnimplementedApiServiceServer) CreateUser(context.Context, *user.NewUserRe
 }
 func (UnimplementedApiServiceServer) DeleteUser(context.Context, *user.DeleteUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
-}
-func (UnimplementedApiServiceServer) GetAllUsers(context.Context, *user.GetAllUsersRequest) (*user.GetUsersResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
 }
 func (UnimplementedApiServiceServer) SearchForUsers(context.Context, *user.SearchRequest) (*user.SearchResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchForUsers not implemented")
@@ -351,24 +337,6 @@ func _ApiService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ApiServiceServer).DeleteUser(ctx, req.(*user.DeleteUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ApiService_GetAllUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(user.GetAllUsersRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ApiServiceServer).GetAllUsers(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protos.ApiService/GetAllUsers",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServiceServer).GetAllUsers(ctx, req.(*user.GetAllUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -511,10 +479,6 @@ var ApiService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _ApiService_DeleteUser_Handler,
-		},
-		{
-			MethodName: "GetAllUsers",
-			Handler:    _ApiService_GetAllUsers_Handler,
 		},
 		{
 			MethodName: "SearchForUsers",

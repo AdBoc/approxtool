@@ -13,8 +13,8 @@
 
 import * as grpcWeb from 'grpc-web';
 
-import * as authservice_pb from './authservice_pb';
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
+import * as authservice_pb from './authservice_pb';
 import * as userservice_pb from './userservice_pb';
 import * as modelservice_pb from './modelservice_pb';
 import * as approximationservice_pb from './approximationservice_pb';
@@ -277,46 +277,6 @@ export class ApiServiceClient {
     request,
     metadata || {},
     this.methodInfoDeleteUser);
-  }
-
-  methodInfoGetAllUsers = new grpcWeb.AbstractClientBase.MethodInfo(
-    userservice_pb.GetUsersResponse,
-    (request: userservice_pb.GetAllUsersRequest) => {
-      return request.serializeBinary();
-    },
-    userservice_pb.GetUsersResponse.deserializeBinary
-  );
-
-  getAllUsers(
-    request: userservice_pb.GetAllUsersRequest,
-    metadata: grpcWeb.Metadata | null): Promise<userservice_pb.GetUsersResponse>;
-
-  getAllUsers(
-    request: userservice_pb.GetAllUsersRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: userservice_pb.GetUsersResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.GetUsersResponse>;
-
-  getAllUsers(
-    request: userservice_pb.GetAllUsersRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: userservice_pb.GetUsersResponse) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/protos.ApiService/GetAllUsers',
-        request,
-        metadata || {},
-        this.methodInfoGetAllUsers,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/protos.ApiService/GetAllUsers',
-    request,
-    metadata || {},
-    this.methodInfoGetAllUsers);
   }
 
   methodInfoSearchForUsers = new grpcWeb.AbstractClientBase.MethodInfo(

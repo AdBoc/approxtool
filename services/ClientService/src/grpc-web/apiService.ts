@@ -123,15 +123,6 @@ class ApiService {
     return this.#withRetry('deleteUser', request, null);
   };
 
-  // TODO: DELETE UNUSED METHOD
-  // async GetAllUsers(): Promise<void> {
-  //   try {
-  //     await this.#client.getAllUsers(request, null);
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // };
-
   SearchForUsers(userQuery: string): Promise<SearchResponse> {
     const request = new SearchRequest();
     request.setSearchquery(userQuery);

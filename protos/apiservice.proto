@@ -19,7 +19,6 @@ service ApiService {
     rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty) {}
     rpc CreateUser(NewUserRequest) returns (UserResponse) {}
     rpc DeleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
-    rpc GetAllUsers(GetAllUsersRequest) returns (GetUsersResponse) {}
     rpc SearchForUsers(SearchRequest) returns (SearchResponse) {}
     rpc ChangePassword(ChangePasswordRequest) returns (google.protobuf.Empty) {}
 

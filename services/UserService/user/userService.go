@@ -26,16 +26,6 @@ func hashPassword(newPassword string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-func (us *userService) GetAllUsers(ctx context.Context, _ *emptypb.Empty) (*pb.GetUsersResponse, error) {
-	//TODO: Pagination ?
-	users, err := us.userUC.GetAll()
-	if err != nil {
-		return nil, grpc_errors.ErrorResponse(err, err.Error())
-	}
-
-	return users, nil
-}
-
 func (us *userService) CreateUser(ctx context.Context, newUser *pb.InternalNewUserRequest) (*pb.UserResponse, error) {
 	hashedPassword, err := hashPassword(newUser.Password)
 	if err != nil {

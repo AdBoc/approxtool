@@ -32,29 +32,6 @@ func (u *userPGRepository) Create(newUser *pb.InternalNewUserRequest) (*pb.UserR
 	return &user, nil
 }
 
-func (u *userPGRepository) GetAll() (*pb.GetUsersResponse, error) {
-	list := &pb.GetUsersResponse{}
-
-	rows, err := u.db.Query(context.Background(), allUsersQuery)
-	if err != nil {
-		return nil, err
-	}
-
-	var userStatus string
-	for rows.Next() {
-		user := &pb.UserResponse{}
-		err := rows.Scan(&user.Id, &user.Username, &user.Email, &userStatus)
-		user.Status = pb.Role(services.Db_Role_value[userStatus])
-		if err != nil {
-			return nil, err
-		}
-		list.Users = append(list.Users, user)
-	}
-	defer rows.Close()
-
-	return list, nil
-}
-
 func (u *userPGRepository) DeleteById(id uint32) error {
 	if _, err := u.db.Exec(context.Background(), deleteByIdQuery, id); err != nil {
 		return err

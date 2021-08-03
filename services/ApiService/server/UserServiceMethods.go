@@ -68,21 +68,6 @@ func (s *Server) DeleteUser(ctx context.Context, request *user.DeleteUserRequest
 	return resp, nil
 }
 
-//GetAllUsers Secured (admin)
-func (s *Server) GetAllUsers(ctx context.Context, request *user.GetAllUsersRequest) (*user.GetUsersResponse, error) {
-	_, err := s.secureAdminRpc(request.AccessToken)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := s.UserClient.GetAllUsers(context.Background(), new(emptypb.Empty))
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
-}
-
 //SearchForUsers Secured (admin)
 func (s *Server) SearchForUsers(ctx context.Context, request *user.SearchRequest) (*user.SearchResponse, error) {
 	_, err := s.secureAdminRpc(request.AccessToken)

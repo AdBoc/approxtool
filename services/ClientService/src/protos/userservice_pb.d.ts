@@ -163,26 +163,6 @@ export namespace InternalChangePrivilegeRequest {
   }
 }
 
-export class GetUsersResponse extends jspb.Message {
-  getUsersList(): Array<UserResponse>;
-  setUsersList(value: Array<UserResponse>): GetUsersResponse;
-  clearUsersList(): GetUsersResponse;
-  addUsers(value?: UserResponse, index?: number): UserResponse;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetUsersResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: GetUsersResponse): GetUsersResponse.AsObject;
-  static serializeBinaryToWriter(message: GetUsersResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetUsersResponse;
-  static deserializeBinaryFromReader(message: GetUsersResponse, reader: jspb.BinaryReader): GetUsersResponse;
-}
-
-export namespace GetUsersResponse {
-  export type AsObject = {
-    usersList: Array<UserResponse.AsObject>,
-  }
-}
-
 export class DeleteUserRequest extends jspb.Message {
   getAccesstoken(): string;
   setAccesstoken(value: string): DeleteUserRequest;
@@ -268,24 +248,6 @@ export namespace VerifyPasswordResponse {
     userId: number,
     username: string,
     userRole: string,
-  }
-}
-
-export class GetAllUsersRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): GetAllUsersRequest;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetAllUsersRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: GetAllUsersRequest): GetAllUsersRequest.AsObject;
-  static serializeBinaryToWriter(message: GetAllUsersRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetAllUsersRequest;
-  static deserializeBinaryFromReader(message: GetAllUsersRequest, reader: jspb.BinaryReader): GetAllUsersRequest;
-}
-
-export namespace GetAllUsersRequest {
-  export type AsObject = {
-    accesstoken: string,
   }
 }
 

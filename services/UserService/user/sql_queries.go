@@ -2,7 +2,6 @@ package user
 
 const (
 	userByEmailQuery   = `SELECT id, username, password, user_status FROM users WHERE email=$1;`
-	allUsersQuery      = `SELECT id, username, email, user_status FROM users;`
 	userByNameQuery    = `SELECT id, username, email, user_status FROM users WHERE username LIKE '%' || $1 || '%';`
 	insertNewUserQuery = `INSERT INTO users (id, email, password, username, user_status, created_on) VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT) RETURNING id, username, email, user_status;`
 	changeStatusQuery  = `UPDATE users SET user_status=$1 WHERE id=$2;`
