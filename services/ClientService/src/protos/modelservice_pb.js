@@ -619,7 +619,7 @@ proto.protos.GetModelsRequest.prototype.toObject = function(opt_includeInstance)
  */
 proto.protos.GetModelsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accesstoken: jspb.Message.getFieldWithDefault(msg, 1, "")
+    accessToken: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -658,7 +658,7 @@ proto.protos.GetModelsRequest.deserializeBinaryFromReader = function(msg, reader
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setAccesstoken(value);
+      msg.setAccessToken(value);
       break;
     default:
       reader.skipField();
@@ -689,7 +689,7 @@ proto.protos.GetModelsRequest.prototype.serializeBinary = function() {
  */
 proto.protos.GetModelsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getAccesstoken();
+  f = message.getAccessToken();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -700,10 +700,10 @@ proto.protos.GetModelsRequest.serializeBinaryToWriter = function(message, writer
 
 
 /**
- * optional string accessToken = 1;
+ * optional string access_token = 1;
  * @return {string}
  */
-proto.protos.GetModelsRequest.prototype.getAccesstoken = function() {
+proto.protos.GetModelsRequest.prototype.getAccessToken = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -712,7 +712,7 @@ proto.protos.GetModelsRequest.prototype.getAccesstoken = function() {
  * @param {string} value
  * @return {!proto.protos.GetModelsRequest} returns this
  */
-proto.protos.GetModelsRequest.prototype.setAccesstoken = function(value) {
+proto.protos.GetModelsRequest.prototype.setAccessToken = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 
@@ -909,7 +909,7 @@ proto.protos.NewModelRequest.prototype.toObject = function(opt_includeInstance) 
  */
 proto.protos.NewModelRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accesstoken: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    accessToken: jspb.Message.getFieldWithDefault(msg, 1, ""),
     name: jspb.Message.getFieldWithDefault(msg, 2, ""),
     expression: jspb.Message.getFieldWithDefault(msg, 3, ""),
     lexexpression: jspb.Message.getFieldWithDefault(msg, 4, "")
@@ -951,7 +951,7 @@ proto.protos.NewModelRequest.deserializeBinaryFromReader = function(msg, reader)
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setAccesstoken(value);
+      msg.setAccessToken(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
@@ -994,7 +994,7 @@ proto.protos.NewModelRequest.prototype.serializeBinary = function() {
  */
 proto.protos.NewModelRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getAccesstoken();
+  f = message.getAccessToken();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -1026,10 +1026,10 @@ proto.protos.NewModelRequest.serializeBinaryToWriter = function(message, writer)
 
 
 /**
- * optional string accessToken = 1;
+ * optional string access_token = 1;
  * @return {string}
  */
-proto.protos.NewModelRequest.prototype.getAccesstoken = function() {
+proto.protos.NewModelRequest.prototype.getAccessToken = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -1038,7 +1038,7 @@ proto.protos.NewModelRequest.prototype.getAccesstoken = function() {
  * @param {string} value
  * @return {!proto.protos.NewModelRequest} returns this
  */
-proto.protos.NewModelRequest.prototype.setAccesstoken = function(value) {
+proto.protos.NewModelRequest.prototype.setAccessToken = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 
@@ -1699,7 +1699,7 @@ proto.protos.DeleteModelRequest.prototype.toObject = function(opt_includeInstanc
  */
 proto.protos.DeleteModelRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    accesstoken: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    accessToken: jspb.Message.getFieldWithDefault(msg, 1, ""),
     modelid: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
@@ -1739,7 +1739,7 @@ proto.protos.DeleteModelRequest.deserializeBinaryFromReader = function(msg, read
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setAccesstoken(value);
+      msg.setAccessToken(value);
       break;
     case 2:
       var value = /** @type {number} */ (reader.readUint32());
@@ -1774,7 +1774,7 @@ proto.protos.DeleteModelRequest.prototype.serializeBinary = function() {
  */
 proto.protos.DeleteModelRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getAccesstoken();
+  f = message.getAccessToken();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -1792,10 +1792,10 @@ proto.protos.DeleteModelRequest.serializeBinaryToWriter = function(message, writ
 
 
 /**
- * optional string accessToken = 1;
+ * optional string access_token = 1;
  * @return {string}
  */
-proto.protos.DeleteModelRequest.prototype.getAccesstoken = function() {
+proto.protos.DeleteModelRequest.prototype.getAccessToken = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
@@ -1804,7 +1804,7 @@ proto.protos.DeleteModelRequest.prototype.getAccesstoken = function() {
  * @param {string} value
  * @return {!proto.protos.DeleteModelRequest} returns this
  */
-proto.protos.DeleteModelRequest.prototype.setAccesstoken = function(value) {
+proto.protos.DeleteModelRequest.prototype.setAccessToken = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 

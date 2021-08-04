@@ -52,8 +52,8 @@ export namespace InternalGetModelsRequest {
 }
 
 export class GetModelsRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): GetModelsRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): GetModelsRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetModelsRequest.AsObject;
@@ -65,7 +65,7 @@ export class GetModelsRequest extends jspb.Message {
 
 export namespace GetModelsRequest {
   export type AsObject = {
-    accesstoken: string,
+    accessToken: string,
   }
 }
 
@@ -90,8 +90,8 @@ export namespace GetModelsResponse {
 }
 
 export class NewModelRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): NewModelRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): NewModelRequest;
 
   getName(): string;
   setName(value: string): NewModelRequest;
@@ -112,7 +112,7 @@ export class NewModelRequest extends jspb.Message {
 
 export namespace NewModelRequest {
   export type AsObject = {
-    accesstoken: string,
+    accessToken: string,
     name: string,
     expression: string,
     lexexpression: string,
@@ -198,8 +198,8 @@ export namespace InternalDeleteModelRequest {
 }
 
 export class DeleteModelRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): DeleteModelRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): DeleteModelRequest;
 
   getModelid(): number;
   setModelid(value: number): DeleteModelRequest;
@@ -214,7 +214,7 @@ export class DeleteModelRequest extends jspb.Message {
 
 export namespace DeleteModelRequest {
   export type AsObject = {
-    accesstoken: string,
+    accessToken: string,
     modelid: number,
   }
 }

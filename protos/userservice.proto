@@ -31,7 +31,7 @@ message UserResponse {
 }
 
 message NewUserRequest {
-  string accessToken = 1;
+  string access_token = 1;
   string username = 2;
   string password = 3;
   string email = 4;
@@ -46,7 +46,7 @@ message InternalNewUserRequest {
 }
 
 message ChangePrivilegeRequest {
-  string accessToken = 1;
+  string access_token = 1;
   uint32 userId = 2;
   Role newStatus = 3;
 }
@@ -57,7 +57,7 @@ message InternalChangePrivilegeRequest {
 }
 
 message DeleteUserRequest {
-  string accessToken = 1;
+  string access_token = 1;
   uint32 id = 2;
 }
 
@@ -77,7 +77,7 @@ message VerifyPasswordResponse {
 }
 
 message SearchRequest {
-  string accessToken = 1;
+  string access_token = 1;
   string searchQuery = 2;
 }
 

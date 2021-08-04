@@ -40,6 +40,8 @@ func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*empt
 
 // RefreshToken Not Secured
 func (s Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest) (*auth.RefreshResponse, error) {
+	// TODO: LOOKUP USER IN DB (IF HE EXISTS??)
+
 	tokens, err := s.AuthClient.RefreshToken(context.Background(), request)
 	if err != nil {
 		return nil, err

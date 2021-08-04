@@ -52,8 +52,8 @@ export namespace UserResponse {
 }
 
 export class NewUserRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): NewUserRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): NewUserRequest;
 
   getUsername(): string;
   setUsername(value: string): NewUserRequest;
@@ -77,7 +77,7 @@ export class NewUserRequest extends jspb.Message {
 
 export namespace NewUserRequest {
   export type AsObject = {
-    accesstoken: string,
+    accessToken: string,
     username: string,
     password: string,
     email: string,
@@ -116,8 +116,8 @@ export namespace InternalNewUserRequest {
 }
 
 export class ChangePrivilegeRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): ChangePrivilegeRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): ChangePrivilegeRequest;
 
   getUserid(): number;
   setUserid(value: number): ChangePrivilegeRequest;
@@ -135,7 +135,7 @@ export class ChangePrivilegeRequest extends jspb.Message {
 
 export namespace ChangePrivilegeRequest {
   export type AsObject = {
-    accesstoken: string,
+    accessToken: string,
     userid: number,
     newstatus: Role,
   }
@@ -164,8 +164,8 @@ export namespace InternalChangePrivilegeRequest {
 }
 
 export class DeleteUserRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): DeleteUserRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): DeleteUserRequest;
 
   getId(): number;
   setId(value: number): DeleteUserRequest;
@@ -180,7 +180,7 @@ export class DeleteUserRequest extends jspb.Message {
 
 export namespace DeleteUserRequest {
   export type AsObject = {
-    accesstoken: string,
+    accessToken: string,
     id: number,
   }
 }
@@ -252,8 +252,8 @@ export namespace VerifyPasswordResponse {
 }
 
 export class SearchRequest extends jspb.Message {
-  getAccesstoken(): string;
-  setAccesstoken(value: string): SearchRequest;
+  getAccessToken(): string;
+  setAccessToken(value: string): SearchRequest;
 
   getSearchquery(): string;
   setSearchquery(value: string): SearchRequest;
@@ -268,7 +268,7 @@ export class SearchRequest extends jspb.Message {
 
 export namespace SearchRequest {
   export type AsObject = {
-    accesstoken: string,
+    accessToken: string,
     searchquery: string,
   }
 }

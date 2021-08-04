@@ -15,6 +15,7 @@ import { User } from '../../types';
 import { fetchTempUsers } from '../../temporary/sim-request/sim-request';
 import styles from './styles.module.scss';
 import { apiService } from '../../grpc-web/apiService';
+import { useIsMounted } from '../../hooks/useIsMounted';
 
 export const UserManager: React.FC = (): JSX.Element => {
   const [userQuery, setUserQuery] = useState('');
@@ -22,16 +23,21 @@ export const UserManager: React.FC = (): JSX.Element => {
   const [renderPasswordInput, setRenderPasswordInput] = useState<boolean | string>(false);
   const [userId, setUserId] = useState<number | null>(null);
 
+  const isMounted = useIsMounted();
   const {isShowing: isRegisterForm, toggle: toggleRegisterForm} = useModal();
 
   useEffect(() => {
     async function fetchUsers() {
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        fetchTempUsers().then(users => setUsers(users));
+        fetchTempUsers().then(users => {
+          if (isMounted()) setUsers(users);
+        });
       } else {
         try {
           const response = await apiService.SearchForUsers(userQuery);
-          setUsers(response.toObject().usersList);
+          if (isMounted()) {
+            setUsers(response.toObject().usersList);
+          }
         } catch (e) {
           console.error(e);
         }
@@ -39,13 +45,15 @@ export const UserManager: React.FC = (): JSX.Element => {
     }
 
     fetchUsers();
-  }, [userQuery]);
+  }, [userQuery, isMounted]);
 
   const handleChangePrivilege = async (userId: number) => {
     try {
       await apiService.ChangeUserPrivilege(userId);
-      setUsers(mutateUser.changePrivilege(users, userId));
-      closeChangePassModal();
+      if (isMounted()) {
+        setUsers(mutateUser.changePrivilege(users, userId));
+        closeChangePassModal();
+      }
     } catch (err) {
       console.error(err.code, err.message);
     }
@@ -54,8 +62,10 @@ export const UserManager: React.FC = (): JSX.Element => {
   const handleDeleteUser = async (userId: number) => {
     try {
       await apiService.DeleteUser(userId);
-      setUsers(mutateUser.deleteUser(users, userId));
-      closeChangePassModal();
+      if (isMounted()) {
+        setUsers(mutateUser.deleteUser(users, userId));
+        closeChangePassModal();
+      }
     } catch (err) {
       console.error(err.code, err.message);
     }
@@ -67,10 +77,11 @@ export const UserManager: React.FC = (): JSX.Element => {
 
     try {
       await apiService.ChangePassword(userId, renderPasswordInput);
+      if (isMounted()) {
+        closeChangePassModal();
+      }
     } catch (err) {
       console.error(err.code, err.message);
-    } finally {
-      closeChangePassModal();
     }
   };
 

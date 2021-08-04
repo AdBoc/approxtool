@@ -24,7 +24,7 @@ message InternalGetModelsRequest {
 }
 
 message GetModelsRequest {
-  string accessToken = 1;
+  string access_token = 1;
 }
 
 message GetModelsResponse {
@@ -32,7 +32,7 @@ message GetModelsResponse {
 }
 
 message NewModelRequest {
-  string accessToken = 1;
+  string access_token = 1;
   string name = 2;
   string expression = 3;
   string lexExpression = 4;
@@ -57,7 +57,7 @@ message InternalDeleteModelRequest {
 }
 
 message DeleteModelRequest {
-  string accessToken = 1;
+  string access_token = 1;
   uint32 modelId = 2;
 }
 

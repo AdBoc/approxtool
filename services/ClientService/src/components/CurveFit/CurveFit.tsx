@@ -31,10 +31,13 @@ import {
 } from '../../protos/approximationservice_pb';
 import styles from './styles.module.scss';
 import { apiService } from '../../grpc-web/apiService';
+import { useIsMounted } from '../../hooks/useIsMounted';
 
 export const CurveFit = () => {
   const history = useHistory();
   const [state, dispatch] = useReducer(curveFitReducer, initialCurveState);
+
+  const isMounted = useIsMounted();
 
   const {isShowing: isDataModal, toggle: toggleDataModal} = useModal();
   const {isShowing: isModelsSelection, toggle: toggleModelsSelection} = useModal();
@@ -42,36 +45,39 @@ export const CurveFit = () => {
   useEffect(() => {
     async function fetchModels() {
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        fetchTempModels().then(models => dispatch({type: FitActionType.SET_MODELS, models}));
+        fetchTempModels().then(models => {
+          if (isMounted()) dispatch({type: FitActionType.SET_MODELS, models})
+        });
       } else {
         try {
           const response = await apiService.GetUserModels();
 
-          const models = response.toObject().modelsList.map(model => {
-            const defaultParams = expressionParams(model.expression).map(param => ({
-              paramName: param,
-              paramValue: 1,
-              minBound: -Infinity,
-              maxBound: Infinity,
-            }));
+          if (isMounted()) {
+            const models = response.toObject().modelsList.map(model => {
+              const defaultParams = expressionParams(model.expression).map(param => ({
+                paramName: param,
+                paramValue: 1,
+                minBound: -Infinity,
+                maxBound: Infinity,
+              }));
 
-            return {
-              ...model,
-              isSelected: false,
-              params: defaultParams
-            }
-          });
+              return {
+                ...model,
+                isSelected: false,
+                params: defaultParams
+              }
+            });
 
-          dispatch({type: FitActionType.SET_MODELS, models});
-        } catch
-          (err) {
+            dispatch({type: FitActionType.SET_MODELS, models});
+          }
+        } catch (err) {
           console.error(err.code, err.message);
         }
       }
     }
 
     fetchModels();
-  }, [history]);
+  }, [history, isMounted]);
 
   const handleApproximation = async () => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -114,9 +120,11 @@ export const CurveFit = () => {
 
       try {
         const response = await apiService.FitCurves(expressions, xData, yData);
-        const fitResult = response.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
-        fitResult.forEach(RateResult);
-        dispatch({type: FitActionType.SET_RESULT, result: fitResult});
+        if (isMounted()) {
+          const fitResult = response.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
+          fitResult.forEach(RateResult);
+          dispatch({type: FitActionType.SET_RESULT, result: fitResult});
+        }
       } catch (err) {
         console.error(err.code, err.message);
       }

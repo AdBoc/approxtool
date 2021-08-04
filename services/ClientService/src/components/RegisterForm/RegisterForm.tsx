@@ -13,15 +13,18 @@ import { Button } from '../../common-components/Button/Button';
 import { mutateUser } from '../UserManager/UserManager.utils';
 import { User } from '../../types';
 import { apiService } from '../../grpc-web/apiService';
+import { useIsMounted } from '../../hooks/useIsMounted';
 
 interface Props {
   handleClose: () => void;
-  setUsers?: React.Dispatch<React.SetStateAction<User[]>>;
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Element => {
   const [registerForm, setRegisterForm] = useState(initialRegisterState);
   const [registerErrors, setRegisterErrors] = useState(initialRegisterState);
+
+  const isMounted = useIsMounted();
 
   const handleRegisterInput = (e: BaseSyntheticEvent) => setRegisterForm(prev => ({
     ...prev,
@@ -38,11 +41,12 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
 
     try {
       const response = await apiService.CreateUser(email, name, password);
-      if (setUsers) setUsers(prev => mutateUser.addUser(prev, response.toObject()));
+      if (isMounted()) {
+        setUsers(prev => mutateUser.addUser(prev, response.toObject()));
+        handleClose();
+      }
     } catch (e) {
       console.error(e);
-    } finally {
-      handleClose();
     }
   };
 

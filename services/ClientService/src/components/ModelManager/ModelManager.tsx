@@ -14,19 +14,26 @@ import { fetchTempModels, } from '../../temporary/sim-request/sim-request';
 import TexMath from '@matejmazur/react-katex';
 import './katex.css';
 import { apiService } from '../../grpc-web/apiService';
+import { useIsMounted } from '../../hooks/useIsMounted';
 
 export const ModelManager: React.FC = (): JSX.Element => {
   const [models, setModels] = useState<Model.AsObject[]>([]);
+
+  const isMounted = useIsMounted();
   const {isShowing: isAddModel, toggle: toggleAddModel} = useModal();
 
   useEffect(() => {
     async function fetchModels() {
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        fetchTempModels().then(models => setModels(models));
+        fetchTempModels().then(models => {
+          if (isMounted()) setModels(models);
+        });
       } else {
         try {
-          const response = await apiService.GetUserModels()
-          setModels(response.toObject().modelsList);
+          const response = await apiService.GetUserModels();
+          if (isMounted()) {
+            setModels(response.toObject().modelsList);
+          }
         } catch (err) {
           console.error(err.code, err.message);
         }
@@ -34,23 +41,26 @@ export const ModelManager: React.FC = (): JSX.Element => {
     }
 
     fetchModels();
-  }, []);
+  }, [isMounted]);
 
   const modelSubmit = async ({name, expression, lexexpression}: NewExpression) => {
     try {
       const response = await apiService.AddModel(name, expression, lexexpression)
-      setModels(prev => mutateModel.addModel(prev, response.toObject()));
+      if (isMounted()) {
+        setModels(prev => mutateModel.addModel(prev, response.toObject()));
+        toggleAddModel();
+      }
     } catch (err) {
       console.error(err.code, err.message);
-    } finally {
-      toggleAddModel();
     }
-  };
+  }
 
   const handleDeleteModel = async (modelId: number) => {
     try {
       await apiService.DeleteModel(modelId);
-      setModels(prev => mutateModel.deleteModel(prev, modelId));
+      if (isMounted()) {
+        setModels(prev => mutateModel.deleteModel(prev, modelId));
+      }
     } catch (err) {
       console.error(err.code, err.message);
     }

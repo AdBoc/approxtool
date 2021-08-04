@@ -30,34 +30,32 @@ import {
 } from '../protos/approximationservice_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
+type GetCallables<T> = {[P in keyof T]: T[P] extends (...args: any) => any ? P : never}[keyof T]
+
 class ApiService {
   #client = new ApiServiceClient('http://localhost:8080');
 
-  async #withRetry<T extends keyof ApiServiceClient, R>(
+  async #withRetry<T extends GetCallables<ApiServiceClient>, R extends {setAccessToken: Function}>(
     method: T,
     request: R,
     metadata: null
   ) {
     try {
-      //@ts-ignore
+      // @ts-ignore
       return await this.#client[method](request, metadata);
     } catch (err) {
       console.log(err);
       if (err.code === 16 && err.message === 'token is expired') {
         try {
           const authRequest = new RefreshRequest();
-
           authRequest.setAccessToken(token.accessToken);
           authRequest.setRefreshToken(token.refreshToken);
-
           const response = await this.#client.refreshToken(authRequest, null);
           const {refreshToken, accessToken} = response.toObject();
-
           token.setRefreshToken = refreshToken;
           token.setAccessToken = accessToken;
-
           //@ts-ignore
-          request.setAccesstoken(accessToken);
+          request.setAccessToken(accessToken);
           //@ts-ignore
           return await this.#client[method](request, metadata);
         } catch (err) {
@@ -99,7 +97,7 @@ class ApiService {
     const request = new ChangePrivilegeRequest();
     request.setUserid(userId);
     request.setNewstatus(Role.ADMIN);
-    request.setAccesstoken(token.accessToken);
+    request.setAccessToken(token.accessToken);
 
     return this.#withRetry('changeUserPrivilege', request, null)
   };
@@ -110,7 +108,7 @@ class ApiService {
     request.setEmail(email);
     request.setPassword(password);
     request.setStatus(Role.BASIC_USER);
-    request.setAccesstoken(token.accessToken);
+    request.setAccessToken(token.accessToken);
 
     return this.#withRetry('createUser', request, null);
   };
@@ -118,7 +116,7 @@ class ApiService {
   DeleteUser(userId: number): Promise<Empty> {
     const request = new DeleteUserRequest();
     request.setId(userId);
-    request.setAccesstoken(token.accessToken);
+    request.setAccessToken(token.accessToken);
 
     return this.#withRetry('deleteUser', request, null);
   };
@@ -126,9 +124,8 @@ class ApiService {
   SearchForUsers(userQuery: string): Promise<SearchResponse> {
     const request = new SearchRequest();
     request.setSearchquery(userQuery);
-    request.setAccesstoken(token.accessToken);
+    request.setAccessToken(token.accessToken);
 
-    console.log(request);
     return this.#withRetry('searchForUsers', request, null);
   };
 
@@ -147,7 +144,7 @@ class ApiService {
     request.setName(name);
     request.setExpression(expression);
     request.setLexexpression(lexexpression);
-    request.setAccesstoken(token.accessToken);
+    request.setAccessToken(token.accessToken);
 
     return this.#withRetry('addModel', request, null);
   };
@@ -155,14 +152,14 @@ class ApiService {
   DeleteModel(modelId: number): Promise<Empty> {
     const request = new DeleteModelRequest();
     request.setModelid(modelId);
-    request.setAccesstoken(token.accessToken);
+    request.setAccessToken(token.accessToken);
 
     return this.#withRetry('deleteModel', request, null);
   };
 
   GetUserModels(): Promise<GetModelsResponse> {
     const request = new GetModelsRequest();
-    request.setAccesstoken(token.accessToken);
+    request.setAccessToken(token.accessToken);
 
     return this.#withRetry('getUserModels', request, null);
   };
@@ -181,30 +178,3 @@ class ApiService {
 }
 
 export const apiService = new ApiService();
-
-
-// async #handleRefresh() {
-//   try {
-//     const request = new RefreshRequest();
-//
-//     request.setAccessToken(token.accessToken);
-//     request.setRefreshToken(token.refreshToken);
-//
-//     const response = await this.#client.refreshToken(request, null);
-//     const {refreshToken, accessToken} = response.toObject();
-//
-//     token.setRefreshToken = refreshToken;
-//     token.setAccessToken = accessToken;
-//
-//     console.log('success', token.accessToken);
-//   } catch (err) {
-//     if (err.code === 16) {
-//       console.log(err);
-//       console.log('refresh error === 16, logout func works')
-//       // this.#logout();
-//       throw err;
-//     }
-//     console.log('refresh other error');
-//     throw err;
-//   }
-// };
