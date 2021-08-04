@@ -1,35 +1,30 @@
 .componentWrapper {
-  display: flex;
-  column-gap: 1rem;
 }
 
-.modelWrapper {
-  display: flex;
-  align-items: center;
-  column-gap: 2em;
+.modelsWrapper {
+  max-height: 80%;
+  overflow-y: auto;
 }
 
 .model {
   display: flex;
-  justify-content: center;
 
   text-align: center;
+  background-color: #eeeeee;
   border: 1px solid #878787;
   border-radius: 6px;
+  width: 10rem;
 
-  padding: 0.75rem;
-  margin: 0.5em 0;
-
-  background-color: #eeeeee;
+  padding: .75rem;
+  margin: .5rem auto;
 
   font-size: 1.1rem;
-
   cursor: pointer;
-
-  flex-grow: 1;
 
   button {
     margin: 0 0 0 auto;
+    background-color: inherit;
+    border: none;
     cursor: pointer;
   }
 
@@ -43,5 +38,16 @@
 
   &:hover {
     background-color: #d3d3fd;
+  }
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+
+  button {
+    margin: 0 .7rem;
+    width: fit-content;
   }
 }

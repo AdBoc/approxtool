@@ -75,7 +75,7 @@ export const ModelManager: React.FC = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <div className={styles.modelsWrapper}>
       <Button text="New model" onClick={toggleAddModel}/>
       <div className={`${styles.tableRow} ${styles.tableHeader}`}>
         <p>Name</p>

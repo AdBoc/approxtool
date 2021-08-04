@@ -157,7 +157,7 @@ export const Graph: React.FC<Props> = React.memo((
   return (
     <div id="func-chart" className={`${styles.funcChart} ${className && className} ${!responsive && styles.funcFixedSize}`}>
       <svg ref={chartRef}/>
-      <button id="reset">Reset position</button>
+      <button id="reset" className={styles.resetButton}>Reset pos</button>
     </div>
   );
 }, () => false);

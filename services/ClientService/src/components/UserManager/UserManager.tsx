@@ -2,7 +2,10 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import { Role } from '../../protos/userservice_pb';
+import {
+  Role,
+  UserResponse
+} from '../../protos/userservice_pb';
 import { roles } from '../../constants/constants';
 import { token } from '../../utils/token';
 import { Modal } from '../../common-components/Modal/Modal';
@@ -16,6 +19,7 @@ import { fetchTempUsers } from '../../temporary/sim-request/sim-request';
 import styles from './styles.module.scss';
 import { apiService } from '../../grpc-web/apiService';
 import { useIsMounted } from '../../hooks/useIsMounted';
+import { Tooltip } from '../../common-components/Tooltip/Tooltip';
 
 export const UserManager: React.FC = (): JSX.Element => {
   const [userQuery, setUserQuery] = useState('');
@@ -88,12 +92,24 @@ export const UserManager: React.FC = (): JSX.Element => {
   const openChangePassModal = (userId: number) => {
     setUserId(userId);
     setRenderPasswordInput(true);
-  }
+  };
 
   const closeChangePassModal = () => {
     setUserId(null);
     setRenderPasswordInput(false);
   };
+
+  const renderOperationsButtons = (user: UserResponse.AsObject): JSX.Element => (
+    <div className={styles.operationButtons}>
+      {user.status === Role.BASIC_USER && (
+        <button type="button" onClick={() => handleChangePrivilege(user.id)}>Give Admin</button>
+      )}
+      <button type="button" onClick={() => openChangePassModal(user.id)}>Change Password</button>
+      {token.decodedTokenData.user_id !== user.id && (
+        <button type="button" onClick={() => handleDeleteUser(user.id)}>Delete</button>
+      )}
+    </div>
+  );
 
   return (
     <div className={styles.usersWrapper}>
@@ -111,25 +127,12 @@ export const UserManager: React.FC = (): JSX.Element => {
       </div>
       {users.map((user) => (
         <div key={user.id} className={styles.tableRow}>
-          <p>Username: {user.username}</p>
-          <p>Email: {user.email}</p>
-          <p>Status: {roles[user.status]}</p>
-          <div className={styles.userOperations}>
-            {user.status === Role.BASIC_USER && (
-              <button
-                type="button"
-                className={styles.operation}
-                onClick={() => handleChangePrivilege(user.id)}
-              >
-                Give Admin
-              </button>
-            )}
-            <button type="button" onClick={() => openChangePassModal(user.id)}>Change Password</button>
-            {token.decodedTokenData.user_id !== user.id && (
-              <button type="button" className={styles.operation}
-                      onClick={() => handleDeleteUser(user.id)}>Delete</button>
-            )}
-          </div>
+          <p>{user.username}</p>
+          <p>{user.email}</p>
+          <Tooltip className={styles.tooltipCustom} tooltipContent={renderOperationsButtons(user)}>
+            <button type="button" className={styles.operation}>Operations</button>
+          </Tooltip>
+          <p>{roles[user.status]}</p>
         </div>
       ))}
       <Modal isShowing={isRegisterForm} className={styles.modalRegisterWrapper}>

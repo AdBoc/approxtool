@@ -171,7 +171,7 @@ export const CurveFit = () => {
       <Modal isShowing={isDataModal}>
         <DataHandler state={state} toggleModal={toggleDataModal} dispatch={dispatch}/>
       </Modal>
-      <Modal isShowing={isModelsSelection}>
+      <Modal isShowing={isModelsSelection} className={styles.modelsModal}>
         <Models expressions={state.allModels} closeModelsModal={toggleModelsSelection} dispatch={dispatch}/>
       </Modal>
     </div>

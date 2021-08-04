@@ -13,6 +13,6 @@ export const ProtectedRoute: React.FC<{ [k: string]: any }> = ({children, ...res
     : (
       <div className={styles.spacing}>
         <Navbar/>
-        <Route {...rest}>{children}</Route>;
+        <Route {...rest}>{children}</Route>
       </div>
     );

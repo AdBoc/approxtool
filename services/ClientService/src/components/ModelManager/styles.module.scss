@@ -1,9 +1,13 @@
+.modelsWrapper {
+  padding: .75rem;
+}
+
 .tableRow {
   display: grid;
   grid-template-columns: 1fr 2fr 4fr 1fr;
   justify-items: center;
   align-items: center;
-  margin: 0 1em;
+  margin: 0 1rem;
 
   &:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.05);
@@ -15,14 +19,14 @@
 }
 
 .tableHeader {
-  padding: 0.25em 0;
+  padding: 0.25rem 0;
   border-bottom: 1px solid black;
 }
 
 .texExpression {
   border-radius: 5px;
-  padding: .25em .75rem;
+  padding: .25rem .75rem;
   font-size: 1.1rem;
-  margin: 0.1em;
+  margin: 0.1rem;
   cursor: pointer;
 }

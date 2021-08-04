@@ -35,6 +35,11 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
     setModelDetails(model);
   };
 
+  const handleModelSelect = (model: FitStateExpression) => dispatch({
+    type: FitActionType.TOGGLE_MODEL_SELECT,
+    id: model.id
+  });
+
   const modelSubmit = (newExpr: NewExpression) => {
     const model = {
       id: performance.now(),
@@ -53,22 +58,17 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
 
   return (
     <>
-      <div className={styles.componentWrapper}>
+      <div>
         <div className={styles.modelsWrapper}>
           {expressions.map((model) => (
-            <div key={model.id} className={styles.modelWrapper}>
-              <input type="checkbox" checked={model.isSelected}
-                     onChange={() => dispatch({type: FitActionType.TOGGLE_MODEL_SELECT, id: model.id})}/>
-              <button
-                className={`${styles.model} ${model.isSelected && styles.modelSelected}`}
-                onClick={e => handleGuessBounds(e, model)}
-              >
-                {model.name}
-              </button>
+            <div key={model.id} className={`${styles.model} ${model.isSelected && styles.modelSelected}`}
+                 onClick={() => handleModelSelect(model)}>
+              <input type="checkbox" checked={model.isSelected} readOnly/>
+              <button onClick={e => handleGuessBounds(e, model)}>{model.name}</button>
             </div>
           ))}
         </div>
-        <div>
+        <div className={styles.modalButtons}>
           <Button text="Select all" type="button" onClick={() => dispatch({type: FitActionType.SELECT_ALL_MODELS})}/>
           <Button
             text="Unselect all"

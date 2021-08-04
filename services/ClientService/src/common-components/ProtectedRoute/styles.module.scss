@@ -1,9 +1,9 @@
 .spacing {
-  div:nth-child(1) {
+  > nav {
     height: var(--nav-size);
   }
 
-  div:nth-child(2) {
+  > div:nth-child(2) {
     margin-top: var(--nav-size);
   }
 }

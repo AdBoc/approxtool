@@ -1,4 +1,5 @@
 .funcChart {
+  position: relative;
   width: 80vw;
   margin: auto;
   display: block;
@@ -7,4 +8,11 @@
 
 .funcFixedSize {
   width: auto;
+}
+
+.resetButton {
+  position: absolute;
+  top: -.25rem;
+  right: 0;
+  border: 1px solid black;
 }

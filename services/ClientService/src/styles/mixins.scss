@@ -8,7 +8,7 @@
   border-radius: 3px;
   border: 1px solid #002d78;
   margin: 0.75rem auto;
-  padding: 0.75em 0.75em;
+  padding: 0.75rem 0.75rem;
 
   cursor: pointer;
 
@@ -22,7 +22,7 @@
   color: colors.$input-text;
   font-size: 1.2rem;
   display: block;
-  margin: 0.75em 0;
+  margin: 0.75rem 0;
 }
 
 @mixin inputField {
@@ -30,7 +30,7 @@
   display: block;
   margin: auto;
   min-width: 20rem;
-  padding: 0.25em;
+  padding: 0.25rem;
 
   border: 1px solid colors.$input-border;
   border-radius: 5px;

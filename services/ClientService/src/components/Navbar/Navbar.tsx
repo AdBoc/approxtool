@@ -21,12 +21,12 @@ export const Navbar: React.FC = (): JSX.Element => {
   };
 
   return (
-    <div className={styles.navbar}>
+    <nav className={styles.navbar}>
       <Link to="/" className={`${styles.navbarElement} ${styles.mainLink}`}>Curve Fit</Link>
       <Link to="/model-manager" className={styles.navbarElement}>Manage models</Link>
       {token.decodedTokenData.user_role === 'ADMIN' &&
       <Link to="/user-manager" className={styles.navbarElement}>Manage Users</Link>}
       <button className={`${styles.navbarElement} ${styles.logoutButton}`} onClick={handleLogout}>Logout</button>
-    </div>
+    </nav>
   );
 };
