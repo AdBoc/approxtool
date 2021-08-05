@@ -396,6 +396,6 @@ export namespace ChangePasswordRequest {
 }
 
 export enum Role { 
-  BASIC_USER = 0,
+  USER = 0,
   ADMIN = 1,
 }

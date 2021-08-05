@@ -16,7 +16,7 @@ service UserService {
 }
 
 enum Role {
-  BASIC_USER = 0;
+  USER = 0;
   ADMIN = 1;
 }
 
@@ -28,7 +28,7 @@ message UserResponse {
   uint32 id = 1;
   string username = 2;
   string email = 3;
-  Role status = 4;
+  Role role = 4;
 }
 
 message NewUserRequest {
@@ -36,25 +36,25 @@ message NewUserRequest {
   string username = 2;
   string password = 3;
   string email = 4;
-  Role status = 5;
+  Role role = 5;
 }
 
 message InternalNewUserRequest {
   string username = 1;
   string password = 2;
   string email = 3;
-  Role status = 4;
+  Role role = 4;
 }
 
 message ChangePrivilegeRequest {
   string access_token = 1;
   uint32 userId = 2;
-  Role newStatus = 3;
+  Role newRole = 3;
 }
 
 message InternalChangePrivilegeRequest {
   uint32 userId = 1;
-  Role newStatus = 2;
+  Role newRole = 2;
 }
 
 message DeleteUserRequest {
@@ -74,7 +74,7 @@ message VerifyPasswordRequest {
 message VerifyPasswordResponse {
   uint32 user_id = 1;
   string username = 2;
-  string user_role = 3;
+  Role role = 3;
 }
 
 message SearchRequest {

@@ -40,6 +40,6 @@ export enum Errors {
 // export const expandMax = 1.1;
 
 export const roles = {
-  0: 'user',
-  1: 'admin'
+  0: 'USER',
+  1: 'ADMIN'
 };

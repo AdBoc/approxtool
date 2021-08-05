@@ -3266,7 +3266,7 @@ proto.protos.ChangePasswordRequest.prototype.setNewpassword = function(value) {
  * @enum {number}
  */
 proto.protos.Role = {
-  BASIC_USER: 0,
+  USER: 0,
   ADMIN: 1
 };
 

@@ -4,12 +4,12 @@ package services
 // TODO: MAKE IT THE SAME AS IN PROTO
 var (
 	DbRoleName = map[int32]string{
-		0: "user",
-		1: "admin",
+		0: "USER",
+		1: "ADMIN",
 	}
 
 	DbRoleValue = map[string]int32{
-		"user":  0,
-		"admin": 1,
+		"USER":  0,
+		"ADMIN": 1,
 	}
 )

@@ -215,5 +215,5 @@ const USERS: User[] = [{
   id: 2,
   username: 'Van',
   email: 'Van@Sama.com',
-  status: Role.BASIC_USER
+  status: Role.USER
 }];

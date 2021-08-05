@@ -1,7 +1,7 @@
 type TokenData = {
   exp: number;
   user_id: number;
-  user_role: 'BASIC_USER' | 'ADMIN';
+  user_role: 'BASIC_USER' | 'ADMIN'; // TODO: SHOULD I USE ENUM??
   username: string; // TODO: should be uuid?
 };
 

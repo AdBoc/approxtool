@@ -101,7 +101,7 @@ export const UserManager: React.FC = (): JSX.Element => {
 
   const renderOperationsButtons = (user: UserResponse.AsObject): JSX.Element => (
     <div className={styles.operationButtons}>
-      {user.status === Role.BASIC_USER && (
+      {user.status === Role.USER && (
         <button type="button" onClick={() => handleChangePrivilege(user.id)}>Give Admin</button>
       )}
       <button type="button" onClick={() => openChangePassModal(user.id)}>Change Password</button>

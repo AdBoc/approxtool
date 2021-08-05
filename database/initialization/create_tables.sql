@@ -2,7 +2,7 @@ CREATE DATABASE approx_tool;
 
 \c approx_tool
 
-CREATE TYPE user_roles AS ENUM ('admin', 'user');
+CREATE TYPE user_roles AS ENUM ('ADMIN', 'USER');
 
 CREATE TABLE public.users (
     id       SERIAL PRIMARY KEY,

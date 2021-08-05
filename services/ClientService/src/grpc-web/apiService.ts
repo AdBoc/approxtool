@@ -110,7 +110,7 @@ class ApiService {
     request.setUsername(name);
     request.setEmail(email);
     request.setPassword(password);
-    request.setStatus(Role.BASIC_USER);
+    request.setStatus(Role.USER);
     request.setAccessToken(token.accessToken);
 
     return this.#withRetry('createUser', request, null);
