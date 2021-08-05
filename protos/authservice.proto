@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-import "userservice.proto";
 import "google/protobuf/empty.proto";
 
 option go_package = "./auth";
@@ -21,7 +20,7 @@ message RefreshRequest {
 
 message InternalRefreshRequest {
     uint32 user_id = 1;
-    Role user_role = 2;
+    string user_role = 2;
     string refresh_token = 3;
 }
 
@@ -45,7 +44,7 @@ message GetSessionRequest {
 // this could be enum
 message GetSessionResponse {
     uint32 user_id = 1;
-    Role user_role = 2;
+    string user_role = 2;
 }
 
 message LoginRequest {
@@ -55,7 +54,7 @@ message LoginRequest {
 
 message InternalLoginRequest {
     uint32 user_id = 1;
-    Role user_role = 2;
+    string user_role = 2;
 }
 
 message LoginResponse {

@@ -4,17 +4,17 @@ import (
 	"context"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/protobuf/types/known/emptypb"
-	pb "usersrv/protos/user"
+	"usersrv/protos/user"
 	"usersrv/utils/grpc_errors"
 )
 
 type userService struct {
-	pb.UnimplementedUserServiceServer
+	user.UnimplementedUserServiceServer
 	userUC UseCase
 }
 
 func NewUserService(uc UseCase) *userService {
-	return &userService{UnimplementedUserServiceServer: pb.UnimplementedUserServiceServer{}, userUC: uc}
+	return &userService{UnimplementedUserServiceServer: user.UnimplementedUserServiceServer{}, userUC: uc}
 }
 
 func hashPassword(newPassword string) (string, error) {
@@ -26,7 +26,7 @@ func hashPassword(newPassword string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-func (us *userService) CreateUser(ctx context.Context, newUser *pb.InternalNewUserRequest) (*pb.UserResponse, error) {
+func (us *userService) CreateUser(ctx context.Context, newUser *user.InternalNewUserRequest) (*user.UserResponse, error) {
 	hashedPassword, err := hashPassword(newUser.Password)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (us *userService) CreateUser(ctx context.Context, newUser *pb.InternalNewUs
 	return user, nil
 }
 
-func (us *userService) DeleteUser(ctx context.Context, userId *pb.InternalDeleteUserRequest) (*emptypb.Empty, error) {
+func (us *userService) DeleteUser(ctx context.Context, userId *user.InternalDeleteUserRequest) (*emptypb.Empty, error) {
 	if err := us.userUC.DeleteById(userId.Id); err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
@@ -50,8 +50,8 @@ func (us *userService) DeleteUser(ctx context.Context, userId *pb.InternalDelete
 	return new(emptypb.Empty), nil
 }
 
-func (us *userService) ChangeUserPrivilege(ctx context.Context, userPrivilege *pb.InternalChangePrivilegeRequest) (*emptypb.Empty, error) {
-	err := us.userUC.ChangeUserStatus(userPrivilege.UserId, &userPrivilege.NewStatus)
+func (us *userService) ChangeUserPrivilege(ctx context.Context, userPrivilege *user.InternalChangePrivilegeRequest) (*emptypb.Empty, error) {
+	err := us.userUC.ChangeUserStatus(userPrivilege.UserId, userPrivilege.NewRole)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
@@ -59,7 +59,7 @@ func (us *userService) ChangeUserPrivilege(ctx context.Context, userPrivilege *p
 	return new(emptypb.Empty), nil
 }
 
-func (us *userService) VerifyPassword(ctx context.Context, credentials *pb.VerifyPasswordRequest) (*pb.VerifyPasswordResponse, error) {
+func (us *userService) VerifyPassword(ctx context.Context, credentials *user.VerifyPasswordRequest) (*user.VerifyPasswordResponse, error) {
 	userDetails, err := us.userUC.GetUserByEmail(credentials.Email)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -70,14 +70,14 @@ func (us *userService) VerifyPassword(ctx context.Context, credentials *pb.Verif
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
 
-	return &pb.VerifyPasswordResponse{
+	return &user.VerifyPasswordResponse{
 		UserId:   userDetails.id,
 		Username: userDetails.username,
-		UserRole: userDetails.role.String(),
+		Role: userDetails.role,
 	}, nil
 }
 
-func (us *userService) SearchForUsers(ctx context.Context, searchRequest *pb.InternalSearchRequest) (*pb.SearchResponse, error) {
+func (us *userService) SearchForUsers(ctx context.Context, searchRequest *user.InternalSearchRequest) (*user.SearchResponse, error) {
 	users, err := us.userUC.SearchUserByName(searchRequest.SearchQuery)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -86,7 +86,7 @@ func (us *userService) SearchForUsers(ctx context.Context, searchRequest *pb.Int
 	return users, nil
 }
 
-func (us *userService) ChangePassword(ctx context.Context, request *pb.InternalChangePasswordRequest) (*emptypb.Empty, error) {
+func (us *userService) ChangePassword(ctx context.Context, request *user.InternalChangePasswordRequest) (*emptypb.Empty, error) {
 	hashedPassword, err := hashPassword(request.NewPassword)
 	if err != nil {
 		return nil, err
@@ -101,11 +101,11 @@ func (us *userService) ChangePassword(ctx context.Context, request *pb.InternalC
 	return new(emptypb.Empty), nil
 }
 
-func (us *userService) GetUserById(ctx context.Context, request *pb.GetUserByIdRequest) (*pb.GetUserByIdResponse, error) {
+func (us *userService) GetUserById(ctx context.Context, request *user.GetUserByIdRequest) (*user.GetUserByIdResponse, error) {
 	role, err := us.userUC.GetUserById(request.UserId)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
 
-	return &pb.GetUserByIdResponse{Role: role.String()}, nil
+	return &user.GetUserByIdResponse{Role: role}, nil
 }

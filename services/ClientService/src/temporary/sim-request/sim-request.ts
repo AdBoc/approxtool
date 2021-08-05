@@ -1,7 +1,9 @@
 import { FitStateExpression } from '../../types/stateExpression';
 import { FitRes } from '../../types/fitResult';
-import { User } from '../../types';
-import { Role } from '../../protos/userservice_pb';
+import {
+  Role,
+  User
+} from '../../types';
 
 export function fetchTempModels(): Promise<FitStateExpression[]> {
   return new Promise((resolve) => {
@@ -210,10 +212,10 @@ const USERS: User[] = [{
   id: 1,
   username: 'Billy',
   email: 'Bill@Herrington.com',
-  status: Role.ADMIN,
+  role: Role.ADMIN,
 }, {
   id: 2,
   username: 'Van',
   email: 'Van@Sama.com',
-  status: Role.USER
+  role: Role.USER
 }];

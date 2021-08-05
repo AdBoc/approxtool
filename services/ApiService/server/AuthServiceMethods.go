@@ -20,7 +20,7 @@ func (s *Server) Login(ctx context.Context, request *auth.LoginRequest) (*auth.L
 
 	resp, err := s.AuthClient.Login(context.Background(), &auth.InternalLoginRequest{
 		UserId:   verifiedUser.UserId,
-		UserRole: verifiedUser.UserRole,
+		UserRole: verifiedUser.Role,
 	})
 	if err != nil {
 		return nil, err

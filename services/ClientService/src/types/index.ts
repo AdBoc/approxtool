@@ -6,3 +6,4 @@ export type {
 export type { Point } from './pointCoordinate';
 export type { User } from './users';
 export type { GenericObject } from './utils';
+export { Role } from './role';

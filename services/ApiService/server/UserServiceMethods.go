@@ -16,7 +16,7 @@ func (s *Server) ChangeUserPrivilege(ctx context.Context, request *user.ChangePr
 		return nil, err
 	}
 
-	resp, err := s.UserClient.ChangeUserPrivilege(context.Background(), &user.InternalChangePrivilegeRequest{NewStatus: 0})
+	resp, err := s.UserClient.ChangeUserPrivilege(context.Background(), &user.InternalChangePrivilegeRequest{NewRole: "ADMIN"})
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (s *Server) CreateUser(ctx context.Context, request *user.NewUserRequest) (
 		Username: request.Username,
 		Password: request.Password,
 		Email:    request.Email,
-		Status:   request.Status,
+		Role:   request.Role,
 	})
 	if err != nil {
 		return nil, err

@@ -1,5 +1,7 @@
-import { User } from '../../types';
-import { Role } from '../../protos/userservice_pb';
+import {
+  Role,
+  User
+} from '../../types';
 
 class MutateUser {
   deleteUser(users: User[], deletedUserId: number) {

@@ -35,11 +35,3 @@ export enum Errors {
   ERR_CSV_EXT = 'Wrong File Extension',
   ERR_PARSING_FILE = 'Problem parsing input file.'
 }
-
-// export const expandMin = 0.9;
-// export const expandMax = 1.1;
-
-export const roles = {
-  0: 'USER',
-  1: 'ADMIN'
-};

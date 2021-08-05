@@ -11,7 +11,6 @@ import {
   ChangePrivilegeRequest,
   DeleteUserRequest,
   NewUserRequest,
-  Role,
   SearchRequest,
   SearchResponse,
   UserResponse
@@ -29,6 +28,7 @@ import {
   Expression
 } from '../protos/approximationservice_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
+import { Role } from '../types';
 
 type GetCallables<T> = {[P in keyof T]: T[P] extends (...args: any) => any ? P : never}[keyof T]
 
@@ -99,7 +99,7 @@ class ApiService {
   ChangeUserPrivilege(userId: number): Promise<Empty> {
     const request = new ChangePrivilegeRequest();
     request.setUserid(userId);
-    request.setNewstatus(Role.ADMIN);
+    request.setNewrole(Role.ADMIN);
     request.setAccessToken(token.accessToken);
 
     return this.#withRetry('changeUserPrivilege', request, null)
@@ -110,7 +110,7 @@ class ApiService {
     request.setUsername(name);
     request.setEmail(email);
     request.setPassword(password);
-    request.setStatus(Role.USER);
+    request.setRole(Role.USER);
     request.setAccessToken(token.accessToken);
 
     return this.#withRetry('createUser', request, null);

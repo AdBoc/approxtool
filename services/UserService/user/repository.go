@@ -3,8 +3,7 @@ package user
 import (
 	context "context"
 	"github.com/jackc/pgx/v4/pgxpool"
-	pb "usersrv/protos/user"
-	"usersrv/services"
+	"usersrv/protos/user"
 )
 
 type userPGRepository struct {
@@ -15,21 +14,16 @@ func NewUserPGRepository(db *pgxpool.Pool) *userPGRepository {
 	return &userPGRepository{db: db}
 }
 
-func (u *userPGRepository) Create(newUser *pb.InternalNewUserRequest) (*pb.UserResponse, error) {
-	var (
-		user       pb.UserResponse
-		userStatus string
-	)
+func (u *userPGRepository) Create(newUser *user.InternalNewUserRequest) (*user.UserResponse, error) {
+	var dbUser user.UserResponse
 
-	if err := u.db.QueryRow(context.Background(), insertNewUserQuery, newUser.Email, newUser.Password, newUser.Username, services.DbRoleName[int32(newUser.Status)]).Scan(
-		&user.Id, &user.Username, &user.Email, &userStatus,
+	if err := u.db.QueryRow(context.Background(), insertNewUserQuery, newUser.Email, newUser.Password, newUser.Username, newUser.Role).Scan(
+		&dbUser.Id, &dbUser.Username, &dbUser.Email, &dbUser.Role,
 	); err != nil {
 		return nil, err
 	}
 
-	user.Status = pb.Role(services.DbRoleValue[userStatus])
-
-	return &user, nil
+	return &dbUser, nil
 }
 
 func (u *userPGRepository) DeleteById(id uint32) error {
@@ -41,20 +35,18 @@ func (u *userPGRepository) DeleteById(id uint32) error {
 }
 
 func (u *userPGRepository) GetUserByEmail(email string) (*User, error) {
-	var user User
-	var userStatus string
+	var dbUser User
 
-	err := u.db.QueryRow(context.Background(), userByEmailQuery, email).Scan(&user.id, &user.username, &user.password, &userStatus)
-	user.role = pb.Role(services.DbRoleValue[userStatus])
+	err := u.db.QueryRow(context.Background(), userByEmailQuery, email).Scan(&dbUser.id, &dbUser.username, &dbUser.password, &dbUser.role)
 	if err != nil {
 		return nil, err
 	}
 
-	return &user, nil
+	return &dbUser, nil
 }
 
-func (u *userPGRepository) ChangeUserStatus(userId uint32, status *pb.Role) error {
-	_, err := u.db.Query(context.Background(), changeStatusQuery, services.DbRoleName[int32(*status)], userId)
+func (u *userPGRepository) ChangeUserStatus(userId uint32, status string) error {
+	_, err := u.db.Query(context.Background(), changeStatusQuery, status, userId)
 	if err != nil {
 		return err
 	}
@@ -62,9 +54,8 @@ func (u *userPGRepository) ChangeUserStatus(userId uint32, status *pb.Role) erro
 	return nil
 }
 
-func (u *userPGRepository) SearchUserByName(userQuery string) (*pb.SearchResponse, error) {
-	var userStatus string
-	list := &pb.SearchResponse{}
+func (u *userPGRepository) SearchUserByName(userQuery string) (*user.SearchResponse, error) {
+	list := &user.SearchResponse{}
 
 	rows, err := u.db.Query(context.Background(), userByNameQuery, userQuery)
 	if err != nil {
@@ -72,13 +63,12 @@ func (u *userPGRepository) SearchUserByName(userQuery string) (*pb.SearchRespons
 	}
 
 	for rows.Next() {
-		user := &pb.UserResponse{}
-		err := rows.Scan(&user.Id, &user.Username, &user.Email, &userStatus)
-		user.Status = pb.Role(services.DbRoleValue[userStatus])
+		dbUser := &user.UserResponse{}
+		err := rows.Scan(&dbUser.Id, &dbUser.Username, &dbUser.Email, &dbUser.Role)
 		if err != nil {
 			return nil, err
 		}
-		list.Users = append(list.Users, user)
+		list.Users = append(list.Users, dbUser)
 	}
 	defer rows.Close()
 
@@ -93,12 +83,11 @@ func (u *userPGRepository) ChangeUserPassword(userId uint32, newPassword string)
 	return nil
 }
 
-func (u *userPGRepository) GetUserById(userId uint32) (*pb.Role, error) {
+func (u *userPGRepository) GetUserById(userId uint32) (string, error) {
 	var userRole string
 	if err := u.db.QueryRow(context.Background(), userByIdQuery, userId).Scan(&userRole); err != nil {
-		return nil, err
+		return "", err
 	}
 
-	role := pb.Role(services.DbRoleValue[userRole])
-	return &role, nil
+	return userRole, nil
 }

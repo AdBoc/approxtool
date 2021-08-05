@@ -29,7 +29,6 @@ goog.exportSymbol('proto.protos.InternalDeleteUserRequest', null, global);
 goog.exportSymbol('proto.protos.InternalNewUserRequest', null, global);
 goog.exportSymbol('proto.protos.InternalSearchRequest', null, global);
 goog.exportSymbol('proto.protos.NewUserRequest', null, global);
-goog.exportSymbol('proto.protos.Role', null, global);
 goog.exportSymbol('proto.protos.SearchRequest', null, global);
 goog.exportSymbol('proto.protos.SearchResponse', null, global);
 goog.exportSymbol('proto.protos.UserResponse', null, global);
@@ -557,7 +556,7 @@ proto.protos.UserResponse.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, 0),
     username: jspb.Message.getFieldWithDefault(msg, 2, ""),
     email: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    status: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    role: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -607,8 +606,8 @@ proto.protos.UserResponse.deserializeBinaryFromReader = function(msg, reader) {
       msg.setEmail(value);
       break;
     case 4:
-      var value = /** @type {!proto.protos.Role} */ (reader.readEnum());
-      msg.setStatus(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRole(value);
       break;
     default:
       reader.skipField();
@@ -660,9 +659,9 @@ proto.protos.UserResponse.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getStatus();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getRole();
+  if (f.length > 0) {
+    writer.writeString(
       4,
       f
     );
@@ -725,20 +724,20 @@ proto.protos.UserResponse.prototype.setEmail = function(value) {
 
 
 /**
- * optional Role status = 4;
- * @return {!proto.protos.Role}
+ * optional string role = 4;
+ * @return {string}
  */
-proto.protos.UserResponse.prototype.getStatus = function() {
-  return /** @type {!proto.protos.Role} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+proto.protos.UserResponse.prototype.getRole = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
 /**
- * @param {!proto.protos.Role} value
+ * @param {string} value
  * @return {!proto.protos.UserResponse} returns this
  */
-proto.protos.UserResponse.prototype.setStatus = function(value) {
-  return jspb.Message.setProto3EnumField(this, 4, value);
+proto.protos.UserResponse.prototype.setRole = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
@@ -778,7 +777,7 @@ proto.protos.NewUserRequest.toObject = function(includeInstance, msg) {
     username: jspb.Message.getFieldWithDefault(msg, 2, ""),
     password: jspb.Message.getFieldWithDefault(msg, 3, ""),
     email: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    status: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    role: jspb.Message.getFieldWithDefault(msg, 5, "")
   };
 
   if (includeInstance) {
@@ -832,8 +831,8 @@ proto.protos.NewUserRequest.deserializeBinaryFromReader = function(msg, reader) 
       msg.setEmail(value);
       break;
     case 5:
-      var value = /** @type {!proto.protos.Role} */ (reader.readEnum());
-      msg.setStatus(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRole(value);
       break;
     default:
       reader.skipField();
@@ -892,9 +891,9 @@ proto.protos.NewUserRequest.serializeBinaryToWriter = function(message, writer) 
       f
     );
   }
-  f = message.getStatus();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getRole();
+  if (f.length > 0) {
+    writer.writeString(
       5,
       f
     );
@@ -975,20 +974,20 @@ proto.protos.NewUserRequest.prototype.setEmail = function(value) {
 
 
 /**
- * optional Role status = 5;
- * @return {!proto.protos.Role}
+ * optional string role = 5;
+ * @return {string}
  */
-proto.protos.NewUserRequest.prototype.getStatus = function() {
-  return /** @type {!proto.protos.Role} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+proto.protos.NewUserRequest.prototype.getRole = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
 /**
- * @param {!proto.protos.Role} value
+ * @param {string} value
  * @return {!proto.protos.NewUserRequest} returns this
  */
-proto.protos.NewUserRequest.prototype.setStatus = function(value) {
-  return jspb.Message.setProto3EnumField(this, 5, value);
+proto.protos.NewUserRequest.prototype.setRole = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
@@ -1027,7 +1026,7 @@ proto.protos.InternalNewUserRequest.toObject = function(includeInstance, msg) {
     username: jspb.Message.getFieldWithDefault(msg, 1, ""),
     password: jspb.Message.getFieldWithDefault(msg, 2, ""),
     email: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    status: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    role: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -1077,8 +1076,8 @@ proto.protos.InternalNewUserRequest.deserializeBinaryFromReader = function(msg, 
       msg.setEmail(value);
       break;
     case 4:
-      var value = /** @type {!proto.protos.Role} */ (reader.readEnum());
-      msg.setStatus(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRole(value);
       break;
     default:
       reader.skipField();
@@ -1130,9 +1129,9 @@ proto.protos.InternalNewUserRequest.serializeBinaryToWriter = function(message, 
       f
     );
   }
-  f = message.getStatus();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getRole();
+  if (f.length > 0) {
+    writer.writeString(
       4,
       f
     );
@@ -1195,20 +1194,20 @@ proto.protos.InternalNewUserRequest.prototype.setEmail = function(value) {
 
 
 /**
- * optional Role status = 4;
- * @return {!proto.protos.Role}
+ * optional string role = 4;
+ * @return {string}
  */
-proto.protos.InternalNewUserRequest.prototype.getStatus = function() {
-  return /** @type {!proto.protos.Role} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+proto.protos.InternalNewUserRequest.prototype.getRole = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
 /**
- * @param {!proto.protos.Role} value
+ * @param {string} value
  * @return {!proto.protos.InternalNewUserRequest} returns this
  */
-proto.protos.InternalNewUserRequest.prototype.setStatus = function(value) {
-  return jspb.Message.setProto3EnumField(this, 4, value);
+proto.protos.InternalNewUserRequest.prototype.setRole = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
@@ -1246,7 +1245,7 @@ proto.protos.ChangePrivilegeRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     accessToken: jspb.Message.getFieldWithDefault(msg, 1, ""),
     userid: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    newstatus: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    newrole: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -1292,8 +1291,8 @@ proto.protos.ChangePrivilegeRequest.deserializeBinaryFromReader = function(msg, 
       msg.setUserid(value);
       break;
     case 3:
-      var value = /** @type {!proto.protos.Role} */ (reader.readEnum());
-      msg.setNewstatus(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNewrole(value);
       break;
     default:
       reader.skipField();
@@ -1338,9 +1337,9 @@ proto.protos.ChangePrivilegeRequest.serializeBinaryToWriter = function(message, 
       f
     );
   }
-  f = message.getNewstatus();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getNewrole();
+  if (f.length > 0) {
+    writer.writeString(
       3,
       f
     );
@@ -1385,20 +1384,20 @@ proto.protos.ChangePrivilegeRequest.prototype.setUserid = function(value) {
 
 
 /**
- * optional Role newStatus = 3;
- * @return {!proto.protos.Role}
+ * optional string newRole = 3;
+ * @return {string}
  */
-proto.protos.ChangePrivilegeRequest.prototype.getNewstatus = function() {
-  return /** @type {!proto.protos.Role} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+proto.protos.ChangePrivilegeRequest.prototype.getNewrole = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /**
- * @param {!proto.protos.Role} value
+ * @param {string} value
  * @return {!proto.protos.ChangePrivilegeRequest} returns this
  */
-proto.protos.ChangePrivilegeRequest.prototype.setNewstatus = function(value) {
-  return jspb.Message.setProto3EnumField(this, 3, value);
+proto.protos.ChangePrivilegeRequest.prototype.setNewrole = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -1435,7 +1434,7 @@ proto.protos.InternalChangePrivilegeRequest.prototype.toObject = function(opt_in
 proto.protos.InternalChangePrivilegeRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    newstatus: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    newrole: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -1477,8 +1476,8 @@ proto.protos.InternalChangePrivilegeRequest.deserializeBinaryFromReader = functi
       msg.setUserid(value);
       break;
     case 2:
-      var value = /** @type {!proto.protos.Role} */ (reader.readEnum());
-      msg.setNewstatus(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNewrole(value);
       break;
     default:
       reader.skipField();
@@ -1516,9 +1515,9 @@ proto.protos.InternalChangePrivilegeRequest.serializeBinaryToWriter = function(m
       f
     );
   }
-  f = message.getNewstatus();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getNewrole();
+  if (f.length > 0) {
+    writer.writeString(
       2,
       f
     );
@@ -1545,20 +1544,20 @@ proto.protos.InternalChangePrivilegeRequest.prototype.setUserid = function(value
 
 
 /**
- * optional Role newStatus = 2;
- * @return {!proto.protos.Role}
+ * optional string newRole = 2;
+ * @return {string}
  */
-proto.protos.InternalChangePrivilegeRequest.prototype.getNewstatus = function() {
-  return /** @type {!proto.protos.Role} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+proto.protos.InternalChangePrivilegeRequest.prototype.getNewrole = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /**
- * @param {!proto.protos.Role} value
+ * @param {string} value
  * @return {!proto.protos.InternalChangePrivilegeRequest} returns this
  */
-proto.protos.InternalChangePrivilegeRequest.prototype.setNewstatus = function(value) {
-  return jspb.Message.setProto3EnumField(this, 2, value);
+proto.protos.InternalChangePrivilegeRequest.prototype.setNewrole = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
@@ -2046,7 +2045,7 @@ proto.protos.VerifyPasswordResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
     username: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    userRole: jspb.Message.getFieldWithDefault(msg, 3, "")
+    role: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -2093,7 +2092,7 @@ proto.protos.VerifyPasswordResponse.deserializeBinaryFromReader = function(msg, 
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setUserRole(value);
+      msg.setRole(value);
       break;
     default:
       reader.skipField();
@@ -2138,7 +2137,7 @@ proto.protos.VerifyPasswordResponse.serializeBinaryToWriter = function(message, 
       f
     );
   }
-  f = message.getUserRole();
+  f = message.getRole();
   if (f.length > 0) {
     writer.writeString(
       3,
@@ -2185,10 +2184,10 @@ proto.protos.VerifyPasswordResponse.prototype.setUsername = function(value) {
 
 
 /**
- * optional string user_role = 3;
+ * optional string role = 3;
  * @return {string}
  */
-proto.protos.VerifyPasswordResponse.prototype.getUserRole = function() {
+proto.protos.VerifyPasswordResponse.prototype.getRole = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
@@ -2197,7 +2196,7 @@ proto.protos.VerifyPasswordResponse.prototype.getUserRole = function() {
  * @param {string} value
  * @return {!proto.protos.VerifyPasswordResponse} returns this
  */
-proto.protos.VerifyPasswordResponse.prototype.setUserRole = function(value) {
+proto.protos.VerifyPasswordResponse.prototype.setRole = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
 };
 
@@ -3261,13 +3260,5 @@ proto.protos.ChangePasswordRequest.prototype.setNewpassword = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
 };
 
-
-/**
- * @enum {number}
- */
-proto.protos.Role = {
-  USER: 0,
-  ADMIN: 1
-};
 
 goog.object.extend(exports, proto.protos);

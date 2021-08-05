@@ -2,11 +2,7 @@ import React, {
   useEffect,
   useState
 } from 'react';
-import {
-  Role,
-  UserResponse
-} from '../../protos/userservice_pb';
-import { roles } from '../../constants/constants';
+import { UserResponse } from '../../protos/userservice_pb';
 import { token } from '../../utils/token';
 import { Modal } from '../../common-components/Modal/Modal';
 import { Button } from '../../common-components/Button/Button';
@@ -14,7 +10,10 @@ import { useModal } from '../../hooks/useModal';
 import { RegisterForm } from '../RegisterForm';
 import { mutateUser } from './UserManager.utils';
 import { InputField } from '../../common-components/InputField/InputField';
-import { User } from '../../types';
+import {
+  Role,
+  User
+} from '../../types';
 import { fetchTempUsers } from '../../temporary/sim-request/sim-request';
 import styles from './styles.module.scss';
 import { apiService } from '../../grpc-web/apiService';
@@ -101,7 +100,7 @@ export const UserManager: React.FC = (): JSX.Element => {
 
   const renderOperationsButtons = (user: UserResponse.AsObject): JSX.Element => (
     <div className={styles.operationButtons}>
-      {user.status === Role.USER && (
+      {user.role === Role.USER && (
         <button type="button" onClick={() => handleChangePrivilege(user.id)}>Give Admin</button>
       )}
       <button type="button" onClick={() => openChangePassModal(user.id)}>Change Password</button>
@@ -132,7 +131,7 @@ export const UserManager: React.FC = (): JSX.Element => {
           <Tooltip className={styles.tooltipCustom} tooltipContent={renderOperationsButtons(user)}>
             <button type="button" className={styles.operation}>Operations</button>
           </Tooltip>
-          <p>{roles[user.status]}</p>
+          <p>{user.role}</p>
         </div>
       ))}
       <Modal isShowing={isRegisterForm} className={styles.modalRegisterWrapper}>

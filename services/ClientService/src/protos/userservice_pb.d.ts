@@ -31,8 +31,8 @@ export class UserResponse extends jspb.Message {
   getEmail(): string;
   setEmail(value: string): UserResponse;
 
-  getStatus(): Role;
-  setStatus(value: Role): UserResponse;
+  getRole(): string;
+  setRole(value: string): UserResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): UserResponse.AsObject;
@@ -47,7 +47,7 @@ export namespace UserResponse {
     id: number,
     username: string,
     email: string,
-    status: Role,
+    role: string,
   }
 }
 
@@ -64,8 +64,8 @@ export class NewUserRequest extends jspb.Message {
   getEmail(): string;
   setEmail(value: string): NewUserRequest;
 
-  getStatus(): Role;
-  setStatus(value: Role): NewUserRequest;
+  getRole(): string;
+  setRole(value: string): NewUserRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): NewUserRequest.AsObject;
@@ -81,7 +81,7 @@ export namespace NewUserRequest {
     username: string,
     password: string,
     email: string,
-    status: Role,
+    role: string,
   }
 }
 
@@ -95,8 +95,8 @@ export class InternalNewUserRequest extends jspb.Message {
   getEmail(): string;
   setEmail(value: string): InternalNewUserRequest;
 
-  getStatus(): Role;
-  setStatus(value: Role): InternalNewUserRequest;
+  getRole(): string;
+  setRole(value: string): InternalNewUserRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InternalNewUserRequest.AsObject;
@@ -111,7 +111,7 @@ export namespace InternalNewUserRequest {
     username: string,
     password: string,
     email: string,
-    status: Role,
+    role: string,
   }
 }
 
@@ -122,8 +122,8 @@ export class ChangePrivilegeRequest extends jspb.Message {
   getUserid(): number;
   setUserid(value: number): ChangePrivilegeRequest;
 
-  getNewstatus(): Role;
-  setNewstatus(value: Role): ChangePrivilegeRequest;
+  getNewrole(): string;
+  setNewrole(value: string): ChangePrivilegeRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ChangePrivilegeRequest.AsObject;
@@ -137,7 +137,7 @@ export namespace ChangePrivilegeRequest {
   export type AsObject = {
     accessToken: string,
     userid: number,
-    newstatus: Role,
+    newrole: string,
   }
 }
 
@@ -145,8 +145,8 @@ export class InternalChangePrivilegeRequest extends jspb.Message {
   getUserid(): number;
   setUserid(value: number): InternalChangePrivilegeRequest;
 
-  getNewstatus(): Role;
-  setNewstatus(value: Role): InternalChangePrivilegeRequest;
+  getNewrole(): string;
+  setNewrole(value: string): InternalChangePrivilegeRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InternalChangePrivilegeRequest.AsObject;
@@ -159,7 +159,7 @@ export class InternalChangePrivilegeRequest extends jspb.Message {
 export namespace InternalChangePrivilegeRequest {
   export type AsObject = {
     userid: number,
-    newstatus: Role,
+    newrole: string,
   }
 }
 
@@ -232,8 +232,8 @@ export class VerifyPasswordResponse extends jspb.Message {
   getUsername(): string;
   setUsername(value: string): VerifyPasswordResponse;
 
-  getUserRole(): string;
-  setUserRole(value: string): VerifyPasswordResponse;
+  getRole(): string;
+  setRole(value: string): VerifyPasswordResponse;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): VerifyPasswordResponse.AsObject;
@@ -247,7 +247,7 @@ export namespace VerifyPasswordResponse {
   export type AsObject = {
     userId: number,
     username: string,
-    userRole: string,
+    role: string,
   }
 }
 
@@ -395,7 +395,3 @@ export namespace ChangePasswordRequest {
   }
 }
 
-export enum Role { 
-  USER = 0,
-  ADMIN = 1,
-}
