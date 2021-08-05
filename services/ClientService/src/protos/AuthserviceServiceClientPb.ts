@@ -38,24 +38,24 @@ export class AuthServiceClient {
 
   methodInfoRefreshToken = new grpcWeb.AbstractClientBase.MethodInfo(
     authservice_pb.RefreshResponse,
-    (request: authservice_pb.RefreshRequest) => {
+    (request: authservice_pb.InternalRefreshRequest) => {
       return request.serializeBinary();
     },
     authservice_pb.RefreshResponse.deserializeBinary
   );
 
   refreshToken(
-    request: authservice_pb.RefreshRequest,
+    request: authservice_pb.InternalRefreshRequest,
     metadata: grpcWeb.Metadata | null): Promise<authservice_pb.RefreshResponse>;
 
   refreshToken(
-    request: authservice_pb.RefreshRequest,
+    request: authservice_pb.InternalRefreshRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
                response: authservice_pb.RefreshResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.RefreshResponse>;
 
   refreshToken(
-    request: authservice_pb.RefreshRequest,
+    request: authservice_pb.InternalRefreshRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
                response: authservice_pb.RefreshResponse) => void) {
@@ -74,6 +74,46 @@ export class AuthServiceClient {
     request,
     metadata || {},
     this.methodInfoRefreshToken);
+  }
+
+  methodInfoDecodeToken = new grpcWeb.AbstractClientBase.MethodInfo(
+    authservice_pb.DecodeTokenResponse,
+    (request: authservice_pb.DecodeTokenRequest) => {
+      return request.serializeBinary();
+    },
+    authservice_pb.DecodeTokenResponse.deserializeBinary
+  );
+
+  decodeToken(
+    request: authservice_pb.DecodeTokenRequest,
+    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.DecodeTokenResponse>;
+
+  decodeToken(
+    request: authservice_pb.DecodeTokenRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: authservice_pb.DecodeTokenResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.DecodeTokenResponse>;
+
+  decodeToken(
+    request: authservice_pb.DecodeTokenRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: authservice_pb.DecodeTokenResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/protos.AuthService/DecodeToken',
+        request,
+        metadata || {},
+        this.methodInfoDecodeToken,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/protos.AuthService/DecodeToken',
+    request,
+    metadata || {},
+    this.methodInfoDecodeToken);
   }
 
   methodInfoGetSession = new grpcWeb.AbstractClientBase.MethodInfo(

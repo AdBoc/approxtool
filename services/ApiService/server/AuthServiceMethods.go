@@ -5,6 +5,7 @@ import (
 	"apisrv/protos/user"
 	"context"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"log"
 )
 
 // Login Not Secured
@@ -40,10 +41,25 @@ func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*empt
 
 // RefreshToken Not Secured
 func (s Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest) (*auth.RefreshResponse, error) {
-	// TODO: LOOKUP USER IN DB (IF HE EXISTS??)
-
-	tokens, err := s.AuthClient.RefreshToken(context.Background(), request)
+	decodedToken, err := s.AuthClient.DecodeToken(context.Background(), &auth.DecodeTokenRequest{RefreshToken: request.RefreshToken})
 	if err != nil {
+		log.Println("Decode token error", err)
+		return nil, err
+	}
+
+	userData, err := s.UserClient.GetUserById(context.Background(), &user.GetUserByIdRequest{UserId: decodedToken.UserId})
+	if err != nil {
+		log.Println("No user found", err)
+		return nil, err
+	}
+
+	tokens, err := s.AuthClient.RefreshToken(context.Background(), &auth.InternalRefreshRequest{
+		UserId:       decodedToken.UserId,
+		UserRole:     userData.Role,
+		RefreshToken: request.RefreshToken,
+	})
+	if err != nil {
+		log.Println("Refresh token error", err)
 		return nil, err
 	}
 

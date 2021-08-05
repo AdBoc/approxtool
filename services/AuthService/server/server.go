@@ -48,20 +48,14 @@ func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*empt
 	return new(emptypb.Empty), nil
 }
 
-func (s *Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest) (*auth.RefreshResponse, error) {
-	// Validate token
-	decodedToken, err := token.DecodeToken(request.RefreshToken, os.Getenv("REFRESH_SECRET"))
-	if err != nil {
-		return nil, err
-	}
-
+func (s *Server) RefreshToken(ctx context.Context, request *auth.InternalRefreshRequest) (*auth.RefreshResponse, error) {
 	// Delete tokens
-	if err = token.DeleteToken(s.RedisClient, request.RefreshToken, os.Getenv("REFRESH_SECRET")); err != nil {
+	if err := token.DeleteToken(s.RedisClient, request.RefreshToken, os.Getenv("REFRESH_SECRET")); err != nil {
 		return nil, err
 	}
 
 	// Create new tokens
-	acToken, rtToken, err := token.CreateToken(s.RedisClient, decodedToken.UserId, decodedToken.UserRole)
+	acToken, rtToken, err := token.CreateToken(s.RedisClient, request.UserId, request.UserRole)
 	if err != nil {
 		return nil, err
 	}
@@ -70,6 +64,15 @@ func (s *Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest)
 		AccessToken:  acToken,
 		RefreshToken: rtToken,
 	}, nil
+}
+
+func (s *Server) DecodeToken(ctx context.Context, request *auth.DecodeTokenRequest) (*auth.DecodeTokenResponse, error) {
+	decodedToken, err := token.DecodeToken(request.RefreshToken, os.Getenv("REFRESH_SECRET"))
+	if err != nil {
+		return nil, err
+	}
+
+	return &auth.DecodeTokenResponse{UserId: decodedToken.UserId}, nil
 }
 
 // TODO: SHOULD I CREATE MY OWN CTX OR USE FROM FUNC??

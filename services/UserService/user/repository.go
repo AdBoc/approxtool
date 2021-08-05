@@ -1,7 +1,7 @@
 package user
 
 import (
-	"context"
+	context "context"
 	"github.com/jackc/pgx/v4/pgxpool"
 	pb "usersrv/protos/user"
 	"usersrv/services"
@@ -21,13 +21,13 @@ func (u *userPGRepository) Create(newUser *pb.InternalNewUserRequest) (*pb.UserR
 		userStatus string
 	)
 
-	if err := u.db.QueryRow(context.Background(), insertNewUserQuery, newUser.Email, newUser.Password, newUser.Username, services.Db_Role_name[int32(newUser.Status)]).Scan(
+	if err := u.db.QueryRow(context.Background(), insertNewUserQuery, newUser.Email, newUser.Password, newUser.Username, services.DbRoleName[int32(newUser.Status)]).Scan(
 		&user.Id, &user.Username, &user.Email, &userStatus,
 	); err != nil {
 		return nil, err
 	}
 
-	user.Status = pb.Role(services.Db_Role_value[userStatus])
+	user.Status = pb.Role(services.DbRoleValue[userStatus])
 
 	return &user, nil
 }
@@ -45,7 +45,7 @@ func (u *userPGRepository) GetUserByEmail(email string) (*User, error) {
 	var userStatus string
 
 	err := u.db.QueryRow(context.Background(), userByEmailQuery, email).Scan(&user.id, &user.username, &user.password, &userStatus)
-	user.role = pb.Role(services.Db_Role_value[userStatus])
+	user.role = pb.Role(services.DbRoleValue[userStatus])
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (u *userPGRepository) GetUserByEmail(email string) (*User, error) {
 }
 
 func (u *userPGRepository) ChangeUserStatus(userId uint32, status *pb.Role) error {
-	_, err := u.db.Query(context.Background(), changeStatusQuery, services.Db_Role_name[int32(*status)], userId)
+	_, err := u.db.Query(context.Background(), changeStatusQuery, services.DbRoleName[int32(*status)], userId)
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (u *userPGRepository) SearchUserByName(userQuery string) (*pb.SearchRespons
 	for rows.Next() {
 		user := &pb.UserResponse{}
 		err := rows.Scan(&user.Id, &user.Username, &user.Email, &userStatus)
-		user.Status = pb.Role(services.Db_Role_value[userStatus])
+		user.Status = pb.Role(services.DbRoleValue[userStatus])
 		if err != nil {
 			return nil, err
 		}
@@ -91,4 +91,14 @@ func (u *userPGRepository) ChangeUserPassword(userId uint32, newPassword string)
 	}
 
 	return nil
+}
+
+func (u *userPGRepository) GetUserById(userId uint32) (*pb.Role, error) {
+	var userRole string
+	if err := u.db.QueryRow(context.Background(), userByIdQuery, userId).Scan(&userRole); err != nil {
+		return nil, err
+	}
+
+	role := pb.Role(services.DbRoleValue[userRole])
+	return &role, nil
 }

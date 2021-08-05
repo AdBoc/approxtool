@@ -311,6 +311,42 @@ export namespace SearchResponse {
   }
 }
 
+export class GetUserByIdRequest extends jspb.Message {
+  getUserid(): number;
+  setUserid(value: number): GetUserByIdRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserByIdRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserByIdRequest): GetUserByIdRequest.AsObject;
+  static serializeBinaryToWriter(message: GetUserByIdRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserByIdRequest;
+  static deserializeBinaryFromReader(message: GetUserByIdRequest, reader: jspb.BinaryReader): GetUserByIdRequest;
+}
+
+export namespace GetUserByIdRequest {
+  export type AsObject = {
+    userid: number,
+  }
+}
+
+export class GetUserByIdResponse extends jspb.Message {
+  getRole(): string;
+  setRole(value: string): GetUserByIdResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetUserByIdResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetUserByIdResponse): GetUserByIdResponse.AsObject;
+  static serializeBinaryToWriter(message: GetUserByIdResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetUserByIdResponse;
+  static deserializeBinaryFromReader(message: GetUserByIdResponse, reader: jspb.BinaryReader): GetUserByIdResponse;
+}
+
+export namespace GetUserByIdResponse {
+  export type AsObject = {
+    role: string,
+  }
+}
+
 export class InternalChangePasswordRequest extends jspb.Message {
   getUserid(): number;
   setUserid(value: number): InternalChangePasswordRequest;

@@ -100,3 +100,12 @@ func (us *userService) ChangePassword(ctx context.Context, request *pb.InternalC
 
 	return new(emptypb.Empty), nil
 }
+
+func (us *userService) GetUserById(ctx context.Context, request *pb.GetUserByIdRequest) (*pb.GetUserByIdResponse, error) {
+	role, err := us.userUC.GetUserById(request.UserId)
+	if err != nil {
+		return nil, grpc_errors.ErrorResponse(err, err.Error())
+	}
+
+	return &pb.GetUserByIdResponse{Role: role.String()}, nil
+}

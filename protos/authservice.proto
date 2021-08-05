@@ -5,7 +5,8 @@ option go_package = "./auth";
 package protos;
 
 service AuthService {
-    rpc RefreshToken (RefreshRequest) returns (RefreshResponse) {}
+    rpc RefreshToken (InternalRefreshRequest) returns (RefreshResponse) {}
+    rpc DecodeToken (DecodeTokenRequest) returns (DecodeTokenResponse) {}
     rpc GetSession (GetSessionRequest) returns (GetSessionResponse) {}
     rpc Login (InternalLoginRequest) returns (LoginResponse) {}
     rpc Logout (LogoutRequest) returns (google.protobuf.Empty) {}
@@ -16,9 +17,23 @@ message RefreshRequest {
     string refresh_token = 2;
 }
 
+message InternalRefreshRequest {
+    uint32 user_id = 1;
+    string user_role = 2;
+    string refresh_token = 3;
+}
+
 message RefreshResponse {
     string access_token = 1;
     string refresh_token = 2;
+}
+
+message DecodeTokenRequest {
+    string refresh_token = 1;
+}
+
+message DecodeTokenResponse {
+    uint32 userId = 1;
 }
 
 message GetSessionRequest {

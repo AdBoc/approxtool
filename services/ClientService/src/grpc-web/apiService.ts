@@ -51,6 +51,9 @@ class ApiService {
           authRequest.setAccessToken(token.accessToken);
           authRequest.setRefreshToken(token.refreshToken);
           const response = await this.#client.refreshToken(authRequest, null);
+
+          console.log('refresh response', response);
+
           const {refreshToken, accessToken} = response.toObject();
           token.setRefreshToken = refreshToken;
           token.setAccessToken = accessToken;

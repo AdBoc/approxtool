@@ -25,6 +25,32 @@ export namespace RefreshRequest {
   }
 }
 
+export class InternalRefreshRequest extends jspb.Message {
+  getUserId(): number;
+  setUserId(value: number): InternalRefreshRequest;
+
+  getUserRole(): string;
+  setUserRole(value: string): InternalRefreshRequest;
+
+  getRefreshToken(): string;
+  setRefreshToken(value: string): InternalRefreshRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalRefreshRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalRefreshRequest): InternalRefreshRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalRefreshRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalRefreshRequest;
+  static deserializeBinaryFromReader(message: InternalRefreshRequest, reader: jspb.BinaryReader): InternalRefreshRequest;
+}
+
+export namespace InternalRefreshRequest {
+  export type AsObject = {
+    userId: number,
+    userRole: string,
+    refreshToken: string,
+  }
+}
+
 export class RefreshResponse extends jspb.Message {
   getAccessToken(): string;
   setAccessToken(value: string): RefreshResponse;
@@ -44,6 +70,42 @@ export namespace RefreshResponse {
   export type AsObject = {
     accessToken: string,
     refreshToken: string,
+  }
+}
+
+export class DecodeTokenRequest extends jspb.Message {
+  getRefreshToken(): string;
+  setRefreshToken(value: string): DecodeTokenRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DecodeTokenRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: DecodeTokenRequest): DecodeTokenRequest.AsObject;
+  static serializeBinaryToWriter(message: DecodeTokenRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DecodeTokenRequest;
+  static deserializeBinaryFromReader(message: DecodeTokenRequest, reader: jspb.BinaryReader): DecodeTokenRequest;
+}
+
+export namespace DecodeTokenRequest {
+  export type AsObject = {
+    refreshToken: string,
+  }
+}
+
+export class DecodeTokenResponse extends jspb.Message {
+  getUserid(): number;
+  setUserid(value: number): DecodeTokenResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): DecodeTokenResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: DecodeTokenResponse): DecodeTokenResponse.AsObject;
+  static serializeBinaryToWriter(message: DecodeTokenResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): DecodeTokenResponse;
+  static deserializeBinaryFromReader(message: DecodeTokenResponse, reader: jspb.BinaryReader): DecodeTokenResponse;
+}
+
+export namespace DecodeTokenResponse {
+  export type AsObject = {
+    userid: number,
   }
 }
 

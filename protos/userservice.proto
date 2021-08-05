@@ -11,6 +11,7 @@ service UserService {
   rpc CreateUser(InternalNewUserRequest) returns (UserResponse) {}
   rpc DeleteUser(InternalDeleteUserRequest) returns (google.protobuf.Empty) {}
   rpc SearchForUsers(InternalSearchRequest) returns (SearchResponse) {}
+  rpc GetUserById(GetUserByIdRequest) returns (GetUserByIdResponse) {}
   rpc ChangePassword(InternalChangePasswordRequest) returns (google.protobuf.Empty) {}
 }
 
@@ -87,6 +88,14 @@ message InternalSearchRequest {
 
 message SearchResponse {
   repeated UserResponse users = 1;
+}
+
+message GetUserByIdRequest {
+  uint32 userId = 1;
+}
+
+message GetUserByIdResponse {
+  string role = 1;
 }
 
 message InternalChangePasswordRequest {

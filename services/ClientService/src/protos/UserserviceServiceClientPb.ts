@@ -236,6 +236,46 @@ export class UserServiceClient {
     this.methodInfoSearchForUsers);
   }
 
+  methodInfoGetUserById = new grpcWeb.AbstractClientBase.MethodInfo(
+    userservice_pb.GetUserByIdResponse,
+    (request: userservice_pb.GetUserByIdRequest) => {
+      return request.serializeBinary();
+    },
+    userservice_pb.GetUserByIdResponse.deserializeBinary
+  );
+
+  getUserById(
+    request: userservice_pb.GetUserByIdRequest,
+    metadata: grpcWeb.Metadata | null): Promise<userservice_pb.GetUserByIdResponse>;
+
+  getUserById(
+    request: userservice_pb.GetUserByIdRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: userservice_pb.GetUserByIdResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.GetUserByIdResponse>;
+
+  getUserById(
+    request: userservice_pb.GetUserByIdRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: userservice_pb.GetUserByIdResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/protos.UserService/GetUserById',
+        request,
+        metadata || {},
+        this.methodInfoGetUserById,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/protos.UserService/GetUserById',
+    request,
+    metadata || {},
+    this.methodInfoGetUserById);
+  }
+
   methodInfoChangePassword = new grpcWeb.AbstractClientBase.MethodInfo(
     google_protobuf_empty_pb.Empty,
     (request: userservice_pb.InternalChangePasswordRequest) => {
