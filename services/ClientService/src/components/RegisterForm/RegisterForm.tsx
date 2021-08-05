@@ -40,7 +40,7 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
     if (isError(Object.entries(errors))) return;
 
     try {
-      const response = await apiService.CreateUser(email, name, password);
+      const response = await apiService.CreateUser(name, email, password);
       if (isMounted()) {
         setUsers(prev => mutateUser.addUser(prev, response.toObject()));
         handleClose();
@@ -52,7 +52,7 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
 
   return (
     <form className={styles.formWrapper} onSubmit={handleRegister}>
-      <h2 className={styles.formText}>Register</h2>
+      <h2 className={styles.formText}>New User</h2>
       <div className={styles.inputWrapper}>
         <InputField
           label="Email"

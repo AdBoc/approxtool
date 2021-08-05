@@ -16,7 +16,10 @@ func (s *Server) ChangeUserPrivilege(ctx context.Context, request *user.ChangePr
 		return nil, err
 	}
 
-	resp, err := s.UserClient.ChangeUserPrivilege(context.Background(), &user.InternalChangePrivilegeRequest{NewRole: "ADMIN"})
+	resp, err := s.UserClient.ChangeUserPrivilege(context.Background(), &user.InternalChangePrivilegeRequest{
+		UserId:  request.UserId,
+		NewRole: "ADMIN",
+	})
 	if err != nil {
 		return nil, err
 	}

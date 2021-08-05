@@ -75,8 +75,7 @@ export const UserManager: React.FC = (): JSX.Element => {
   };
 
   const handleChangePassword = async (userId: number) => {
-    if (typeof renderPasswordInput !== 'string') return;
-    if (renderPasswordInput.length < 6) return;
+    if (typeof renderPasswordInput !== 'string' || renderPasswordInput.length < 6) return;
 
     try {
       await apiService.ChangePassword(userId, renderPasswordInput);
@@ -108,7 +107,7 @@ export const UserManager: React.FC = (): JSX.Element => {
         <button type="button" onClick={() => handleDeleteUser(user.id)}>Delete</button>
       )}
     </div>
-  );
+  ); // TODO: SHOULD I RENDER IT HERE OR EXTRACT TO SEPARATE COM
 
   return (
     <div className={styles.usersWrapper}>
@@ -139,7 +138,7 @@ export const UserManager: React.FC = (): JSX.Element => {
       </Modal>
       <Modal isShowing={Boolean(renderPasswordInput)}>
         <div className={styles.passwordForm}>
-          <InputField label="New Password" handler={(e) => setRenderPasswordInput(e.target.value)}/>
+          <InputField type="password" label="New Password" handler={(e) => setRenderPasswordInput(e.target.value)}/>
           <p>Password must have 6 min characters</p>
           <Button type="submit" text="Send" onClick={() => handleChangePassword(userId!)}/>
           <Button type="button" text="Cancel" onClick={closeChangePassModal}/>

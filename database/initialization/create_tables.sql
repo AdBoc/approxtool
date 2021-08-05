@@ -21,8 +21,10 @@ CREATE TABLE public.models (
     user_id integer REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE ROLE approx_user WITH LOGIN PASSWORD 'approx_pass';
-CREATE ROLE model_user WITH LOGIN PASSWORD 'model_pass';
+CREATE ROLE approx_user WITH LOGIN PASSWORD 'user_pass';
+GRANT SELECT, INSERT, UPDATE, DELETE, SELECT ON TABLE users TO approx_user;
+GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO approx_user;
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users TO approx_user;
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE models TO model_user;
+CREATE ROLE approx_model WITH LOGIN PASSWORD 'model_pass';
+GRANT SELECT, INSERT, UPDATE, DELETE, SELECT ON TABLE models TO approx_model;
+GRANT USAGE, SELECT ON SEQUENCE models_id_seq TO approx_model;

@@ -53,7 +53,7 @@ services:
       PORT: ':9092'
       DB_HOST: 'postgres'
       DB_USER: 'approx_user'
-      DB_PASS: 'approx_pass'
+      DB_PASS: 'user_pass'
       DB_NAME: 'approx_tool'
       DB_PORT: '5432'
   model_svc:
@@ -65,7 +65,7 @@ services:
     environment:
       PORT: ':9093'
       DB_HOST: 'postgres'
-      DB_USER: 'model_user'
+      DB_USER: 'approx_model'
       DB_PASS: 'model_pass'
       DB_NAME: 'approx_tool'
       DB_PORT: '5432'
