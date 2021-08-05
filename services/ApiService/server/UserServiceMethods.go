@@ -54,8 +54,6 @@ func (s *Server) DeleteUser(ctx context.Context, request *user.DeleteUserRequest
 		return nil, err
 	} else if token.UserId == request.Id {
 		return nil, status.Error(codes.PermissionDenied, "User id for deletion is the same as sender id")
-	} else if token.UserId == 1 {
-		return nil, status.Error(codes.PermissionDenied, "Initial admin is not removable")
 	}
 
 	resp, err := s.UserClient.DeleteUser(context.Background(), &user.InternalDeleteUserRequest{

@@ -2,6 +2,9 @@ package model
 
 import (
 	"context"
+	"errors"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 	pb "modelsrv/protos/model"
 	"modelsrv/utils/grpc_errors"
@@ -26,6 +29,18 @@ func (us *modelService) GetUserModels(ctx context.Context, userId *pb.InternalGe
 }
 
 func (us *modelService) AddModel(ctx context.Context, newModel *pb.InternalNewModelRequest) (*pb.NewModelResponse, error) {
+	var valError error
+	if len(newModel.Name) > 100 {
+		valError = errors.New("Name exceeded 100 characters ")
+	} else if len(newModel.Expression) > 255 {
+		valError = errors.New("Expression exceeded 255 characters ")
+	} else if len(newModel.LexExpression) > 255 {
+		valError = errors.New("LexExpression exceeded 255 characters ")
+	}
+	if valError != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "Validation failed: %s", valError)
+	}
+
 	model, err := us.modelUc.AddModel(newModel)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())

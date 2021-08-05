@@ -2,8 +2,12 @@ package user
 
 import (
 	"context"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"net/mail"
 	"usersrv/protos/user"
 	"usersrv/utils/grpc_errors"
 )
@@ -27,6 +31,19 @@ func hashPassword(newPassword string) (string, error) {
 }
 
 func (us *userService) CreateUser(ctx context.Context, newUser *user.InternalNewUserRequest) (*user.UserResponse, error) {
+	var valErr error
+	if len(newUser.Username) > 100 {
+		valErr = errors.New("username exceeds 100 char limit")
+	} else if len(newUser.Password) > 255 {
+		valErr = errors.New("password exceeds 255 char limit")
+	} else if len(newUser.Email) > 100 {
+		valErr = errors.New("email exceeds 100 char limit")
+	}
+	_, valErr = mail.ParseAddress(newUser.Email)
+	if valErr != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "Validation Error: %s", valErr)
+	}
+
 	hashedPassword, err := hashPassword(newUser.Password)
 	if err != nil {
 		return nil, err
@@ -43,6 +60,10 @@ func (us *userService) CreateUser(ctx context.Context, newUser *user.InternalNew
 }
 
 func (us *userService) DeleteUser(ctx context.Context, userId *user.InternalDeleteUserRequest) (*emptypb.Empty, error) {
+	if userId.Id == 0 {
+		return nil, status.Error(codes.InvalidArgument, "Initial admin is not removable")
+	}
+
 	if err := us.userUC.DeleteById(userId.Id); err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
@@ -73,11 +94,15 @@ func (us *userService) VerifyPassword(ctx context.Context, credentials *user.Ver
 	return &user.VerifyPasswordResponse{
 		UserId:   userDetails.id,
 		Username: userDetails.username,
-		Role: userDetails.role,
+		Role:     userDetails.role,
 	}, nil
 }
 
 func (us *userService) SearchForUsers(ctx context.Context, searchRequest *user.InternalSearchRequest) (*user.SearchResponse, error) {
+	if len(searchRequest.SearchQuery) > 100 {
+		return nil, status.Errorf(codes.InvalidArgument, "Validation Error: Invalid Search Query")
+	}
+
 	users, err := us.userUC.SearchUserByName(searchRequest.SearchQuery)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
@@ -87,6 +112,10 @@ func (us *userService) SearchForUsers(ctx context.Context, searchRequest *user.I
 }
 
 func (us *userService) ChangePassword(ctx context.Context, request *user.InternalChangePasswordRequest) (*emptypb.Empty, error) {
+	if len(request.NewPassword) > 255 {
+		return nil, status.Errorf(codes.InvalidArgument, "Validation Error: Invalid Password length")
+	}
+
 	hashedPassword, err := hashPassword(request.NewPassword)
 	if err != nil {
 		return nil, err
