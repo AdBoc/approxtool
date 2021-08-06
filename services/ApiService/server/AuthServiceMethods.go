@@ -31,6 +31,11 @@ func (s *Server) Login(ctx context.Context, request *auth.LoginRequest) (*auth.L
 
 // Logout Not Secured
 func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*emptypb.Empty, error) {
+	_, err := s.secureRpc(request.AccessToken)
+    if err != nil {
+    	return nil, err
+    }
+
 	_, err := s.AuthClient.Logout(context.Background(), request)
 	if err != nil {
 		return nil, err

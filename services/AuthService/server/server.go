@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/go-redis/redis/v8"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"log"
 	"os"
 )
 
@@ -50,20 +49,16 @@ func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*empt
 }
 
 func (s *Server) RefreshToken(ctx context.Context, request *auth.InternalRefreshRequest) (*auth.RefreshResponse, error) {
-	// Delete tokens
+	// Delete refresh token (access is already deleted)
 	if err := token.DeleteToken(s.RedisClient, request.RefreshToken, os.Getenv("REFRESH_SECRET")); err != nil {
-        log.Println(err)
 		return nil, err
 	}
 
 	// Create new tokens
 	acToken, rtToken, err := token.CreateToken(s.RedisClient, request.UserId, request.UserRole)
 	if err != nil {
-        log.Println(err)
 		return nil, err
 	}
-
-    log.Println("Sending created token to browser")
 
 	return &auth.RefreshResponse{
 		AccessToken:  acToken,

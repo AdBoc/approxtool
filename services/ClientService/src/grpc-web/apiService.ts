@@ -30,12 +30,10 @@ import {
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { Role } from '../types';
 
-type GetCallables<T> = {[P in keyof T]: T[P] extends (...args: any) => any ? P : never}[keyof T]
-
 class ApiService {
   #client = new ApiServiceClient('http://localhost:8080');
 
-  async #withRetry<T extends GetCallables<ApiServiceClient>, R extends {setAccessToken: Function}>(
+  async #withRetry<T, R extends { setAccessToken: Function }>(
     method: T,
     request: R,
     metadata: null
@@ -44,15 +42,12 @@ class ApiService {
       // @ts-ignore
       return await this.#client[method](request, metadata);
     } catch (err) {
-      console.log(err);
       if (err.code === 16 && err.message === 'token is expired') {
         try {
           const authRequest = new RefreshRequest();
           authRequest.setAccessToken(token.accessToken);
           authRequest.setRefreshToken(token.refreshToken);
           const response = await this.#client.refreshToken(authRequest, null);
-
-          console.log('refresh response', response);
 
           const {refreshToken, accessToken} = response.toObject();
           token.setRefreshToken = refreshToken;
@@ -92,7 +87,12 @@ class ApiService {
     request.setAccessToken(token.accessToken);
     request.setRefreshToken(token.refreshToken);
 
-    return this.#client.logout(request, null);
+    try {
+      return this.#client.logout(request, null);
+    } catch (e) {
+      console.error(e, 'try catch works');
+      throw e;
+    }
   };
 
   // User Service
