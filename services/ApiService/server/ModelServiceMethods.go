@@ -17,6 +17,7 @@ func (s *Server) AddModel(ctx context.Context, request *model.NewModelRequest) (
 		Name:          request.Name,
 		Expression:    request.Expression,
 		LexExpression: request.LexExpression,
+		Tag:           request.Tag,
 		UserId:        token.UserId,
 	})
 	if err != nil {
@@ -54,4 +55,18 @@ func (s *Server) GetUserModels(ctx context.Context, request *model.GetModelsRequ
 	}
 
 	return resp, nil
+}
+
+func (s *Server) EditTag(ctx context.Context, request *model.EditTagRequest) (*emptypb.Empty, error) {
+	_, err := s.secureRpc(request.AccessToken)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = s.ModelClient.EditTag(context.Background(), &model.InternalEditTagRequest{ModelId: request.ModelId, NewTag: request.NewTag})
+	if err != nil {
+		return nil, err
+	}
+
+	return new(emptypb.Empty), nil
 }

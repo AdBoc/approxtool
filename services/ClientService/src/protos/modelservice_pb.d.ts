@@ -16,6 +16,9 @@ export class Model extends jspb.Message {
   getLexexpression(): string;
   setLexexpression(value: string): Model;
 
+  getTag(): string;
+  setTag(value: string): Model;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Model.AsObject;
   static toObject(includeInstance: boolean, msg: Model): Model.AsObject;
@@ -30,6 +33,7 @@ export namespace Model {
     name: string,
     expression: string,
     lexexpression: string,
+    tag: string,
   }
 }
 
@@ -89,6 +93,54 @@ export namespace GetModelsResponse {
   }
 }
 
+export class EditTagRequest extends jspb.Message {
+  getAccessToken(): string;
+  setAccessToken(value: string): EditTagRequest;
+
+  getModelid(): number;
+  setModelid(value: number): EditTagRequest;
+
+  getNewtag(): string;
+  setNewtag(value: string): EditTagRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): EditTagRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: EditTagRequest): EditTagRequest.AsObject;
+  static serializeBinaryToWriter(message: EditTagRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): EditTagRequest;
+  static deserializeBinaryFromReader(message: EditTagRequest, reader: jspb.BinaryReader): EditTagRequest;
+}
+
+export namespace EditTagRequest {
+  export type AsObject = {
+    accessToken: string,
+    modelid: number,
+    newtag: string,
+  }
+}
+
+export class InternalEditTagRequest extends jspb.Message {
+  getModelid(): number;
+  setModelid(value: number): InternalEditTagRequest;
+
+  getNewtag(): string;
+  setNewtag(value: string): InternalEditTagRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): InternalEditTagRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: InternalEditTagRequest): InternalEditTagRequest.AsObject;
+  static serializeBinaryToWriter(message: InternalEditTagRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): InternalEditTagRequest;
+  static deserializeBinaryFromReader(message: InternalEditTagRequest, reader: jspb.BinaryReader): InternalEditTagRequest;
+}
+
+export namespace InternalEditTagRequest {
+  export type AsObject = {
+    modelid: number,
+    newtag: string,
+  }
+}
+
 export class NewModelRequest extends jspb.Message {
   getAccessToken(): string;
   setAccessToken(value: string): NewModelRequest;
@@ -101,6 +153,9 @@ export class NewModelRequest extends jspb.Message {
 
   getLexexpression(): string;
   setLexexpression(value: string): NewModelRequest;
+
+  getTag(): string;
+  setTag(value: string): NewModelRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): NewModelRequest.AsObject;
@@ -116,6 +171,7 @@ export namespace NewModelRequest {
     name: string,
     expression: string,
     lexexpression: string,
+    tag: string,
   }
 }
 
@@ -132,6 +188,9 @@ export class InternalNewModelRequest extends jspb.Message {
   getUserid(): number;
   setUserid(value: number): InternalNewModelRequest;
 
+  getTag(): string;
+  setTag(value: string): InternalNewModelRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InternalNewModelRequest.AsObject;
   static toObject(includeInstance: boolean, msg: InternalNewModelRequest): InternalNewModelRequest.AsObject;
@@ -146,6 +205,7 @@ export namespace InternalNewModelRequest {
     expression: string,
     lexexpression: string,
     userid: number,
+    tag: string,
   }
 }
 
@@ -162,6 +222,9 @@ export class NewModelResponse extends jspb.Message {
   getLexexpression(): string;
   setLexexpression(value: string): NewModelResponse;
 
+  getTag(): string;
+  setTag(value: string): NewModelResponse;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): NewModelResponse.AsObject;
   static toObject(includeInstance: boolean, msg: NewModelResponse): NewModelResponse.AsObject;
@@ -176,6 +239,7 @@ export namespace NewModelResponse {
     name: string,
     expression: string,
     lexexpression: string,
+    tag: string,
   }
 }
 

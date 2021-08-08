@@ -7,7 +7,6 @@ import { Modal } from '../../common-components/Modal/Modal';
 import { AddModel } from '../../common-components/AddModel/AddModel';
 import { Button } from '../../common-components/Button/Button';
 import styles from './styles.module.scss';
-import { NewExpression } from '../../types/stateExpression';
 import { mutateModel } from './ModelManager.utils';
 import { Model } from '../../protos/modelservice_pb';
 import { fetchTempModels, } from '../../temporary/sim-request/sim-request';
@@ -15,9 +14,12 @@ import TexMath from '@matejmazur/react-katex';
 import './katex.css';
 import { apiService } from '../../grpc-web/apiService';
 import { useIsMounted } from '../../hooks/useIsMounted';
+import { EditTag } from './EditTag';
+import { NewExpression } from '../../types/stateExpression';
 
 export const ModelManager: React.FC = (): JSX.Element => {
   const [models, setModels] = useState<Model.AsObject[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const isMounted = useIsMounted();
   const {isShowing: isAddModel, toggle: toggleAddModel} = useModal();
@@ -32,7 +34,7 @@ export const ModelManager: React.FC = (): JSX.Element => {
         try {
           const response = await apiService.GetUserModels();
           if (isMounted()) {
-            setModels(response.toObject().modelsList);
+            setModels(response.toObject().modelsList.sort((a, b) => a.tag.localeCompare(b.tag)));
           }
         } catch (err) {
           console.error(err.code, err.message);
@@ -43,9 +45,9 @@ export const ModelManager: React.FC = (): JSX.Element => {
     fetchModels();
   }, [isMounted]);
 
-  const modelSubmit = async ({name, expression, lexexpression}: NewExpression) => {
+  const modelSubmit = async ({name, expression, lexexpression, tag}: NewExpression) => {
     try {
-      const response = await apiService.AddModel(name, expression, lexexpression)
+      const response = await apiService.AddModel(name, expression, lexexpression, tag);
       if (isMounted()) {
         setModels(prev => mutateModel.addModel(prev, response.toObject()));
         toggleAddModel();
@@ -53,7 +55,7 @@ export const ModelManager: React.FC = (): JSX.Element => {
     } catch (err) {
       console.error(err.code, err.message);
     }
-  }
+  };
 
   const handleDeleteModel = async (modelId: number) => {
     try {
@@ -76,29 +78,43 @@ export const ModelManager: React.FC = (): JSX.Element => {
 
   return (
     <div className={styles.modelsWrapper}>
-      <Button text="New model" onClick={toggleAddModel}/>
-      <div className={`${styles.tableRow} ${styles.tableHeader}`}>
-        <p>Name</p>
-        <p>Expression</p>
-        <p>Lex expression</p>
-        <p>Delete</p>
-      </div>
-      {models.map((model) => (
-        <div key={model.id} className={styles.tableRow}>
-          <p>{model.name}</p>
-          <p>{model.expression}</p>
-          <TexMath
-            block
-            className={styles.texExpression}
-            math={model.lexexpression}
-            onClick={() => handleLatexToClipboard(model.lexexpression)}
-          />
-          <button onClick={() => handleDeleteModel(model.id)}>Delete</button>
+      <section className={styles.tableWrapper}>
+        <div className={`${styles.tableRow} ${styles.tableHeader}`}>
+          <p>Name</p>
+          <p>Expression</p>
+          <p>Lex expression</p>
+          <p>Delete</p>
+          <p>Tag</p>
         </div>
-      ))}
+        {models.map((model) => (
+          <div key={model.id} className={styles.tableRow}>
+            <p>{model.name}</p>
+            <p>{model.expression}</p>
+            <TexMath
+              block
+              className={styles.texExpression}
+              math={model.lexexpression}
+              onClick={() => handleLatexToClipboard(model.lexexpression)}
+            />
+            <button type="button" onClick={() => handleDeleteModel(model.id)}>Delete</button>
+            <button
+              type="button"
+              className={styles.tagElement}
+              onClick={() => setSelectedId(model.id)}>
+              {model.tag}
+            </button>
+          </div>
+        ))
+        }
+      </section>
+      <Button className={styles.addButton} text="New model" type="button" onClick={toggleAddModel}/>
       <Modal isShowing={isAddModel}>
         <AddModel modelSubmit={modelSubmit}/>
         <Button text="Close" onClick={toggleAddModel}/>
+      </Modal>
+      <Modal isShowing={Boolean(selectedId)}>
+        <EditTag modelId={selectedId} setModels={setModels} toggleModal={() => setSelectedId(null)}/>
+        <Button text="Close" onClick={() => setSelectedId(null)}/>
       </Modal>
     </div>
   );

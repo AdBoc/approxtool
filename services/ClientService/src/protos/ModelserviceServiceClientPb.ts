@@ -76,6 +76,46 @@ export class ModelServiceClient {
     this.methodInfoAddModel);
   }
 
+  methodInfoEditTag = new grpcWeb.AbstractClientBase.MethodInfo(
+    google_protobuf_empty_pb.Empty,
+    (request: modelservice_pb.InternalEditTagRequest) => {
+      return request.serializeBinary();
+    },
+    google_protobuf_empty_pb.Empty.deserializeBinary
+  );
+
+  editTag(
+    request: modelservice_pb.InternalEditTagRequest,
+    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
+
+  editTag(
+    request: modelservice_pb.InternalEditTagRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
+
+  editTag(
+    request: modelservice_pb.InternalEditTagRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/protos.ModelService/EditTag',
+        request,
+        metadata || {},
+        this.methodInfoEditTag,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/protos.ModelService/EditTag',
+    request,
+    metadata || {},
+    this.methodInfoEditTag);
+  }
+
   methodInfoDeleteModel = new grpcWeb.AbstractClientBase.MethodInfo(
     google_protobuf_empty_pb.Empty,
     (request: modelservice_pb.InternalDeleteModelRequest) => {

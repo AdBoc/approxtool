@@ -30,6 +30,7 @@ const MODELS: FitStateExpression[] = [
     expression: 'a * x + b',
     lexexpression: 'a \\cdot x+b',
     isSelected: false,
+    tag: 'Unassigned',
     params: [
       {
         paramName: 'a',
@@ -51,6 +52,7 @@ const MODELS: FitStateExpression[] = [
     expression: 'a * x + b',
     lexexpression: 'a \\cdot x+b',
     isSelected: false,
+    tag: 'Unassigned',
     params: [
       {
         paramName: 'a',
@@ -72,6 +74,7 @@ const MODELS: FitStateExpression[] = [
     expression: 'a * x + b',
     lexexpression: 'a \\cdot x+b',
     isSelected: false,
+    tag: 'Linear',
     params: [
       {
         paramName: 'a',

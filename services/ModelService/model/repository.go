@@ -25,7 +25,7 @@ func (m *modelPGRepository) GetUserModels(userId uint32) (*pb.GetModelsResponse,
 
 	for rows.Next() {
 		model := &pb.Model{}
-		err := rows.Scan(&model.Id, &model.Name, &model.Expression, &model.LexExpression)
+		err := rows.Scan(&model.Id, &model.Name, &model.Expression, &model.LexExpression, &model.Tag)
 		if err != nil {
 			return nil, err
 		}
@@ -39,9 +39,13 @@ func (m *modelPGRepository) GetUserModels(userId uint32) (*pb.GetModelsResponse,
 func (m *modelPGRepository) AddModel(newModel *pb.InternalNewModelRequest) (*pb.NewModelResponse, error) {
 	var model pb.NewModelResponse
 
+	if newModel.Tag == "" {
+		newModel.Tag = "Unassigned"
+	}
+
 	if err := m.db.QueryRow(
-		context.Background(), insertNewModelQuery, newModel.Name, newModel.Expression, newModel.LexExpression, newModel.UserId,
-	).Scan(&model.Id, &model.Name, &model.Expression, &model.LexExpression); err != nil {
+		context.Background(), insertNewModelQuery, newModel.Name, newModel.Expression, newModel.LexExpression, newModel.Tag, newModel.UserId,
+	).Scan(&model.Id, &model.Name, &model.Expression, &model.LexExpression, &model.Tag); err != nil {
 		return nil, err
 	}
 
@@ -60,10 +64,18 @@ func (m *modelPGRepository) AddDefaultModels(userId uint32) error {
 	batch := &pgx.Batch{}
 
 	for _, model := range models {
-		batch.Queue(insertNewModelQuery, model.name, model.expression, model.lexExpression, userId)
+		batch.Queue(insertNewModelQuery, model.name, model.expression, model.lexExpression, model.tag, userId)
 	}
 
 	if err := m.db.SendBatch(context.Background(), batch).Close(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *modelPGRepository) EditTag(modelId uint32, tag string) error {
+	if _, err := m.db.Query(context.Background(), updateTag, tag, modelId); err != nil {
 		return err
 	}
 

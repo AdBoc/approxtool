@@ -25,13 +25,10 @@ import {
   fetchTempModels,
   fetchTempResults,
 } from '../../temporary/sim-request/sim-request';
-import {
-  Expression,
-  RequestExpressionParameter
-} from '../../protos/approximationservice_pb';
 import styles from './styles.module.scss';
 import { apiService } from '../../grpc-web/apiService';
 import { useIsMounted } from '../../hooks/useIsMounted';
+import { FitStateExpression } from '../../types/stateExpression';
 
 export const CurveFit = () => {
   const history = useHistory();
@@ -46,7 +43,14 @@ export const CurveFit = () => {
     async function fetchModels() {
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         fetchTempModels().then(models => {
-          if (isMounted()) dispatch({type: FitActionType.SET_MODELS, models})
+          const modelsObject: { [k: string]: FitStateExpression[] } = {};
+
+          models.forEach(model => {
+            if (!modelsObject.hasOwnProperty(model.tag)) modelsObject[model.tag] = [];
+            modelsObject[model.tag].push(model);
+          });
+
+          if (isMounted()) dispatch({type: FitActionType.SET_MODELS, models: modelsObject});
         });
       } else {
         try {
@@ -68,7 +72,14 @@ export const CurveFit = () => {
               }
             });
 
-            dispatch({type: FitActionType.SET_MODELS, models});
+            const modelsObject: { [k: string]: FitStateExpression[] } = {};
+
+            models.forEach(model => {
+              if (!modelsObject.hasOwnProperty(model.tag)) modelsObject[model.tag] = [];
+              modelsObject[model.tag].push(model);
+            });
+
+            dispatch({type: FitActionType.SET_MODELS, models: modelsObject});
           }
         } catch (err) {
           console.error(err.code, err.message);
@@ -81,45 +92,28 @@ export const CurveFit = () => {
 
   const handleApproximation = async () => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      console.log(Object.values(state.allModels).reduce((acc, models) => {
+        models.forEach(model => (model.isSelected && acc.push(model)));
+        return acc;
+      }, []));
+
       fetchTempResults().then(results => {
         results.forEach(RateResult);
         dispatch({type: FitActionType.SET_RESULT, result: results});
         graphDataManager.clearExpressions();
       });
     } else {
-      const expressions: Expression[] = [];
+      const modelsList = Object.values(state.allModels).reduce((acc, models) => {
+        models.forEach(model => (model.isSelected && acc.push(model)));
+        return acc;
+      }, []);
 
-      state.allModels
-        .filter(({id}) => state.fitSelectedModelIds.includes(id))
-        .forEach(({id, name, expression, lexexpression, params}) => {
-          const parsedParams = params.map(param => {
-            const requestParams = new RequestExpressionParameter();
+      if (!state.rawPoints.length) return;
 
-            requestParams.setParamname(param.paramName);
-            requestParams.setParamvalue(param.paramValue);
-            requestParams.setMinbound(param.minBound);
-            requestParams.setMaxbound(param.maxBound);
-
-            return requestParams;
-          });
-
-          const newExpression = new Expression();
-
-          newExpression.setId(id);
-          newExpression.setName(name);
-          newExpression.setExpression(expression);
-          newExpression.setLexExpression(lexexpression);
-          newExpression.setParametersList(parsedParams);
-
-          expressions.push(newExpression);
-        });
-
-      if (!state.rawPoints.length || !expressions.length) return;
-
-      const [xData, yData] = parsePointsForRequest(state.rawPoints); //TODO: ADD TO CLASS?
+      const [xData, yData] = parsePointsForRequest(state.rawPoints); //TODO: ADD TO CLASS METHOD?
 
       try {
-        const response = await apiService.FitCurves(expressions, xData, yData);
+        const response = await apiService.FitCurves(modelsList, xData, yData);
         if (isMounted()) {
           const fitResult = response.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
           fitResult.forEach(RateResult);
@@ -134,7 +128,7 @@ export const CurveFit = () => {
 
   return (
     <div>
-      <div className={styles.graphWrapper}>
+      <section className={styles.graphWrapper}>
         {Boolean(state.graphPoints.length) && (
           <Graph
             responsive
@@ -147,11 +141,11 @@ export const CurveFit = () => {
         {Boolean(state.fitResult.length) && (
           <FitResults results={state.fitResult} dispatch={dispatch}/>
         )}
-      </div>
-      <div className={styles.fittingButtons}>
-        <p>1. Provide data by pasting it into the table or selecting csv file</p>
+      </section>
+      <section className={styles.fittingButtons}>
+        <p className={styles.descriptionText}>1. Provide data by pasting it into the table or selecting csv file</p>
         <Button text="Enter data" type="button" onClick={toggleDataModal}/>
-        <p>
+        <p className={styles.descriptionText}>
           2. Select models for fitting,
           add temporary models (will be lost on page reload),
           set parameters initial guess and bounds values (Initial guess value is always 1, bounds are -Infinite,
@@ -159,7 +153,7 @@ export const CurveFit = () => {
         </p>
         <Button text="Select models" type="button" onClick={toggleModelsSelection}/>
         <p>3. Send fit request.</p>
-        <p>
+        <p className={styles.descriptionText}>
           Green is valid calculation.
           Yellow color indicates that the result should only be used with caution.
           It indicates that the calculation succeeded, but with reservations.
@@ -167,7 +161,7 @@ export const CurveFit = () => {
           (Likely generated NaN values, make sure that models and its bounds are correct).
         </p>
         <Button text="Fit" type="button" onClick={handleApproximation}/>
-      </div>
+      </section>
       <Modal isShowing={isDataModal}>
         <DataHandler state={state} toggleModal={toggleDataModal} dispatch={dispatch}/>
       </Modal>

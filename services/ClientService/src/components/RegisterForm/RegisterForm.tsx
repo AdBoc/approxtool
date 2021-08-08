@@ -57,6 +57,7 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
         <InputField
           label="Email"
           name="email"
+          autoComplete="email"
           value={registerForm.email}
           handler={handleRegisterInput}
         />
@@ -64,6 +65,7 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
         <InputField
           label="Name"
           name="name"
+          autoComplete="username"
           value={registerForm.name}
           handler={handleRegisterInput}
         />
@@ -74,7 +76,7 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
           name="password"
           value={registerForm.password}
           handler={handleRegisterInput}
-          autoComplete="on"
+          autoComplete="new-password"
         />
         {registerErrors.password && <p className={styles.validationError}>{registerErrors.password}</p>}
         <InputField

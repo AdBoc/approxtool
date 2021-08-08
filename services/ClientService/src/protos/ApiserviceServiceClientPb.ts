@@ -13,8 +13,8 @@
 
 import * as grpcWeb from 'grpc-web';
 
-import * as authservice_pb from './authservice_pb';
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
+import * as authservice_pb from './authservice_pb';
 import * as userservice_pb from './userservice_pb';
 import * as modelservice_pb from './modelservice_pb';
 import * as approximationservice_pb from './approximationservice_pb';
@@ -397,6 +397,46 @@ export class ApiServiceClient {
     request,
     metadata || {},
     this.methodInfoAddModel);
+  }
+
+  methodInfoEditTag = new grpcWeb.AbstractClientBase.MethodInfo(
+    google_protobuf_empty_pb.Empty,
+    (request: modelservice_pb.EditTagRequest) => {
+      return request.serializeBinary();
+    },
+    google_protobuf_empty_pb.Empty.deserializeBinary
+  );
+
+  editTag(
+    request: modelservice_pb.EditTagRequest,
+    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
+
+  editTag(
+    request: modelservice_pb.EditTagRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
+
+  editTag(
+    request: modelservice_pb.EditTagRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.Error,
+               response: google_protobuf_empty_pb.Empty) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/protos.ApiService/EditTag',
+        request,
+        metadata || {},
+        this.methodInfoEditTag,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/protos.ApiService/EditTag',
+    request,
+    metadata || {},
+    this.methodInfoEditTag);
   }
 
   methodInfoDeleteModel = new grpcWeb.AbstractClientBase.MethodInfo(

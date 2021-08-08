@@ -335,7 +335,6 @@ func (x *GetSessionRequest) GetAccessToken() string {
 	return ""
 }
 
-// this could be enum
 type GetSessionResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

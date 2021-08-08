@@ -37,7 +37,8 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
 
   const handleModelSelect = (model: FitStateExpression) => dispatch({
     type: FitActionType.TOGGLE_MODEL_SELECT,
-    id: model.id
+    tag: model.tag,
+    id: model.id,
   });
 
   const modelSubmit = (newExpr: NewExpression) => {
@@ -45,6 +46,7 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
       id: performance.now(),
       ...newExpr,
       isSelected: false,
+      tag: newExpr.tag || 'Unassigned',
       params: expressionParams(newExpr.expression).map(param => ({
         paramName: param,
         paramValue: 1,
@@ -56,28 +58,31 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
     toggleIsModelModal();
   };
 
+  const handleSelectTag = (tag: string) => dispatch({type: FitActionType.TOGGLE_TAG, tag});
+
   return (
     <>
-      <div>
-        <div className={styles.modelsWrapper}>
-          {expressions.map((model) => (
-            <div key={model.id} className={`${styles.model} ${model.isSelected && styles.modelSelected}`}
-                 onClick={() => handleModelSelect(model)}>
-              <input type="checkbox" checked={model.isSelected} readOnly/>
-              <button onClick={e => handleGuessBounds(e, model)}>{model.name}</button>
-            </div>
-          ))}
-        </div>
-        <div className={styles.modalButtons}>
-          <Button text="Select all" type="button" onClick={() => dispatch({type: FitActionType.SELECT_ALL_MODELS})}/>
-          <Button
-            text="Unselect all"
-            type="button"
-            onClick={() => dispatch({type: FitActionType.UNSELECT_ALL_MODELS})}
-          />
-          <Button text="Add temporary model" type="submit" onClick={toggleIsModelModal}/>
-          <Button text="Close modal" type="submit" onClick={closeModelsModal}/>
-        </div>
+      <div className={styles.modelsWrapper}>
+        {Object.entries(expressions).map(([tag, expressions]) => (
+          <div key={tag}>
+            <button type="button" className={styles.tag} onClick={() => handleSelectTag(tag)}>{tag}</button>
+            {expressions.map((model) => (
+              <div
+                key={model.id}
+                className={`${styles.model} ${model.isSelected && styles.modelSelected}`}
+                onClick={() => handleModelSelect(model)}
+              >
+                <input type="checkbox" checked={model.isSelected} readOnly/>
+                <button onClick={e => handleGuessBounds(e, model)}>{model.name}</button>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className={styles.modalButtons}>
+        <Button text="Toggle all" type="button" onClick={() => dispatch({type: FitActionType.TOGGLE_ALL})}/>
+        <Button text="Add temporary model" type="submit" onClick={toggleIsModelModal}/>
+        <Button text="Close modal" type="button" onClick={closeModelsModal}/>
       </div>
       <Modal isShowing={isAddModelModal}>
         <AddModel modelSubmit={modelSubmit}/>

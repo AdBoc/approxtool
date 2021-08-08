@@ -17,6 +17,7 @@ import {
 } from '../protos/userservice_pb';
 import {
   DeleteModelRequest,
+  EditTagRequest,
   GetModelsRequest,
   GetModelsResponse,
   NewModelRequest,
@@ -25,10 +26,12 @@ import {
 import {
   CurveFitRequest,
   CurveFitResult,
-  Expression
+  Expression,
+  RequestExpressionParameter
 } from '../protos/approximationservice_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { Role } from '../types';
+import { FitStateExpression } from '../types/stateExpression';
 
 class ApiService {
   #client = new ApiServiceClient('http://localhost:8080');
@@ -142,14 +145,24 @@ class ApiService {
   };
 
   // Model Service
-  AddModel(name: string, expression: string, lexexpression: string): Promise<NewModelResponse> {
+  AddModel(name: string, expression: string, lexexpression: string, tag: string): Promise<NewModelResponse> {
     const request = new NewModelRequest();
     request.setName(name);
     request.setExpression(expression);
     request.setLexexpression(lexexpression);
+    request.setTag(tag);
     request.setAccessToken(token.accessToken);
 
     return this.#withRetry('addModel', request, null);
+  };
+
+  EditTag(modelId: number, tag: string): Promise<Empty> {
+    const request = new EditTagRequest();
+    request.setAccessToken(token.accessToken);
+    request.setModelid(modelId);
+    request.setNewtag(tag);
+
+    return this.#withRetry('editTag', request, null);
   };
 
   DeleteModel(modelId: number): Promise<Empty> {
@@ -168,7 +181,33 @@ class ApiService {
   };
 
   // Approx Service
-  FitCurves(expressions: Expression[], xData: number[], yData: number[]): Promise<CurveFitResult> {
+  FitCurves(modelsList: FitStateExpression[], xData: number[], yData: number[]): Promise<CurveFitResult> {
+    // TODO: WHAT IF EMPTY IS SENT??
+    const expressions: Expression[] = [];
+
+    modelsList.forEach(({id, name, expression, lexexpression, params}) => {
+      const parsedParams = params.map(param => {
+        const requestParams = new RequestExpressionParameter();
+
+        requestParams.setParamname(param.paramName);
+        requestParams.setParamvalue(param.paramValue);
+        requestParams.setMinbound(param.minBound);
+        requestParams.setMaxbound(param.maxBound);
+
+        return requestParams;
+      });
+
+      const newExpression = new Expression();
+
+      newExpression.setId(id);
+      newExpression.setName(name);
+      newExpression.setExpression(expression);
+      newExpression.setLexExpression(lexexpression);
+      newExpression.setParametersList(parsedParams);
+
+      expressions.push(newExpression);
+    });
+
     const request = new CurveFitRequest();
 
     request.setExpressionsList(expressions);

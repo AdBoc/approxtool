@@ -15,6 +15,11 @@
   padding: 1.25rem;
 }
 
+.tableWrapper {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
 .tableRow {
   display: grid;
   grid-template-columns: 2fr 2fr 1fr 1fr;
@@ -63,4 +68,8 @@
   border: none;
   background-color: inherit;
   cursor: pointer;
+}
+
+.addButton {
+  margin-top: 2rem;
 }

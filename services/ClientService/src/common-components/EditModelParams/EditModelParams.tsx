@@ -27,7 +27,7 @@ export const EditModelParams: React.FC<Props> = ({model, dispatch, closeModal}):
   };
 
   const handleCloseAndSave = () => {
-    dispatch({type: FitActionType.CHANGE_PARAMS, params: paramsForm, modelId: model.id});
+    dispatch({type: FitActionType.CHANGE_PARAMS, params: paramsForm, modelId: model.id, tag: model.tag});
     closeModal();
   };
 

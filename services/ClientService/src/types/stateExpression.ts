@@ -11,13 +11,9 @@ export interface ExpressionParameter {
 export interface FitStateExpression extends Model.AsObject {
   isSelected: boolean,
   params: ExpressionParameter[],
-  //tags: string[];
 }
 
-export interface StateExpression extends Model.AsObject {
-  isSelected: boolean;
-  //tags: string[];
-}
+export interface StateExpression extends Model.AsObject { isSelected: boolean }
 
 export type NewExpression = Omit<Model.AsObject, 'id'>;
 

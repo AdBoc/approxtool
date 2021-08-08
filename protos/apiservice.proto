@@ -24,6 +24,7 @@ service ApiService {
 
     // Model Service
     rpc AddModel(NewModelRequest) returns (NewModelResponse) {}
+    rpc EditTag(EditTagRequest) returns (google.protobuf.Empty) {}
     rpc DeleteModel(DeleteModelRequest) returns (google.protobuf.Empty) {}
     rpc GetUserModels(GetModelsRequest) returns (GetModelsResponse) {}
 

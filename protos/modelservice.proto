@@ -7,6 +7,7 @@ package protos;
 
 service ModelService {
   rpc AddModel(InternalNewModelRequest) returns (NewModelResponse) {}
+  rpc EditTag(InternalEditTagRequest) returns (google.protobuf.Empty) {}
   rpc DeleteModel(InternalDeleteModelRequest) returns (google.protobuf.Empty) {}
   rpc GetUserModels(InternalGetModelsRequest) returns (GetModelsResponse) {}
   rpc AddDefaultModels(AddDefaultModelRequest) returns (google.protobuf.Empty) {}
@@ -17,6 +18,7 @@ message Model {
   string name = 2;
   string expression = 3;
   string lexExpression = 4;
+  string tag = 5;
 }
 
 message InternalGetModelsRequest {
@@ -31,11 +33,23 @@ message GetModelsResponse {
   repeated Model models = 1;
 }
 
+message EditTagRequest {
+  string access_token = 1;
+  uint32 modelId = 2;
+  string newTag = 3;
+}
+
+message InternalEditTagRequest {
+  uint32 modelId = 1;
+  string newTag = 2;
+}
+
 message NewModelRequest {
   string access_token = 1;
   string name = 2;
   string expression = 3;
   string lexExpression = 4;
+  string tag = 5;
 }
 
 message InternalNewModelRequest {
@@ -43,13 +57,15 @@ message InternalNewModelRequest {
   string expression = 2;
   string lexExpression = 3;
   uint32 userId = 4;
+  string tag = 5;
 }
 
 message NewModelResponse {
   uint32 id = 1;
   string name = 2;
   string expression = 3;
-  string lexExpression = 4; 
+  string lexExpression = 4;
+  string tag = 5;
 }
 
 message InternalDeleteModelRequest {

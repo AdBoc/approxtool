@@ -36,7 +36,7 @@ func (s *Server) Logout(ctx context.Context, request *auth.LogoutRequest) (*empt
     	return nil, err
     }
 
-	_, err := s.AuthClient.Logout(context.Background(), request)
+	_, err = s.AuthClient.Logout(context.Background(), request)
 	if err != nil {
 		return nil, err
 	}
@@ -71,5 +71,5 @@ func (s Server) RefreshToken(ctx context.Context, request *auth.RefreshRequest) 
 	return &auth.RefreshResponse{
 		AccessToken:  tokens.AccessToken,
 		RefreshToken: tokens.RefreshToken,
-	}, err
+	}, nil
 }

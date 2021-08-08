@@ -6,9 +6,8 @@ interface Props {
   className?: string;
 }
 
-export const Tooltip: React.FC<Props> = ({ tooltipContent, className, children }): JSX.Element => {
+export const Tooltip: React.FC<Props> = ({tooltipContent, className, children}): JSX.Element => {
   const [active, setActive] = useState(false);
-
   return (
     <div
       className={`${styles.tooltipWrapper} ${className ? className : null}`}

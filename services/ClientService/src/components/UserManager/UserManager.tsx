@@ -111,38 +111,46 @@ export const UserManager: React.FC = (): JSX.Element => {
 
   return (
     <div className={styles.usersWrapper}>
-      <Button type="button" text="Add user" onClick={toggleRegisterForm}/>
       <InputField
         label="Search by username:"
         value={userQuery}
         handler={e => setUserQuery(e.target.value)}
       />
-      <div className={`${styles.tableRow} ${styles.tableHeader}`}>
-        <p>Username</p>
-        <p>Email</p>
-        <p>Status</p>
-        <p>Operations</p>
-      </div>
-      {users.map((user) => (
-        <div key={user.id} className={styles.tableRow}>
-          <p>{user.username}</p>
-          <p>{user.email}</p>
-          <Tooltip className={styles.tooltipCustom} tooltipContent={renderOperationsButtons(user)}>
-            <button type="button" className={styles.operation}>Operations</button>
-          </Tooltip>
-          <p>{user.role}</p>
+      <section className={styles.tableWrapper}>
+        <div className={`${styles.tableRow} ${styles.tableHeader}`}>
+          <p>Username</p>
+          <p>Email</p>
+          <p>Status</p>
+          <p>Operations</p>
         </div>
-      ))}
+        {users.map((user) => (
+          <div key={user.id} className={styles.tableRow}>
+            <p>{user.username}</p>
+            <p>{user.email}</p>
+            <Tooltip className={styles.tooltipCustom} tooltipContent={renderOperationsButtons(user)}>
+              <button type="button" className={styles.operation}>Operations</button>
+            </Tooltip>
+            <p>{user.role}</p>
+          </div>
+        ))}
+      </section>
+      <Button className={styles.addButton} type="button" text="Add user" onClick={toggleRegisterForm}/>
       <Modal isShowing={isRegisterForm} className={styles.modalRegisterWrapper}>
         <RegisterForm setUsers={setUsers} handleClose={toggleRegisterForm}/>
       </Modal>
       <Modal isShowing={Boolean(renderPasswordInput)}>
-        <div className={styles.passwordForm}>
-          <InputField type="password" label="New Password" handler={(e) => setRenderPasswordInput(e.target.value)}/>
+        <form className={styles.passwordForm}>
+          <input type="text" autoComplete="username" hidden/>
+          <InputField
+            type="password"
+            label="New Password"
+            autoComplete="new-password"
+            handler={(e) => setRenderPasswordInput(e.target.value)}
+          />
           <p>Password must have 6 min characters</p>
           <Button type="submit" text="Send" onClick={() => handleChangePassword(userId!)}/>
           <Button type="button" text="Cancel" onClick={closeChangePassModal}/>
-        </div>
+        </form>
       </Modal>
     </div>
   );

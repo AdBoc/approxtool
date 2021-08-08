@@ -1,11 +1,3 @@
-.componentWrapper {
-}
-
-.modelsWrapper {
-  max-height: 80%;
-  overflow-y: auto;
-}
-
 .model {
   display: flex;
 
@@ -31,6 +23,16 @@
   &:hover {
     background-color: #dedede;
   }
+}
+
+.tag {
+  margin-top: 1.5rem;
+  background-color: inherit;
+  border: 1px solid black;
+  padding: 0.5rem;
+  min-width: 6rem;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .modelSelected {

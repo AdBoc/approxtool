@@ -35,6 +35,7 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
     name: '',
     expression: '',
     lexexpression: '',
+    tag: '',
   });
 
   useEffect(() => {
@@ -95,8 +96,9 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
   return (
     <div className={styles.modalWrapper}>
       <div>
-        <InputField label="Name" name="name" value={modelForm.name} handler={handleInput}/>
-        <InputField label="Expression" name="expression" value={modelForm.expression} handler={handleInput}/>
+        <InputField label="Name*" name="name" value={modelForm.name} handler={handleInput}/>
+        <InputField label="Expression*" name="expression" value={modelForm.expression} handler={handleInput}/>
+        <InputField label="Tag" name="tag" value={modelForm.tag} handler={handleInput}/>
         {modelForm.lexexpression && (
           <TexMath
             block

@@ -60,7 +60,7 @@ func (us *userService) CreateUser(ctx context.Context, newUser *user.InternalNew
 }
 
 func (us *userService) DeleteUser(ctx context.Context, userId *user.InternalDeleteUserRequest) (*emptypb.Empty, error) {
-	if userId.Id == 0 {
+	if userId.Id == 1 {
 		return nil, status.Error(codes.InvalidArgument, "Initial admin is not removable")
 	}
 

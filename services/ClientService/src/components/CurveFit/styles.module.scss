@@ -7,10 +7,8 @@
 }
 
 .fittingButtons {
+  margin-top: 2rem;
   text-align: center;
-  p {
-    margin: 1rem 0;
-  }
 }
 
 .modelsModal {
@@ -18,4 +16,10 @@
   min-width: 20rem;
   min-height: 20vh;
   max-height: 80vh;
+  overflow-y: auto;
+}
+
+.descriptionText {
+  margin: auto;
+  max-width: 30em;
 }

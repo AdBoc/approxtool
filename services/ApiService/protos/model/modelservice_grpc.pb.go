@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ModelServiceClient interface {
 	AddModel(ctx context.Context, in *InternalNewModelRequest, opts ...grpc.CallOption) (*NewModelResponse, error)
+	EditTag(ctx context.Context, in *InternalEditTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteModel(ctx context.Context, in *InternalDeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetUserModels(ctx context.Context, in *InternalGetModelsRequest, opts ...grpc.CallOption) (*GetModelsResponse, error)
 	AddDefaultModels(ctx context.Context, in *AddDefaultModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -36,6 +37,15 @@ func NewModelServiceClient(cc grpc.ClientConnInterface) ModelServiceClient {
 func (c *modelServiceClient) AddModel(ctx context.Context, in *InternalNewModelRequest, opts ...grpc.CallOption) (*NewModelResponse, error) {
 	out := new(NewModelResponse)
 	err := c.cc.Invoke(ctx, "/protos.ModelService/AddModel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelServiceClient) EditTag(ctx context.Context, in *InternalEditTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/protos.ModelService/EditTag", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -74,6 +84,7 @@ func (c *modelServiceClient) AddDefaultModels(ctx context.Context, in *AddDefaul
 // for forward compatibility
 type ModelServiceServer interface {
 	AddModel(context.Context, *InternalNewModelRequest) (*NewModelResponse, error)
+	EditTag(context.Context, *InternalEditTagRequest) (*emptypb.Empty, error)
 	DeleteModel(context.Context, *InternalDeleteModelRequest) (*emptypb.Empty, error)
 	GetUserModels(context.Context, *InternalGetModelsRequest) (*GetModelsResponse, error)
 	AddDefaultModels(context.Context, *AddDefaultModelRequest) (*emptypb.Empty, error)
@@ -86,6 +97,9 @@ type UnimplementedModelServiceServer struct {
 
 func (UnimplementedModelServiceServer) AddModel(context.Context, *InternalNewModelRequest) (*NewModelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddModel not implemented")
+}
+func (UnimplementedModelServiceServer) EditTag(context.Context, *InternalEditTagRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditTag not implemented")
 }
 func (UnimplementedModelServiceServer) DeleteModel(context.Context, *InternalDeleteModelRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteModel not implemented")
@@ -123,6 +137,24 @@ func _ModelService_AddModel_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelServiceServer).AddModel(ctx, req.(*InternalNewModelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelService_EditTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalEditTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).EditTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.ModelService/EditTag",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).EditTag(ctx, req.(*InternalEditTagRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -191,6 +223,10 @@ var ModelService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddModel",
 			Handler:    _ModelService_AddModel_Handler,
+		},
+		{
+			MethodName: "EditTag",
+			Handler:    _ModelService_EditTag_Handler,
 		},
 		{
 			MethodName: "DeleteModel",

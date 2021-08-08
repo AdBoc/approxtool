@@ -2,9 +2,14 @@
   padding: .75rem;
 }
 
+.tableWrapper {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
 .tableRow {
   display: grid;
-  grid-template-columns: 1fr 2fr 4fr 1fr;
+  grid-template-columns: 1fr 2fr 4fr 1fr 1fr;
   justify-items: center;
   align-items: center;
   margin: 0 1rem;
@@ -29,4 +34,14 @@
   font-size: 1.1rem;
   margin: 0.1rem;
   cursor: pointer;
+}
+
+.tagElement {
+  border: 1px solid black;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.addButton {
+  margin-top: 2rem;
 }

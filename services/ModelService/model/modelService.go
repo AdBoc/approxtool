@@ -59,7 +59,15 @@ func (us *modelService) DeleteModel(ctx context.Context, model *pb.InternalDelet
 
 func (us *modelService) AddDefaultModels(ctx context.Context, request *pb.AddDefaultModelRequest) (*emptypb.Empty, error) {
 	if err := us.modelUc.AddDefaultModels(request.UserId); err != nil {
-		return nil, err
+		return nil, grpc_errors.ErrorResponse(err, err.Error())
+	}
+
+	return new(emptypb.Empty), nil
+}
+
+func (us *modelService) EditTag(ctx context.Context, request *pb.InternalEditTagRequest) (*emptypb.Empty, error) {
+	if err := us.modelUc.EditTag(request.ModelId, request.NewTag); err != nil {
+		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}
 
 	return new(emptypb.Empty), nil

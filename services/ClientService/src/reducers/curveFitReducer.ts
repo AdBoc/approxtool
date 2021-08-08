@@ -7,11 +7,10 @@ import {
 import { FitRes } from '../types/fitResult';
 
 export type CurveFitState = {
-  allModels: FitStateExpression[];
+  allModels: { [k: string]: FitStateExpression[] };
   graphExpression: GraphExpression | null;
   graphPoints: Point[];
   fitResult: FitRes[];
-  fitSelectedModelIds: number[];
   rawPoints: number[];
   xDomain: [number, number];
   yDomain: [number, number];
@@ -25,23 +24,23 @@ export enum FitActionType {
   RAW_POINTS_TO_GRAPH_POINTS = 'RAW_POINTS_TO_GRAPH_POINTS',
   SET_GRAPH_EXPRESSION = 'SET_GRAPH_EXPRESSION',
   SET_DOMAINS = 'SET_DOMAINS',
-  SELECT_ALL_MODELS = 'SELECT_ALL_MODELS',
-  UNSELECT_ALL_MODELS = 'UNSELECT_ALL_MODELS',
+  TOGGLE_ALL = 'TOGGLE_ALL',
+  TOGGLE_TAG = 'TOGGLE_TAG',
   CHANGE_PARAMS = 'CHANGE_PARAMS',
   ADD_TEMP_MODEL = 'ADD_TEMP_MODEL',
 }
 
 export type CurveFitActions =
-  { type: FitActionType.SET_MODELS, models: FitStateExpression[] } |
+  { type: FitActionType.SET_MODELS, models: { [k: string]: FitStateExpression[] } } |
   { type: FitActionType.SET_PLOT_POINTS, plotPoints: number[] } |
   { type: FitActionType.SET_RESULT, result: FitRes[] } |
-  { type: FitActionType.TOGGLE_MODEL_SELECT, id: number } |
+  { type: FitActionType.TOGGLE_MODEL_SELECT, id: number, tag: string } |
   { type: FitActionType.RAW_POINTS_TO_GRAPH_POINTS, graphPoints: Point[] } |
   { type: FitActionType.SET_GRAPH_EXPRESSION, expression: GraphExpression } |
   { type: FitActionType.SET_DOMAINS, xDomain: [number, number], yDomain: [number, number] } |
-  { type: FitActionType.SELECT_ALL_MODELS } |
-  { type: FitActionType.UNSELECT_ALL_MODELS } |
-  { type: FitActionType.CHANGE_PARAMS, params: ExpressionParameter[], modelId: number } |
+  { type: FitActionType.TOGGLE_ALL } |
+  { type: FitActionType.TOGGLE_TAG, tag: string } |
+  { type: FitActionType.CHANGE_PARAMS, params: ExpressionParameter[], modelId: number, tag: string } |
   { type: FitActionType.ADD_TEMP_MODEL, model: FitStateExpression };
 
 type CurveFitReducer = (state: CurveFitState, action: CurveFitActions) => CurveFitState;
@@ -65,18 +64,15 @@ export const curveFitReducer: CurveFitReducer = (state, action) => {
         graphExpression: null,
       };
     case FitActionType.TOGGLE_MODEL_SELECT: {
-      const newModels = state.allModels.map(model => {
-        if (model.id !== action.id) return model;
-        return {...model, isSelected: !model.isSelected};
-      });
-      const newModelIds = state.fitSelectedModelIds.find(id => id === action.id)
-        ? removeModelFromFitting(state.fitSelectedModelIds, action.id)
-        : addModelToFit(state.fitSelectedModelIds, action.id);
+      const newModels = {...state.allModels};
+      newModels[action.tag] = newModels[action.tag].map(model => model.id === action.id
+        ? {...model, isSelected: !model.isSelected}
+        : model
+      );
 
       return {
         ...state,
         allModels: newModels,
-        fitSelectedModelIds: newModelIds,
       };
     }
     case FitActionType.RAW_POINTS_TO_GRAPH_POINTS:
@@ -98,53 +94,56 @@ export const curveFitReducer: CurveFitReducer = (state, action) => {
     case FitActionType.ADD_TEMP_MODEL:
       return {
         ...state,
-        allModels: [...state.allModels, action.model],
+        allModels: {
+          ...state.allModels,
+          Unassigned: [...state.allModels.Unassigned, action.model]
+        }
       }
     case FitActionType.CHANGE_PARAMS:
       return {
         ...state,
-        allModels: state.allModels.map(model => {
-          if (model.id === action.modelId) return {...model, params: action.params};
-          return model;
-        })
-      }
-    case FitActionType.SELECT_ALL_MODELS:
-      return {
-        ...state,
-        allModels: state.allModels.map((model) => ({...model, isSelected: true})),
-        fitSelectedModelIds: state.allModels.map(({id}) => id)
+        allModels: {
+          ...state.allModels,
+          [action.tag]: state.allModels[action.tag].map(model => model.id === action.modelId
+            ? {...model, params: action.params}
+            : model
+          ),
+        }
       };
-    case FitActionType.UNSELECT_ALL_MODELS:
+    case FitActionType.TOGGLE_ALL: {
+      const isSelectedVal = Object.values(state.allModels).some(models => models.some(model => model.isSelected));
+
+      const newModels: { [k: string]: FitStateExpression[] } = {};
+      Object.entries(state.allModels).forEach(([tag, models]) => newModels[tag] = [...models.map(model => ({...model}))]);
+      Object.values(newModels).forEach(models => models.forEach(model => model.isSelected = !isSelectedVal));
+
       return {
         ...state,
-        allModels: state.allModels.map((model) => ({...model, isSelected: false})),
-        fitSelectedModelIds: []
+        allModels: newModels
+      };
+    }
+    case FitActionType.TOGGLE_TAG: {
+      const isSelected = state.allModels[action.tag].some(model => model.isSelected);
+      const newTagValues = state.allModels[action.tag].map(model => ({...model, isSelected: !isSelected}));
+      return {
+        ...state,
+        allModels: {
+          ...state.allModels,
+          [action.tag]: newTagValues
+        }
       }
+    }
     default:
       return state;
   }
 };
 
 export const initialCurveState: CurveFitState = {
-  allModels: [],
+  allModels: {Unassigned: []},
   fitResult: [],
-  fitSelectedModelIds: [],
   graphExpression: null,
   graphPoints: [],
   rawPoints: [],
   xDomain: [0, 0],
   yDomain: [0, 0],
 };
-
-function addModelToFit(modelIds: number[], id: number): number[] {
-  return [...modelIds, id];
-}
-
-function removeModelFromFitting(modelIds: number[], id: number): number[] {
-  const safeCopy = [...modelIds];
-  const index = safeCopy.indexOf(id);
-  if (index >= 0) {
-    safeCopy.splice(index, 1);
-  }
-  return safeCopy;
-}

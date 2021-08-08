@@ -28,7 +28,7 @@
 @mixin inputField {
   font-size: inherit;
   display: block;
-  margin: auto;
+  margin: 0.15rem auto auto auto;
   min-width: 20rem;
   padding: 0.25rem;
 

@@ -41,7 +41,6 @@ message GetSessionRequest {
     string access_token = 1;
 }
 
-// this could be enum
 message GetSessionResponse {
     uint32 user_id = 1;
     string user_role = 2;

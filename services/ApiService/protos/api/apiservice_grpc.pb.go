@@ -35,6 +35,7 @@ type ApiServiceClient interface {
 	ChangePassword(ctx context.Context, in *user.ChangePasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// Model Service
 	AddModel(ctx context.Context, in *model.NewModelRequest, opts ...grpc.CallOption) (*model.NewModelResponse, error)
+	EditTag(ctx context.Context, in *model.EditTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteModel(ctx context.Context, in *model.DeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetUserModels(ctx context.Context, in *model.GetModelsRequest, opts ...grpc.CallOption) (*model.GetModelsResponse, error)
 	// Approx Service
@@ -130,6 +131,15 @@ func (c *apiServiceClient) AddModel(ctx context.Context, in *model.NewModelReque
 	return out, nil
 }
 
+func (c *apiServiceClient) EditTag(ctx context.Context, in *model.EditTagRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/protos.ApiService/EditTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *apiServiceClient) DeleteModel(ctx context.Context, in *model.DeleteModelRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/protos.ApiService/DeleteModel", in, out, opts...)
@@ -173,6 +183,7 @@ type ApiServiceServer interface {
 	ChangePassword(context.Context, *user.ChangePasswordRequest) (*emptypb.Empty, error)
 	// Model Service
 	AddModel(context.Context, *model.NewModelRequest) (*model.NewModelResponse, error)
+	EditTag(context.Context, *model.EditTagRequest) (*emptypb.Empty, error)
 	DeleteModel(context.Context, *model.DeleteModelRequest) (*emptypb.Empty, error)
 	GetUserModels(context.Context, *model.GetModelsRequest) (*model.GetModelsResponse, error)
 	// Approx Service
@@ -210,6 +221,9 @@ func (UnimplementedApiServiceServer) ChangePassword(context.Context, *user.Chang
 }
 func (UnimplementedApiServiceServer) AddModel(context.Context, *model.NewModelRequest) (*model.NewModelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddModel not implemented")
+}
+func (UnimplementedApiServiceServer) EditTag(context.Context, *model.EditTagRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditTag not implemented")
 }
 func (UnimplementedApiServiceServer) DeleteModel(context.Context, *model.DeleteModelRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteModel not implemented")
@@ -395,6 +409,24 @@ func _ApiService_AddModel_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ApiService_EditTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(model.EditTagRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ApiServiceServer).EditTag(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protos.ApiService/EditTag",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ApiServiceServer).EditTag(ctx, req.(*model.EditTagRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ApiService_DeleteModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(model.DeleteModelRequest)
 	if err := dec(in); err != nil {
@@ -491,6 +523,10 @@ var ApiService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddModel",
 			Handler:    _ApiService_AddModel_Handler,
+		},
+		{
+			MethodName: "EditTag",
+			Handler:    _ApiService_EditTag_Handler,
 		},
 		{
 			MethodName: "DeleteModel",

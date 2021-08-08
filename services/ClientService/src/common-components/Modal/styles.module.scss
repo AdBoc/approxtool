@@ -18,9 +18,11 @@
   transform: translate(-50%, -50%);
   max-width: 80vw;
   padding: 2rem;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   text-align: center;
   background: white;
-  margin: 1.75rem auto;
   border-radius: 3px;
 }
