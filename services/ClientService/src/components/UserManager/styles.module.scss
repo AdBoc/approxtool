@@ -9,14 +9,8 @@
   padding: 0.75rem;
 }
 
-.passwordForm {
-  border: 1px solid colors.$input-border;
-  border-radius: 4px;
-  padding: 1.25rem;
-}
-
 .tableWrapper {
-  max-height: 80vh;
+  max-height: 70vh;
   overflow-y: auto;
 }
 
@@ -43,31 +37,6 @@
 .tableHeader {
   padding: .25rem 0;
   border-bottom: 1px solid black;
-}
-
-.tooltipCustom {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-}
-
-.operationButtons {
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-
-  button {
-    padding: 0.25rem;
-    cursor: pointer;
-  }
-}
-
-.operation {
-  border: none;
-  background-color: inherit;
-  cursor: pointer;
 }
 
 .addButton {

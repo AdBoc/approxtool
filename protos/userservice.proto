@@ -74,11 +74,13 @@ message VerifyPasswordResponse {
 
 message SearchRequest {
   string access_token = 1;
-  string searchQuery = 2;
+  uint32 keySetValue = 2;
+  string searchQuery = 3;
 }
 
 message InternalSearchRequest {
-  string searchQuery = 1;
+  uint32 keySetValue = 1;
+  string searchQuery = 2;
 }
 
 message SearchResponse {

@@ -37,7 +37,7 @@ func (s *Server) CreateUser(ctx context.Context, request *user.NewUserRequest) (
 		Username: request.Username,
 		Password: request.Password,
 		Email:    request.Email,
-		Role:   request.Role,
+		Role:     request.Role,
 	})
 	if err != nil {
 		return nil, err
@@ -76,7 +76,10 @@ func (s *Server) SearchForUsers(ctx context.Context, request *user.SearchRequest
 		return nil, err
 	}
 
-	resp, err := s.UserClient.SearchForUsers(context.Background(), &user.InternalSearchRequest{SearchQuery: request.SearchQuery})
+	resp, err := s.UserClient.SearchForUsers(context.Background(), &user.InternalSearchRequest{
+		SearchQuery: request.SearchQuery,
+		KeySetValue: request.KeySetValue,
+	})
 	if err != nil {
 		return nil, err
 	}

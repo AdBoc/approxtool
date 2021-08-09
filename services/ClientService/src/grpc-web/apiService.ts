@@ -105,7 +105,7 @@ class ApiService {
     request.setNewrole(Role.ADMIN);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('changeUserPrivilege', request, null)
+    return this.#withRetry('changeUserPrivilege', request, null);
   };
 
   CreateUser(name: string, email: string, password: string): Promise<UserResponse> {
@@ -127,9 +127,10 @@ class ApiService {
     return this.#withRetry('deleteUser', request, null);
   };
 
-  SearchForUsers(userQuery: string): Promise<SearchResponse> {
+  SearchForUsers(userQuery: string, keySetVal: number): Promise<SearchResponse> {
     const request = new SearchRequest();
     request.setSearchquery(userQuery);
+    request.setKeysetvalue(keySetVal);
     request.setAccessToken(token.accessToken);
 
     return this.#withRetry('searchForUsers', request, null);

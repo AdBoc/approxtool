@@ -54,10 +54,10 @@ func (u *userPGRepository) ChangeUserStatus(userId uint32, status string) error 
 	return nil
 }
 
-func (u *userPGRepository) SearchUserByName(userQuery string) (*user.SearchResponse, error) {
+func (u *userPGRepository) SearchUserByName(userQuery string, keySetValue uint32) (*user.SearchResponse, error) {
 	list := &user.SearchResponse{}
 
-	rows, err := u.db.Query(context.Background(), userByNameQuery, userQuery)
+	rows, err := u.db.Query(context.Background(), userByNameQuery, keySetValue, userQuery)
 	if err != nil {
 		return nil, err
 	}

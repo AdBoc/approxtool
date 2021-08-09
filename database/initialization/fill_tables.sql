@@ -45,3 +45,27 @@ INSERT INTO models VALUES (DEFAULT, 'reciprocal quadratic', '1/(a+b*x+c*x**2)', 
 INSERT INTO models VALUES (DEFAULT, 'wavy', 'a*cos(2*x)+b*sin(x)', '\mathrm{cos}\left(2 \cdot x\right) \cdot a+\mathrm{sin}\left(x\right) \cdot b', 'Unassigned', 2);
 INSERT INTO models VALUES (DEFAULT, 'richards', 'a/(1+exp(b-c*x))**(1/d)', '\frac{a}{\left(e^{-c \cdot x+b}+1\right)^{\frac{1}{d}}}', 'Sigmoidal', 2);
 INSERT INTO models VALUES (DEFAULT, 'logistic', 'a/(1+b*e**(-c*x))', '\frac{a}{\frac{b}{e^{c \cdot x}}+1}', 'Sigmoidal', 2);
+
+INSERT INTO users VALUES (DEFAULT, 'ghjtest@sddsd.test', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'test', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'dwahjghjgdwa@dadwa.pl', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'awdadwa', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'cxzchjhjggz@dada.com', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'acxwadzc', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'cxghhgjjgfgdy@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'acxgdwaf', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'cfdsjhjghgjhgvfy@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'acfdwads', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'vfdhhjhjghjggjgsgfsdvgf@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'avfdwaddg', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'fdsvgjhghjghjhfgdhf@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'afdwasv', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'gfdhfhjgghjgdf@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'agfwdadh', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'gdfhadhjhgk@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'agddxczfh', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'tryyhhjjgrtyhjghjktr@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'atrxczyy', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'yuijhgyuiouyiy@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'aycxzuiy', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'dwadhjgwdsfadwa@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'adwagfdd', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'asdahjdfdskhjfasda@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'asgfdda', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'fdsgfzxcvcxdsfdfsgsd@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'ffddsg', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'asdhjgfdsdsffgxx@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'ashgtrfdg', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'dawfghhjgdzzcz@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'dawfghd', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'fdfdhjfdssfgfdghds@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'fgfhhdfg', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'xzccxvfg@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'xzchgfc', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'hgffdfdssfdjhgdj@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'hhgfgfd', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'yikdsfduygig@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'yihgfku', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'earrsfdsdsytty@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'eahgfrr', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'uyuidsfoui@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'uyhgfui', 'USER', DEFAULT);
+INSERT INTO users VALUES (DEFAULT, 'cwadfdscz@.zn', '$2a$10$MNvDujHFuZMhCQZfYEEYz.mZniHza9XLBf6qNozB1JrMzf6xMmg4u', 'cwahgfd', 'USER', DEFAULT);

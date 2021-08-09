@@ -2234,7 +2234,8 @@ proto.protos.SearchRequest.prototype.toObject = function(opt_includeInstance) {
 proto.protos.SearchRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     accessToken: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    searchquery: jspb.Message.getFieldWithDefault(msg, 2, "")
+    keysetvalue: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    searchquery: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -2276,6 +2277,10 @@ proto.protos.SearchRequest.deserializeBinaryFromReader = function(msg, reader) {
       msg.setAccessToken(value);
       break;
     case 2:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setKeysetvalue(value);
+      break;
+    case 3:
       var value = /** @type {string} */ (reader.readString());
       msg.setSearchquery(value);
       break;
@@ -2315,10 +2320,17 @@ proto.protos.SearchRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getKeysetvalue();
+  if (f !== 0) {
+    writer.writeUint32(
+      2,
+      f
+    );
+  }
   f = message.getSearchquery();
   if (f.length > 0) {
     writer.writeString(
-      2,
+      3,
       f
     );
   }
@@ -2344,11 +2356,29 @@ proto.protos.SearchRequest.prototype.setAccessToken = function(value) {
 
 
 /**
- * optional string searchQuery = 2;
+ * optional uint32 keySetValue = 2;
+ * @return {number}
+ */
+proto.protos.SearchRequest.prototype.getKeysetvalue = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.protos.SearchRequest} returns this
+ */
+proto.protos.SearchRequest.prototype.setKeysetvalue = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional string searchQuery = 3;
  * @return {string}
  */
 proto.protos.SearchRequest.prototype.getSearchquery = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -2357,7 +2387,7 @@ proto.protos.SearchRequest.prototype.getSearchquery = function() {
  * @return {!proto.protos.SearchRequest} returns this
  */
 proto.protos.SearchRequest.prototype.setSearchquery = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
+  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -2393,7 +2423,8 @@ proto.protos.InternalSearchRequest.prototype.toObject = function(opt_includeInst
  */
 proto.protos.InternalSearchRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    searchquery: jspb.Message.getFieldWithDefault(msg, 1, "")
+    keysetvalue: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    searchquery: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -2431,6 +2462,10 @@ proto.protos.InternalSearchRequest.deserializeBinaryFromReader = function(msg, r
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setKeysetvalue(value);
+      break;
+    case 2:
       var value = /** @type {string} */ (reader.readString());
       msg.setSearchquery(value);
       break;
@@ -2463,10 +2498,17 @@ proto.protos.InternalSearchRequest.prototype.serializeBinary = function() {
  */
 proto.protos.InternalSearchRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getKeysetvalue();
+  if (f !== 0) {
+    writer.writeUint32(
+      1,
+      f
+    );
+  }
   f = message.getSearchquery();
   if (f.length > 0) {
     writer.writeString(
-      1,
+      2,
       f
     );
   }
@@ -2474,11 +2516,29 @@ proto.protos.InternalSearchRequest.serializeBinaryToWriter = function(message, w
 
 
 /**
- * optional string searchQuery = 1;
+ * optional uint32 keySetValue = 1;
+ * @return {number}
+ */
+proto.protos.InternalSearchRequest.prototype.getKeysetvalue = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.protos.InternalSearchRequest} returns this
+ */
+proto.protos.InternalSearchRequest.prototype.setKeysetvalue = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string searchQuery = 2;
  * @return {string}
  */
 proto.protos.InternalSearchRequest.prototype.getSearchquery = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
@@ -2487,7 +2547,7 @@ proto.protos.InternalSearchRequest.prototype.getSearchquery = function() {
  * @return {!proto.protos.InternalSearchRequest} returns this
  */
 proto.protos.InternalSearchRequest.prototype.setSearchquery = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 

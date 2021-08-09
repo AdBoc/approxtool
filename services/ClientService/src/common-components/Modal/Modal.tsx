@@ -5,6 +5,7 @@ import styles from './styles.module.scss';
 interface Props {
   isShowing: boolean;
   className?: string;
+  content?: JSX.Element;
 }
 
 export const Modal: React.FC<Props> = ({isShowing, className, children}): JSX.Element | null =>

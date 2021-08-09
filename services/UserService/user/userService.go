@@ -103,7 +103,7 @@ func (us *userService) SearchForUsers(ctx context.Context, searchRequest *user.I
 		return nil, status.Errorf(codes.InvalidArgument, "Validation Error: Invalid Search Query")
 	}
 
-	users, err := us.userUC.SearchUserByName(searchRequest.SearchQuery)
+	users, err := us.userUC.SearchUserByName(searchRequest.SearchQuery, searchRequest.KeySetValue)
 	if err != nil {
 		return nil, grpc_errors.ErrorResponse(err, err.Error())
 	}

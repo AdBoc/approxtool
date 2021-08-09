@@ -1,0 +1,7 @@
+@use '../../../styles/colors';
+
+.passwordForm {
+  border: 1px solid colors.$input-border;
+  border-radius: 4px;
+  padding: 1.25rem;
+}

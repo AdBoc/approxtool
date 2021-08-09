@@ -255,6 +255,9 @@ export class SearchRequest extends jspb.Message {
   getAccessToken(): string;
   setAccessToken(value: string): SearchRequest;
 
+  getKeysetvalue(): number;
+  setKeysetvalue(value: number): SearchRequest;
+
   getSearchquery(): string;
   setSearchquery(value: string): SearchRequest;
 
@@ -269,11 +272,15 @@ export class SearchRequest extends jspb.Message {
 export namespace SearchRequest {
   export type AsObject = {
     accessToken: string,
+    keysetvalue: number,
     searchquery: string,
   }
 }
 
 export class InternalSearchRequest extends jspb.Message {
+  getKeysetvalue(): number;
+  setKeysetvalue(value: number): InternalSearchRequest;
+
   getSearchquery(): string;
   setSearchquery(value: string): InternalSearchRequest;
 
@@ -287,6 +294,7 @@ export class InternalSearchRequest extends jspb.Message {
 
 export namespace InternalSearchRequest {
   export type AsObject = {
+    keysetvalue: number,
     searchquery: string,
   }
 }
