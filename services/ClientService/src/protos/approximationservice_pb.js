@@ -1079,7 +1079,7 @@ proto.protos.Parameter.prototype.setStderr = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.protos.FitResult.repeatedFields_ = [16];
+proto.protos.FitResult.repeatedFields_ = [13];
 
 
 
@@ -1121,12 +1121,9 @@ proto.protos.FitResult.toObject = function(includeInstance, msg) {
     aic: jspb.Message.getFloatingPointFieldWithDefault(msg, 7, 0.0),
     bic: jspb.Message.getFloatingPointFieldWithDefault(msg, 8, 0.0),
     fog: jspb.Message.getFieldWithDefault(msg, 9, 0),
-    meanOfX: jspb.Message.getFloatingPointFieldWithDefault(msg, 10, 0.0),
-    meanOfY: jspb.Message.getFloatingPointFieldWithDefault(msg, 11, 0.0),
-    chiSqrt: jspb.Message.getFloatingPointFieldWithDefault(msg, 12, 0.0),
-    reducedChiSqrt: jspb.Message.getFloatingPointFieldWithDefault(msg, 13, 0.0),
-    dataPoints: jspb.Message.getFloatingPointFieldWithDefault(msg, 14, 0.0),
-    fittingMethod: jspb.Message.getFieldWithDefault(msg, 15, ""),
+    meanError: jspb.Message.getFloatingPointFieldWithDefault(msg, 10, 0.0),
+    meanSquaredError: jspb.Message.getFloatingPointFieldWithDefault(msg, 11, 0.0),
+    rootMeanSquaredError: jspb.Message.getFloatingPointFieldWithDefault(msg, 12, 0.0),
     parametersList: jspb.Message.toObjectList(msg.getParametersList(),
     proto.protos.Parameter.toObject, includeInstance)
   };
@@ -1203,29 +1200,17 @@ proto.protos.FitResult.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 10:
       var value = /** @type {number} */ (reader.readFloat());
-      msg.setMeanOfX(value);
+      msg.setMeanError(value);
       break;
     case 11:
       var value = /** @type {number} */ (reader.readFloat());
-      msg.setMeanOfY(value);
+      msg.setMeanSquaredError(value);
       break;
     case 12:
       var value = /** @type {number} */ (reader.readFloat());
-      msg.setChiSqrt(value);
+      msg.setRootMeanSquaredError(value);
       break;
     case 13:
-      var value = /** @type {number} */ (reader.readFloat());
-      msg.setReducedChiSqrt(value);
-      break;
-    case 14:
-      var value = /** @type {number} */ (reader.readFloat());
-      msg.setDataPoints(value);
-      break;
-    case 15:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setFittingMethod(value);
-      break;
-    case 16:
       var value = new proto.protos.Parameter;
       reader.readMessage(value,proto.protos.Parameter.deserializeBinaryFromReader);
       msg.addParameters(value);
@@ -1322,52 +1307,31 @@ proto.protos.FitResult.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getMeanOfX();
+  f = message.getMeanError();
   if (f !== 0.0) {
     writer.writeFloat(
       10,
       f
     );
   }
-  f = message.getMeanOfY();
+  f = message.getMeanSquaredError();
   if (f !== 0.0) {
     writer.writeFloat(
       11,
       f
     );
   }
-  f = message.getChiSqrt();
+  f = message.getRootMeanSquaredError();
   if (f !== 0.0) {
     writer.writeFloat(
       12,
       f
     );
   }
-  f = message.getReducedChiSqrt();
-  if (f !== 0.0) {
-    writer.writeFloat(
-      13,
-      f
-    );
-  }
-  f = message.getDataPoints();
-  if (f !== 0.0) {
-    writer.writeFloat(
-      14,
-      f
-    );
-  }
-  f = message.getFittingMethod();
-  if (f.length > 0) {
-    writer.writeString(
-      15,
-      f
-    );
-  }
   f = message.getParametersList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      16,
+      13,
       f,
       proto.protos.Parameter.serializeBinaryToWriter
     );
@@ -1538,10 +1502,10 @@ proto.protos.FitResult.prototype.setFog = function(value) {
 
 
 /**
- * optional float mean_of_x = 10;
+ * optional float mean_error = 10;
  * @return {number}
  */
-proto.protos.FitResult.prototype.getMeanOfX = function() {
+proto.protos.FitResult.prototype.getMeanError = function() {
   return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 10, 0.0));
 };
 
@@ -1550,16 +1514,16 @@ proto.protos.FitResult.prototype.getMeanOfX = function() {
  * @param {number} value
  * @return {!proto.protos.FitResult} returns this
  */
-proto.protos.FitResult.prototype.setMeanOfX = function(value) {
+proto.protos.FitResult.prototype.setMeanError = function(value) {
   return jspb.Message.setProto3FloatField(this, 10, value);
 };
 
 
 /**
- * optional float mean_of_y = 11;
+ * optional float mean_squared_error = 11;
  * @return {number}
  */
-proto.protos.FitResult.prototype.getMeanOfY = function() {
+proto.protos.FitResult.prototype.getMeanSquaredError = function() {
   return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 11, 0.0));
 };
 
@@ -1568,16 +1532,16 @@ proto.protos.FitResult.prototype.getMeanOfY = function() {
  * @param {number} value
  * @return {!proto.protos.FitResult} returns this
  */
-proto.protos.FitResult.prototype.setMeanOfY = function(value) {
+proto.protos.FitResult.prototype.setMeanSquaredError = function(value) {
   return jspb.Message.setProto3FloatField(this, 11, value);
 };
 
 
 /**
- * optional float chi_sqrt = 12;
+ * optional float root_mean_squared_error = 12;
  * @return {number}
  */
-proto.protos.FitResult.prototype.getChiSqrt = function() {
+proto.protos.FitResult.prototype.getRootMeanSquaredError = function() {
   return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 12, 0.0));
 };
 
@@ -1586,72 +1550,18 @@ proto.protos.FitResult.prototype.getChiSqrt = function() {
  * @param {number} value
  * @return {!proto.protos.FitResult} returns this
  */
-proto.protos.FitResult.prototype.setChiSqrt = function(value) {
+proto.protos.FitResult.prototype.setRootMeanSquaredError = function(value) {
   return jspb.Message.setProto3FloatField(this, 12, value);
 };
 
 
 /**
- * optional float reduced_chi_sqrt = 13;
- * @return {number}
- */
-proto.protos.FitResult.prototype.getReducedChiSqrt = function() {
-  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 13, 0.0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.protos.FitResult} returns this
- */
-proto.protos.FitResult.prototype.setReducedChiSqrt = function(value) {
-  return jspb.Message.setProto3FloatField(this, 13, value);
-};
-
-
-/**
- * optional float data_points = 14;
- * @return {number}
- */
-proto.protos.FitResult.prototype.getDataPoints = function() {
-  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 14, 0.0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.protos.FitResult} returns this
- */
-proto.protos.FitResult.prototype.setDataPoints = function(value) {
-  return jspb.Message.setProto3FloatField(this, 14, value);
-};
-
-
-/**
- * optional string fitting_method = 15;
- * @return {string}
- */
-proto.protos.FitResult.prototype.getFittingMethod = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 15, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.protos.FitResult} returns this
- */
-proto.protos.FitResult.prototype.setFittingMethod = function(value) {
-  return jspb.Message.setProto3StringField(this, 15, value);
-};
-
-
-/**
- * repeated Parameter parameters = 16;
+ * repeated Parameter parameters = 13;
  * @return {!Array<!proto.protos.Parameter>}
  */
 proto.protos.FitResult.prototype.getParametersList = function() {
   return /** @type{!Array<!proto.protos.Parameter>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.protos.Parameter, 16));
+    jspb.Message.getRepeatedWrapperField(this, proto.protos.Parameter, 13));
 };
 
 
@@ -1660,7 +1570,7 @@ proto.protos.FitResult.prototype.getParametersList = function() {
  * @return {!proto.protos.FitResult} returns this
 */
 proto.protos.FitResult.prototype.setParametersList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 16, value);
+  return jspb.Message.setRepeatedWrapperField(this, 13, value);
 };
 
 
@@ -1670,7 +1580,7 @@ proto.protos.FitResult.prototype.setParametersList = function(value) {
  * @return {!proto.protos.Parameter}
  */
 proto.protos.FitResult.prototype.addParameters = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 16, opt_value, proto.protos.Parameter, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 13, opt_value, proto.protos.Parameter, opt_index);
 };
 
 

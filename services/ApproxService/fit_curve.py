@@ -1,5 +1,6 @@
+import numpy
 import approximationservice_pb2
-import numpy as np
+
 from lmfit import Parameters
 from lmfit.models import ExpressionModel
 
@@ -21,10 +22,11 @@ def fit_curve(x_data, y_data, expression):
         result = model.fit(y_data, x=x_data, params=fit_params)
         params = composeParams(result.params.values())
 
-        # r sqrt
-        ss_res = np.sum(result.residual ** 2)
-        ss_tot = np.sum((y_data - np.mean(y_data)) ** 2)
-        r_squared = 1 - (ss_res / ss_tot)
+        ME = numpy.mean(result.residual)  # Mean Error
+        SE = numpy.square(result.residual)  # Squared errors
+        MSE = numpy.mean(SE)  # Mean squared errors
+        RMSE = numpy.sqrt(MSE)  # Root Mean Squared Error
+        R_squared = 1.0 - (numpy.var(result.residual) / numpy.var(y_data))
 
         return approximationservice_pb2.FitResult(
             model_id=expression.id,
@@ -32,16 +34,13 @@ def fit_curve(x_data, y_data, expression):
             model_name=expression.name,
             model_expression=expression.expression,
             lex_expression=expression.lex_expression,
-            r_sqrt=r_squared,
+            r_sqrt=R_squared,
             aic=result.aic,
             bic=result.bic,
             fog=int(result.nfree),
-            mean_of_x=np.mean(x_data),
-            mean_of_y=np.mean(y_data),
-            chi_sqrt=result.chisqr,
-            reduced_chi_sqrt=result.redchi,
-            data_points=result.ndata,
-            fitting_method=result.method,
+            mean_error=ME,
+            mean_squared_error=MSE,
+            root_mean_squared_error=RMSE,
             parameters=params,
         )
     except ValueError:
@@ -56,12 +55,9 @@ def fit_curve(x_data, y_data, expression):
             aic=float(0),
             bic=float(0),
             fog=int(0),
-            mean_of_x=float(0),
-            mean_of_y=float(0),
-            chi_sqrt=float(0),
-            reduced_chi_sqrt=float(0),
-            data_points=float(0),
-            fitting_method="",
+            mean_error=float(0),
+            mean_squared_error=float(0),
+            root_mean_squared_error=float(0),
             parameters=[],
         )
 

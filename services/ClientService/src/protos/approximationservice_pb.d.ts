@@ -144,23 +144,14 @@ export class FitResult extends jspb.Message {
   getFog(): number;
   setFog(value: number): FitResult;
 
-  getMeanOfX(): number;
-  setMeanOfX(value: number): FitResult;
+  getMeanError(): number;
+  setMeanError(value: number): FitResult;
 
-  getMeanOfY(): number;
-  setMeanOfY(value: number): FitResult;
+  getMeanSquaredError(): number;
+  setMeanSquaredError(value: number): FitResult;
 
-  getChiSqrt(): number;
-  setChiSqrt(value: number): FitResult;
-
-  getReducedChiSqrt(): number;
-  setReducedChiSqrt(value: number): FitResult;
-
-  getDataPoints(): number;
-  setDataPoints(value: number): FitResult;
-
-  getFittingMethod(): string;
-  setFittingMethod(value: string): FitResult;
+  getRootMeanSquaredError(): number;
+  setRootMeanSquaredError(value: number): FitResult;
 
   getParametersList(): Array<Parameter>;
   setParametersList(value: Array<Parameter>): FitResult;
@@ -186,12 +177,9 @@ export namespace FitResult {
     aic: number,
     bic: number,
     fog: number,
-    meanOfX: number,
-    meanOfY: number,
-    chiSqrt: number,
-    reducedChiSqrt: number,
-    dataPoints: number,
-    fittingMethod: string,
+    meanError: number,
+    meanSquaredError: number,
+    rootMeanSquaredError: number,
     parametersList: Array<Parameter.AsObject>,
   }
 }

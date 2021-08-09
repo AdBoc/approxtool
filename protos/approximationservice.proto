@@ -40,13 +40,10 @@ message FitResult {
   float aic = 7;
   float bic = 8;
   uint32 fog = 9;
-  float mean_of_x = 10;
-  float mean_of_y = 11;
-  float chi_sqrt = 12;
-  float reduced_chi_sqrt = 13;
-  float data_points = 14;
-  string fitting_method = 15;
-  repeated Parameter parameters = 16;
+  float mean_error = 10;
+  float mean_squared_error = 11;
+  float root_mean_squared_error = 12;
+  repeated Parameter parameters = 13;
 }
 
 message RequestExpressionParameter {

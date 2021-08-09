@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\010./approx',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x1a\x61pproximationservice.proto\x12\x06protos\"b\n\x17InternalCurveFitRequest\x12\x0e\n\x06x_data\x18\x01 \x03(\x02\x12\x0e\n\x06y_data\x18\x02 \x03(\x02\x12\'\n\x0b\x65xpressions\x18\x03 \x03(\x0b\x32\x12.protos.Expression\"p\n\x0f\x43urveFitRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0e\n\x06x_data\x18\x02 \x03(\x02\x12\x0e\n\x06y_data\x18\x03 \x03(\x02\x12\'\n\x0b\x65xpressions\x18\x04 \x03(\x0b\x32\x12.protos.Expression\"7\n\x0e\x43urveFitResult\x12%\n\nfit_result\x18\x01 \x03(\x0b\x32\x11.protos.FitResult\"8\n\tParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x02\x12\x0e\n\x06stderr\x18\x03 \x01(\x02\"\xd8\x02\n\tFitResult\x12\x10\n\x08model_id\x18\x01 \x01(\r\x12\x16\n\x0esuccess_status\x18\x02 \x01(\x08\x12\x12\n\nmodel_name\x18\x03 \x01(\t\x12\x18\n\x10model_expression\x18\x04 \x01(\t\x12\x16\n\x0elex_expression\x18\x05 \x01(\t\x12\x0e\n\x06r_sqrt\x18\x06 \x01(\x02\x12\x0b\n\x03\x61ic\x18\x07 \x01(\x02\x12\x0b\n\x03\x62ic\x18\x08 \x01(\x02\x12\x0b\n\x03\x66og\x18\t \x01(\r\x12\x11\n\tmean_of_x\x18\n \x01(\x02\x12\x11\n\tmean_of_y\x18\x0b \x01(\x02\x12\x10\n\x08\x63hi_sqrt\x18\x0c \x01(\x02\x12\x18\n\x10reduced_chi_sqrt\x18\r \x01(\x02\x12\x13\n\x0b\x64\x61ta_points\x18\x0e \x01(\x02\x12\x16\n\x0e\x66itting_method\x18\x0f \x01(\t\x12%\n\nparameters\x18\x10 \x03(\x0b\x32\x11.protos.Parameter\"g\n\x1aRequestExpressionParameter\x12\x11\n\tparamName\x18\x01 \x01(\t\x12\x12\n\nparamValue\x18\x02 \x01(\x02\x12\x10\n\x08minBound\x18\x03 \x01(\x02\x12\x10\n\x08maxBound\x18\x04 \x01(\x02\"\x8a\x01\n\nExpression\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\nexpression\x18\x03 \x01(\t\x12\x16\n\x0elex_expression\x18\x04 \x01(\t\x12\x36\n\nparameters\x18\x05 \x03(\x0b\x32\".protos.RequestExpressionParameter2^\n\x14\x41pproximationService\x12\x46\n\tFitCurves\x12\x1f.protos.InternalCurveFitRequest\x1a\x16.protos.CurveFitResult\"\x00\x42\nZ\x08./approxb\x06proto3'
+  serialized_pb=b'\n\x1a\x61pproximationservice.proto\x12\x06protos\"b\n\x17InternalCurveFitRequest\x12\x0e\n\x06x_data\x18\x01 \x03(\x02\x12\x0e\n\x06y_data\x18\x02 \x03(\x02\x12\'\n\x0b\x65xpressions\x18\x03 \x03(\x0b\x32\x12.protos.Expression\"p\n\x0f\x43urveFitRequest\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x0e\n\x06x_data\x18\x02 \x03(\x02\x12\x0e\n\x06y_data\x18\x03 \x03(\x02\x12\'\n\x0b\x65xpressions\x18\x04 \x03(\x0b\x32\x12.protos.Expression\"7\n\x0e\x43urveFitResult\x12%\n\nfit_result\x18\x01 \x03(\x0b\x32\x11.protos.FitResult\"8\n\tParameter\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x02\x12\x0e\n\x06stderr\x18\x03 \x01(\x02\"\xaa\x02\n\tFitResult\x12\x10\n\x08model_id\x18\x01 \x01(\r\x12\x16\n\x0esuccess_status\x18\x02 \x01(\x08\x12\x12\n\nmodel_name\x18\x03 \x01(\t\x12\x18\n\x10model_expression\x18\x04 \x01(\t\x12\x16\n\x0elex_expression\x18\x05 \x01(\t\x12\x0e\n\x06r_sqrt\x18\x06 \x01(\x02\x12\x0b\n\x03\x61ic\x18\x07 \x01(\x02\x12\x0b\n\x03\x62ic\x18\x08 \x01(\x02\x12\x0b\n\x03\x66og\x18\t \x01(\r\x12\x12\n\nmean_error\x18\n \x01(\x02\x12\x1a\n\x12mean_squared_error\x18\x0b \x01(\x02\x12\x1f\n\x17root_mean_squared_error\x18\x0c \x01(\x02\x12%\n\nparameters\x18\r \x03(\x0b\x32\x11.protos.Parameter\"g\n\x1aRequestExpressionParameter\x12\x11\n\tparamName\x18\x01 \x01(\t\x12\x12\n\nparamValue\x18\x02 \x01(\x02\x12\x10\n\x08minBound\x18\x03 \x01(\x02\x12\x10\n\x08maxBound\x18\x04 \x01(\x02\"\x8a\x01\n\nExpression\x12\n\n\x02id\x18\x01 \x01(\r\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\nexpression\x18\x03 \x01(\t\x12\x16\n\x0elex_expression\x18\x04 \x01(\t\x12\x36\n\nparameters\x18\x05 \x03(\x0b\x32\".protos.RequestExpressionParameter2^\n\x14\x41pproximationService\x12\x46\n\tFitCurves\x12\x1f.protos.InternalCurveFitRequest\x1a\x16.protos.CurveFitResult\"\x00\x42\nZ\x08./approxb\x06proto3'
 )
 
 
@@ -274,50 +274,29 @@ _FITRESULT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='mean_of_x', full_name='protos.FitResult.mean_of_x', index=9,
+      name='mean_error', full_name='protos.FitResult.mean_error', index=9,
       number=10, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='mean_of_y', full_name='protos.FitResult.mean_of_y', index=10,
+      name='mean_squared_error', full_name='protos.FitResult.mean_squared_error', index=10,
       number=11, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='chi_sqrt', full_name='protos.FitResult.chi_sqrt', index=11,
+      name='root_mean_squared_error', full_name='protos.FitResult.root_mean_squared_error', index=11,
       number=12, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='reduced_chi_sqrt', full_name='protos.FitResult.reduced_chi_sqrt', index=12,
-      number=13, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='data_points', full_name='protos.FitResult.data_points', index=13,
-      number=14, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='fitting_method', full_name='protos.FitResult.fitting_method', index=14,
-      number=15, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='parameters', full_name='protos.FitResult.parameters', index=15,
-      number=16, type=11, cpp_type=10, label=3,
+      name='parameters', full_name='protos.FitResult.parameters', index=12,
+      number=13, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -335,7 +314,7 @@ _FITRESULT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=368,
-  serialized_end=712,
+  serialized_end=666,
 )
 
 
@@ -387,8 +366,8 @@ _REQUESTEXPRESSIONPARAMETER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=714,
-  serialized_end=817,
+  serialized_start=668,
+  serialized_end=771,
 )
 
 
@@ -447,8 +426,8 @@ _EXPRESSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=820,
-  serialized_end=958,
+  serialized_start=774,
+  serialized_end=912,
 )
 
 _INTERNALCURVEFITREQUEST.fields_by_name['expressions'].message_type = _EXPRESSION
@@ -524,8 +503,8 @@ _APPROXIMATIONSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=960,
-  serialized_end=1054,
+  serialized_start=914,
+  serialized_end=1008,
   methods=[
   _descriptor.MethodDescriptor(
     name='FitCurves',
