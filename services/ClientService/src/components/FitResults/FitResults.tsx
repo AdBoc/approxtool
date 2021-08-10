@@ -70,6 +70,7 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
             className={`${styles.resultElement} ${!result.successStatus ? styles.errorFit : result.successStatus === 'WARN' ? styles.warnFit : styles.properFit}`}
             onClick={() => handleShowDetails(result)}
           >
+            <p className={styles.resultScore}>{result.rootMeanSquaredError}</p>
             <p>{result.modelName}</p>
             {result.successStatus &&
             <Button
@@ -94,6 +95,9 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
         <p>R^2: {highlightedResult?.rSqrt}</p>
         <p>BIC: {highlightedResult?.bic}</p>
         <p>AIC: {highlightedResult?.aic}</p>
+        <p>mean error: {highlightedResult?.meanError}</p>
+        <p>mean squared error: {highlightedResult?.meanSquaredError}</p>
+        <p>root mean squared error: {highlightedResult?.rootMeanSquaredError}</p>
         <h2>Parameters</h2>
         <div className={styles.parametersWrapper} onClick={handleParamsToExcel}>
           {highlightedResult?.parametersList.map(parameter =>

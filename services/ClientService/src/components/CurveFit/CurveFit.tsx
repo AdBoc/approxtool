@@ -115,7 +115,8 @@ export const CurveFit = () => {
       try {
         const response = await apiService.FitCurves(modelsList, xData, yData);
         if (isMounted()) {
-          const fitResult = response.toObject().fitResultList.sort((a, b) => b.rSqrt - a.rSqrt);
+          const fitResult = response.toObject().fitResultList
+            .sort((a, b) => a.rootMeanSquaredError - b.rootMeanSquaredError);
           fitResult.forEach(RateResult);
           dispatch({type: FitActionType.SET_RESULT, result: fitResult});
         }
