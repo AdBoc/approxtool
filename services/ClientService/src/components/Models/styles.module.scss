@@ -35,6 +35,30 @@
   cursor: pointer;
 }
 
+.mansonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-gap: 1px;
+  grid-auto-rows: minmax(180px, auto);
+  grid-auto-flow: dense;
+  padding: 1px;
+}
+
+.mansonryChild {
+  padding: 1rem;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 10px;
+}
+
+.paramsButton {
+  margin: 0 0 0 auto;
+  border: none;
+  cursor: pointer;
+  background-color: #cecece;
+}
+
 .modelSelected {
   background-color: #e6e6ff;
 

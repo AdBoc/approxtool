@@ -62,9 +62,9 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
 
   return (
     <>
-      <div className={styles.modelsWrapper}>
+      <div className={styles.mansonry}>
         {Object.entries(expressions).map(([tag, expressions]) => (
-          <div key={tag}>
+          <div key={tag} className={styles.mansonryChild}>
             <button type="button" className={styles.tag} onClick={() => handleSelectTag(tag)}>{tag}</button>
             {expressions.map((model) => (
               <div
@@ -73,7 +73,7 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
                 onClick={() => handleModelSelect(model)}
               >
                 <input type="checkbox" checked={model.isSelected} readOnly/>
-                <button onClick={e => handleGuessBounds(e, model)}>{model.name}</button>
+                <button className={styles.paramsButton} onClick={e => handleGuessBounds(e, model)}>{model.name}</button>
               </div>
             ))}
           </div>
