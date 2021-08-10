@@ -10,7 +10,8 @@
 }
 
 .tableWrapper {
-  max-height: 70vh;
+  border: 1px solid black;
+  height: 70vh;
   overflow-y: auto;
 }
 
@@ -35,7 +36,6 @@
 }
 
 .tableHeader {
-  padding: .25rem 0;
   border-bottom: 1px solid black;
 }
 

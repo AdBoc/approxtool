@@ -70,8 +70,8 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
             className={`${styles.resultElement} ${!result.successStatus ? styles.errorFit : result.successStatus === 'WARN' ? styles.warnFit : styles.properFit}`}
             onClick={() => handleShowDetails(result)}
           >
-            <p className={styles.resultScore}>{result.rootMeanSquaredError}</p>
-            <p>{result.modelName}</p>
+            <p>{result.rootMeanSquaredError.toFixed(2)}</p>
+            <p className={styles.resultName}>{result.modelName}</p>
             {result.successStatus &&
             <Button
                 className={styles.drawButton}

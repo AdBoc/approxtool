@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, setSelectedUser}): JSX.Element => {
-  const [renderPasswordInput, setRenderPasswordInput] = useState<boolean | string>(false);
+  const [passwordInput, setPasswordInput] = useState<boolean | string>(false);
   const [userId, setUserId] = useState<number | null>(null);
   const isMounted = useIsMounted();
 
@@ -27,7 +27,7 @@ export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, 
       await apiService.ChangeUserPrivilege(userId);
       if (isMounted()) {
         setUsers(mutateUser.changePrivilege(users, userId));
-        closeChangePassModal();
+        setSelectedUser(null);
       }
     } catch (err) {
       console.error(err.code, err.message);
@@ -39,7 +39,7 @@ export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, 
       await apiService.DeleteUser(userId);
       if (isMounted()) {
         setUsers(mutateUser.deleteUser(users, userId));
-        closeChangePassModal();
+        setSelectedUser(null);
       }
     } catch (err) {
       console.error(err.code, err.message);
@@ -47,12 +47,13 @@ export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, 
   };
 
   const handleChangePassword = async (userId: number) => {
-    if (typeof renderPasswordInput !== 'string' || renderPasswordInput.length < 6) return;
+    if (typeof passwordInput !== 'string' || passwordInput.length < 6) return;
 
     try {
-      await apiService.ChangePassword(userId, renderPasswordInput);
+      await apiService.ChangePassword(userId, passwordInput);
       if (isMounted()) {
         closeChangePassModal();
+        setSelectedUser(null);
       }
     } catch (err) {
       console.error(err.code, err.message);
@@ -61,12 +62,12 @@ export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, 
 
   const openChangePassModal = (userId: number) => {
     setUserId(userId);
-    setRenderPasswordInput(true);
+    setPasswordInput(true);
   };
 
   const closeChangePassModal = () => {
+    setPasswordInput(false);
     setUserId(null);
-    setRenderPasswordInput(false);
   };
 
   return (
@@ -81,14 +82,14 @@ export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, 
         )}
       </div>
       <Button text="Close" onClick={() => setSelectedUser(null)}/>
-      <Modal isShowing={Boolean(renderPasswordInput)}>
-        <form className={styles.passwordForm}>
+      <Modal isShowing={Boolean(passwordInput)}>
+        <form className={styles.passwordForm} onSubmit={e => e.preventDefault()}>
           <input type="text" autoComplete="username" hidden/>
           <InputField
             type="password"
             label="New Password"
             autoComplete="new-password"
-            handler={(e) => setRenderPasswordInput(e.target.value)}
+            handler={(e) => setPasswordInput(e.target.value)}
           />
           <p>Password must have 6 min characters</p>
           <Button type="submit" text="Send" onClick={() => handleChangePassword(userId!)}/>

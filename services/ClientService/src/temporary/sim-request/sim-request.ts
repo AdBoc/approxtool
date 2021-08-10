@@ -105,7 +105,7 @@ const RESULTS: FitRes[] = [
     fog: 13,
     meanError: 10,
     meanSquaredError: 10,
-    rootMeanSquaredError: 10,
+    rootMeanSquaredError: 10.217465,
     parametersList: [{
       name: 'a',
       value: 1,
