@@ -70,6 +70,7 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
             className={`${styles.resultElement} ${!result.successStatus ? styles.errorFit : result.successStatus === 'WARN' ? styles.warnFit : styles.properFit}`}
             onClick={() => handleShowDetails(result)}
           >
+            <p className={styles.resultScore}>{result.rootMeanSquaredError}</p>
             <p>{result.modelName}</p>
             {result.successStatus &&
             <Button
@@ -111,9 +112,3 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
     </>
   );
 };
-
-//min=0
-//max=2000
-
-// what if x = 450
-
