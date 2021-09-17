@@ -19,7 +19,7 @@ class Servicer(approximationservice_pb2_grpc.ApproximationServiceServicer):
             result = fit_curves(x_data, y_data, request.expressions)
             return approximationservice_pb2.CurveFitResult(fit_result=result)
         except Exception:
-            context.set_details("uncaught error")
+            context.set_details("approx service error")
             context.set_code(13)
             return approximationservice_pb2.CurveFitResult()
 

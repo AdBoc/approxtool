@@ -183,7 +183,6 @@ class ApiService {
 
   // Approx Service
   FitCurves(modelsList: FitStateExpression[], xData: number[], yData: number[]): Promise<CurveFitResult> {
-    // TODO: WHAT IF EMPTY IS SENT??
     const expressions: Expression[] = [];
 
     modelsList.forEach(({id, name, expression, lexexpression, params}) => {

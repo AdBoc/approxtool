@@ -21,8 +21,10 @@ export const EditModelParams: React.FC<Props> = ({model, dispatch, closeModal}):
   const [paramsForm, setParamsForm] = useState(model.params);
 
   const handleChangeParam = (e: BaseSyntheticEvent, paramIndex: number) => {
+    let newValue = parseFloat(e.target.value);
+    if (Number.isNaN(newValue)) newValue = 0;
     const newParamsState = [...paramsForm];
-    newParamsState[paramIndex] = {...newParamsState[paramIndex], [e.target.name]: parseFloat(e.target.value)};
+    newParamsState[paramIndex] = {...newParamsState[paramIndex], [e.target.name]: newValue};
     setParamsForm(newParamsState);
   };
 
@@ -43,6 +45,7 @@ export const EditModelParams: React.FC<Props> = ({model, dispatch, closeModal}):
           <p>Param: <b>{param.paramName}</b></p>
           <InputField
             label="Initial Guess"
+            type="number"
             name="paramValue"
             value={param.paramValue}
             handler={e => handleChangeParam(e, index)}

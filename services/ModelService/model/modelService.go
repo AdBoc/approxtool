@@ -31,11 +31,11 @@ func (us *modelService) GetUserModels(ctx context.Context, userId *pb.InternalGe
 func (us *modelService) AddModel(ctx context.Context, newModel *pb.InternalNewModelRequest) (*pb.NewModelResponse, error) {
 	var valError error
 	if len(newModel.Name) > 100 {
-		valError = errors.New("Name exceeded 100 characters ")
+		valError = errors.New("Name exceeded 100 characters")
 	} else if len(newModel.Expression) > 255 {
-		valError = errors.New("Expression exceeded 255 characters ")
+		valError = errors.New("Expression exceeded 255 characters")
 	} else if len(newModel.LexExpression) > 255 {
-		valError = errors.New("LexExpression exceeded 255 characters ")
+		valError = errors.New("LexExpression exceeded 255 characters")
 	}
 	if valError != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "Validation failed: %s", valError)

@@ -44,7 +44,7 @@ def fit_curve(x_data, y_data, expression):
             parameters=params,
         )
     except ValueError:
-        print('exception!!', expression.expression)
+        print('exception!!', expression.expression) # TODO: Delete exception print
         return approximationservice_pb2.FitResult(
             model_id=expression.id,
             success_status=False,

@@ -18,6 +18,7 @@ import {
   NewExpression
 } from '../../types/stateExpression';
 import styles from './styles.module.scss';
+import { uint32Generator } from '../../utils/idGenerator';
 
 interface Props {
   expressions: CurveFitState['allModels'];
@@ -43,10 +44,10 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
 
   const modelSubmit = (newExpr: NewExpression) => {
     const model = {
-      id: performance.now(),
+      id: uint32Generator.next().value as number,
       ...newExpr,
       isSelected: false,
-      tag: newExpr.tag || 'Unassigned',
+      tag: 'Unassigned',
       params: expressionParams(newExpr.expression).map(param => ({
         paramName: param,
         paramValue: 1,
@@ -85,7 +86,7 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
         <Button text="Close modal" type="button" onClick={closeModelsModal}/>
       </div>
       <Modal isShowing={isAddModelModal}>
-        <AddModel modelSubmit={modelSubmit}/>
+        <AddModel temporary modelSubmit={modelSubmit}/>
         <Button text="Close" onClick={toggleIsModelModal}/>
       </Modal>
       <Modal isShowing={Boolean(modelDetails)}>

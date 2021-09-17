@@ -92,10 +92,10 @@ export const CurveFit = () => {
 
   const handleApproximation = async () => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      console.log(Object.values(state.allModels).reduce((acc, models) => {
+      Object.values(state.allModels).reduce((acc, models) => {
         models.forEach(model => (model.isSelected && acc.push(model)));
         return acc;
-      }, []));
+      }, []);
 
       fetchTempResults().then(results => {
         results.forEach(RateResult);

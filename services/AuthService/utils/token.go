@@ -25,10 +25,10 @@ type parsedDetails struct {
 func CreateToken(redisClient *redis.Client, userId uint32, userRole string) (string, string, error) {
 	var ctx = context.Background()
 
-		atExpiry := time.Now().Add(time.Minute * 1).Unix()
+	atExpiry := time.Now().Add(time.Minute * 1).Unix()
 // 	atExpiry := time.Now().Add(time.Minute * 15).Unix()
 	atUuid := uuid.New()
-// 		rtExpiry := time.Now().Add(time.Minute * 2).Unix()
+// 	rtExpiry := time.Now().Add(time.Minute * 2).Unix()
 	rtExpiry := time.Now().Add(time.Hour * 24 * 7).Unix()
 	rtUuid := uuid.New()
 
@@ -128,20 +128,3 @@ func DeleteToken(redisClient *redis.Client, token string, secret string) error {
 
 	return nil
 }
-
-//	type customClaims struct { https://pkg.go.dev/github.com/golang-jwt/jwt#NewWithClaims
-//		UserId uint32 `json:"user_id"`
-//		Username string `json:"username"`
-//		UserRole string `json:"user_role"`
-//		jwt.StandardClaims
-//	}
-//
-//	claims := customClaims{
-//		UserId:         request.UserId,
-//		Username:       request.Username,
-//		UserRole:       request.UserRole,
-//		StandardClaims: jwt.StandardClaims{
-//			Issuer:    "",
-//			ExpiresAt: 0,
-//		},
-//	}

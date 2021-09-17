@@ -72,6 +72,8 @@ services:
   approx_svc:
     build:
       context: ./services/ApproxService
+#    deploy:
+#      replicas: 3
     environment:
       PORT: ':9094'
   postgres:
@@ -94,3 +96,5 @@ services:
     restart: always
   redis:
     image: "redis:alpine"
+
+# Some of thouse should not spcify full port in need for replication. 3000:3000 should be just 3000

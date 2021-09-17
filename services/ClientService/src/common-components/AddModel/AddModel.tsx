@@ -25,9 +25,10 @@ import { Graph } from '../Graph';
 
 interface Props {
   modelSubmit: (expr: NewExpression) => void;
+  temporary?: boolean;
 }
 
-export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
+export const AddModel: React.FC<Props> = ({modelSubmit, temporary}): JSX.Element => {
   const [graphPoints, setGraphPoints] = useState<Point[]>([]);
   const [parameters, setParameters] = useState<GenericObject<number>>({});
   const [errors, setErrors] = useState<string[]>([]);
@@ -39,7 +40,7 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
   });
 
   useEffect(() => {
-    if (!modelForm.expression) return setModelForm(prev => ({...prev, lexExpression: ''}));
+    if (!modelForm.expression) return setModelForm(prev => ({...prev, lexexpression: ''}));
     let exprErrors: string[] = [];
     try {
       const lexEquation = nerdamer(modelForm.expression).toTeX();
@@ -98,7 +99,7 @@ export const AddModel: React.FC<Props> = ({modelSubmit}): JSX.Element => {
       <div>
         <InputField label="Name*" name="name" value={modelForm.name} handler={handleInput}/>
         <InputField label="Expression*" name="expression" value={modelForm.expression} handler={handleInput}/>
-        <InputField label="Tag" name="tag" value={modelForm.tag} handler={handleInput}/>
+        {!temporary && <InputField label="Tag" name="tag" value={modelForm.tag} handler={handleInput}/>}
         {modelForm.lexexpression && (
           <TexMath
             block
