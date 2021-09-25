@@ -5,30 +5,25 @@ services:
     ports:
       - "80:80"
     restart: always
-    depends_on:
-      - envoy
   envoy:
     build:
       context: ./envoy
     ports:
       - "8080:8080"
-      - "9901:9901"
     restart: always
-    depends_on:
-      - api_svc
   api_svc:
     build:
       context: ./services/ApiService
-    ports:
-      - "9090:9090"
-    restart: always
     deploy:
-      replicas: 1
+      replicas: 2
+    restart: always
     depends_on:
       - auth_svc
       - user_svc
       - model_svc
       - approx_svc
+    volumes:
+      - ./envoy/api-envoy.yaml:/etc/api-envoy.yaml
     environment:
       PORT: ':9090'
       AUTH_ADDR: 'auth_svc:9091'
@@ -39,8 +34,11 @@ services:
     build:
       context: ./services/AuthService
     restart: always
+    depends_on:
+      - redis
     environment:
       PORT: ':9091'
+      REDIS_ADDR: 'redis:6379'
   user_svc:
     build:
       context: ./services/UserService
@@ -71,6 +69,8 @@ services:
   approx_svc:
     build:
       context: ./services/ApproxService
+    deploy:
+      replicas: 2
     environment:
       PORT: ':9094'
   postgres:
@@ -91,3 +91,5 @@ services:
       timeout: 5s
       retries: 5
     restart: always
+  redis:
+    image: "redis:alpine"

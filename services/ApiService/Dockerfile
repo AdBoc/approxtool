@@ -17,16 +17,20 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN go build -o ApiService
+RUN go build -o ApiService.exe
 
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
 
 # Copy binary from build to main folder
-RUN cp /build/ApiService .
+RUN cp /build/ApiService.exe .
 
 # Build a small image
-FROM scratch
-COPY --from=builder /dist/ApiService /
-EXPOSE 9091
-ENTRYPOINT ["/ApiService"]
+FROM envoyproxy/envoy-alpine-dev:latest
+COPY --from=builder /dist/ApiService.exe /
+
+COPY start_service.sh /
+RUN apk update && apk add bash
+RUN chmod u+x /start_service.sh
+
+CMD ["sh", "/start_service.sh"]

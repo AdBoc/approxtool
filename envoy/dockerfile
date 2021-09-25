@@ -1,4 +1,4 @@
 FROM envoyproxy/envoy-dev:0e26d7fb01d1ebfe481e5fccd91d3e2e87030b9f
-COPY ./envoy.yaml /etc/envoy/envoy.yaml
-CMD /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
-EXPOSE 8080 9901
+COPY ./front-envoy.yaml /etc/front-envoy.yaml
+CMD /usr/local/bin/envoy -c /etc/front-envoy.yaml
+EXPOSE 8080
