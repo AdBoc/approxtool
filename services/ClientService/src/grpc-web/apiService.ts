@@ -2,7 +2,6 @@ import { ApiServiceClient } from '../protos/ApiserviceServiceClientPb';
 import {
   LoginRequest,
   LoginResponse,
-  LogoutRequest,
   RefreshRequest
 } from '../protos/authservice_pb';
 import { token } from '../utils/token';
@@ -48,14 +47,12 @@ class ApiService {
       if (err.code === 16 && err.message === 'token is expired') {
         try {
           const authRequest = new RefreshRequest();
-          authRequest.setAccessToken(token.accessToken);
           authRequest.setRefreshToken(token.refreshToken);
           const response = await this.#client.refreshToken(authRequest, null);
 
           const {refreshToken, accessToken} = response.toObject();
           token.setRefreshToken = refreshToken;
           token.setAccessToken = accessToken;
-          //@ts-ignore
           request.setAccessToken(accessToken);
           //@ts-ignore
           return await this.#client[method](request, metadata);
@@ -83,19 +80,6 @@ class ApiService {
     request.setPassword(password);
 
     return this.#client.login(request, null);
-  };
-
-  Logout(): Promise<Empty> {
-    const request = new LogoutRequest();
-    request.setAccessToken(token.accessToken);
-    request.setRefreshToken(token.refreshToken);
-
-    try {
-      return this.#client.logout(request, null);
-    } catch (e) {
-      console.error(e, 'try catch works');
-      throw e;
-    }
   };
 
   // User Service

@@ -20,8 +20,8 @@ type Server struct {
 	ApproxClient approx.ApproximationServiceClient
 }
 
-func (s *Server) secureRpc(accessToken string) (*auth.GetSessionResponse, error) {
-	token, err := s.AuthClient.GetSession(context.Background(), &auth.GetSessionRequest{AccessToken: accessToken})
+func (s *Server) secureRpc(accessToken string) (*auth.VerifyAccessTokenResponse, error) {
+	token, err := s.AuthClient.VerifyAccessToken(context.Background(), &auth.VerifyAccessTokenRequest{AccessToken: accessToken})
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -30,8 +30,8 @@ func (s *Server) secureRpc(accessToken string) (*auth.GetSessionResponse, error)
 	return token, nil
 }
 
-func (s *Server) secureAdminRpc(accessToken string) (*auth.GetSessionResponse, error) {
-	token, err := s.AuthClient.GetSession(context.Background(), &auth.GetSessionRequest{AccessToken: accessToken})
+func (s *Server) secureAdminRpc(accessToken string) (*auth.VerifyAccessTokenResponse, error) {
+	token, err := s.AuthClient.VerifyAccessToken(context.Background(), &auth.VerifyAccessTokenRequest{AccessToken: accessToken})
 	if err != nil {
 		log.Println(err)
 		return nil, err

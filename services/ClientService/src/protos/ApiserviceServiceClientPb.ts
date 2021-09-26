@@ -119,46 +119,6 @@ export class ApiServiceClient {
     this.methodInfoRefreshToken);
   }
 
-  methodInfoLogout = new grpcWeb.AbstractClientBase.MethodInfo(
-    google_protobuf_empty_pb.Empty,
-    (request: authservice_pb.LogoutRequest) => {
-      return request.serializeBinary();
-    },
-    google_protobuf_empty_pb.Empty.deserializeBinary
-  );
-
-  logout(
-    request: authservice_pb.LogoutRequest,
-    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
-
-  logout(
-    request: authservice_pb.LogoutRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
-
-  logout(
-    request: authservice_pb.LogoutRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/protos.ApiService/Logout',
-        request,
-        metadata || {},
-        this.methodInfoLogout,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/protos.ApiService/Logout',
-    request,
-    metadata || {},
-    this.methodInfoLogout);
-  }
-
   methodInfoChangeUserPrivilege = new grpcWeb.AbstractClientBase.MethodInfo(
     google_protobuf_empty_pb.Empty,
     (request: userservice_pb.ChangePrivilegeRequest) => {

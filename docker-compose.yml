@@ -22,6 +22,8 @@ services:
     ports:
       - "9090:9090"
     restart: always
+    deploy:
+      replicas: 1
     depends_on:
       - auth_svc
       - user_svc
@@ -37,11 +39,8 @@ services:
     build:
       context: ./services/AuthService
     restart: always
-    depends_on:
-      - redis
     environment:
       PORT: ':9091'
-      REDIS_ADDR: 'redis:6379'
   user_svc:
     build:
       context: ./services/UserService
@@ -72,8 +71,6 @@ services:
   approx_svc:
     build:
       context: ./services/ApproxService
-#    deploy:
-#      replicas: 3
     environment:
       PORT: ':9094'
   postgres:
@@ -94,7 +91,3 @@ services:
       timeout: 5s
       retries: 5
     restart: always
-  redis:
-    image: "redis:alpine"
-
-# Some of thouse should not spcify full port in need for replication. 3000:3000 should be just 3000

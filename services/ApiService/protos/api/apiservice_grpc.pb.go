@@ -26,7 +26,6 @@ type ApiServiceClient interface {
 	// Auth Service
 	Login(ctx context.Context, in *auth.LoginRequest, opts ...grpc.CallOption) (*auth.LoginResponse, error)
 	RefreshToken(ctx context.Context, in *auth.RefreshRequest, opts ...grpc.CallOption) (*auth.RefreshResponse, error)
-	Logout(ctx context.Context, in *auth.LogoutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	// User Service
 	ChangeUserPrivilege(ctx context.Context, in *user.ChangePrivilegeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CreateUser(ctx context.Context, in *user.NewUserRequest, opts ...grpc.CallOption) (*user.UserResponse, error)
@@ -62,15 +61,6 @@ func (c *apiServiceClient) Login(ctx context.Context, in *auth.LoginRequest, opt
 func (c *apiServiceClient) RefreshToken(ctx context.Context, in *auth.RefreshRequest, opts ...grpc.CallOption) (*auth.RefreshResponse, error) {
 	out := new(auth.RefreshResponse)
 	err := c.cc.Invoke(ctx, "/protos.ApiService/RefreshToken", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *apiServiceClient) Logout(ctx context.Context, in *auth.LogoutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/protos.ApiService/Logout", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +164,6 @@ type ApiServiceServer interface {
 	// Auth Service
 	Login(context.Context, *auth.LoginRequest) (*auth.LoginResponse, error)
 	RefreshToken(context.Context, *auth.RefreshRequest) (*auth.RefreshResponse, error)
-	Logout(context.Context, *auth.LogoutRequest) (*emptypb.Empty, error)
 	// User Service
 	ChangeUserPrivilege(context.Context, *user.ChangePrivilegeRequest) (*emptypb.Empty, error)
 	CreateUser(context.Context, *user.NewUserRequest) (*user.UserResponse, error)
@@ -200,9 +189,6 @@ func (UnimplementedApiServiceServer) Login(context.Context, *auth.LoginRequest) 
 }
 func (UnimplementedApiServiceServer) RefreshToken(context.Context, *auth.RefreshRequest) (*auth.RefreshResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
-}
-func (UnimplementedApiServiceServer) Logout(context.Context, *auth.LogoutRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedApiServiceServer) ChangeUserPrivilege(context.Context, *user.ChangePrivilegeRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeUserPrivilege not implemented")
@@ -279,24 +265,6 @@ func _ApiService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ApiServiceServer).RefreshToken(ctx, req.(*auth.RefreshRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ApiService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(auth.LogoutRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ApiServiceServer).Logout(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protos.ApiService/Logout",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServiceServer).Logout(ctx, req.(*auth.LogoutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -495,10 +463,6 @@ var ApiService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RefreshToken",
 			Handler:    _ApiService_RefreshToken_Handler,
-		},
-		{
-			MethodName: "Logout",
-			Handler:    _ApiService_Logout_Handler,
 		},
 		{
 			MethodName: "ChangeUserPrivilege",

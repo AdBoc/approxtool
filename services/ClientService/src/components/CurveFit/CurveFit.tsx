@@ -148,18 +148,17 @@ export const CurveFit = () => {
         <Button text="Enter data" type="button" onClick={toggleDataModal}/>
         <p className={styles.descriptionText}>
           2. Select models for fitting,
-          add temporary models (will be lost on page reload),
-          set parameters initial guess and bounds values (Initial guess value is always 1, bounds are -Infinite,
-          Infinite)
+          add temporary models (it will be lost on page reload),
+          set parameters initial guess and bounds values (Default initial guess value is always 1, bounds are [-Infinite,
+          Infinite])
         </p>
         <Button text="Select models" type="button" onClick={toggleModelsSelection}/>
         <p>3. Send fit request.</p>
         <p className={styles.descriptionText}>
-          Green is valid calculation.
-          Yellow color indicates that the result should only be used with caution.
-          It indicates that the calculation succeeded, but with reservations.
+          Green color indicates successful calculation.
+          Yellow color indicates that the result should be used with caution.
           Red color means that calculation failed and threw exception
-          (Likely generated NaN values, make sure that models and its bounds are correct).
+          (Likely generated NaN values, make sure that default and bounds of parameters are set correctly).
         </p>
         <Button text="Fit" type="button" onClick={handleApproximation}/>
       </section>

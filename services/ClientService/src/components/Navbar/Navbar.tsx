@@ -5,19 +5,13 @@ import {
 } from 'react-router-dom';
 import { token } from '../../utils/token';
 import styles from './styles.module.scss';
-import { apiService } from '../../grpc-web/apiService';
 
 export const Navbar: React.FC = (): JSX.Element => {
   const history = useHistory();
 
   const handleLogout = async () => {
-    try {
-      await apiService.Logout();
-      token.removeTokens();
-      history.push('/login');
-    } catch (err) {
-      console.error(err.code, err.message);
-    }
+    token.removeTokens();
+    history.push('/login');
   };
 
   return (

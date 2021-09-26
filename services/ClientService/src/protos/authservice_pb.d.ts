@@ -1,12 +1,8 @@
 import * as jspb from 'google-protobuf'
 
-import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 
 
 export class RefreshRequest extends jspb.Message {
-  getAccessToken(): string;
-  setAccessToken(value: string): RefreshRequest;
-
   getRefreshToken(): string;
   setRefreshToken(value: string): RefreshRequest;
 
@@ -20,7 +16,6 @@ export class RefreshRequest extends jspb.Message {
 
 export namespace RefreshRequest {
   export type AsObject = {
-    accessToken: string,
     refreshToken: string,
   }
 }
@@ -31,9 +26,6 @@ export class InternalRefreshRequest extends jspb.Message {
 
   getUserRole(): string;
   setUserRole(value: string): InternalRefreshRequest;
-
-  getRefreshToken(): string;
-  setRefreshToken(value: string): InternalRefreshRequest;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): InternalRefreshRequest.AsObject;
@@ -47,7 +39,6 @@ export namespace InternalRefreshRequest {
   export type AsObject = {
     userId: number,
     userRole: string,
-    refreshToken: string,
   }
 }
 
@@ -73,76 +64,76 @@ export namespace RefreshResponse {
   }
 }
 
-export class DecodeTokenRequest extends jspb.Message {
+export class VerifyRefreshTokenRequest extends jspb.Message {
   getRefreshToken(): string;
-  setRefreshToken(value: string): DecodeTokenRequest;
+  setRefreshToken(value: string): VerifyRefreshTokenRequest;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): DecodeTokenRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: DecodeTokenRequest): DecodeTokenRequest.AsObject;
-  static serializeBinaryToWriter(message: DecodeTokenRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): DecodeTokenRequest;
-  static deserializeBinaryFromReader(message: DecodeTokenRequest, reader: jspb.BinaryReader): DecodeTokenRequest;
+  toObject(includeInstance?: boolean): VerifyRefreshTokenRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: VerifyRefreshTokenRequest): VerifyRefreshTokenRequest.AsObject;
+  static serializeBinaryToWriter(message: VerifyRefreshTokenRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerifyRefreshTokenRequest;
+  static deserializeBinaryFromReader(message: VerifyRefreshTokenRequest, reader: jspb.BinaryReader): VerifyRefreshTokenRequest;
 }
 
-export namespace DecodeTokenRequest {
+export namespace VerifyRefreshTokenRequest {
   export type AsObject = {
     refreshToken: string,
   }
 }
 
-export class DecodeTokenResponse extends jspb.Message {
+export class VerifyRefreshTokenResponse extends jspb.Message {
   getUserid(): number;
-  setUserid(value: number): DecodeTokenResponse;
+  setUserid(value: number): VerifyRefreshTokenResponse;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): DecodeTokenResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: DecodeTokenResponse): DecodeTokenResponse.AsObject;
-  static serializeBinaryToWriter(message: DecodeTokenResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): DecodeTokenResponse;
-  static deserializeBinaryFromReader(message: DecodeTokenResponse, reader: jspb.BinaryReader): DecodeTokenResponse;
+  toObject(includeInstance?: boolean): VerifyRefreshTokenResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: VerifyRefreshTokenResponse): VerifyRefreshTokenResponse.AsObject;
+  static serializeBinaryToWriter(message: VerifyRefreshTokenResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerifyRefreshTokenResponse;
+  static deserializeBinaryFromReader(message: VerifyRefreshTokenResponse, reader: jspb.BinaryReader): VerifyRefreshTokenResponse;
 }
 
-export namespace DecodeTokenResponse {
+export namespace VerifyRefreshTokenResponse {
   export type AsObject = {
     userid: number,
   }
 }
 
-export class GetSessionRequest extends jspb.Message {
+export class VerifyAccessTokenRequest extends jspb.Message {
   getAccessToken(): string;
-  setAccessToken(value: string): GetSessionRequest;
+  setAccessToken(value: string): VerifyAccessTokenRequest;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetSessionRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: GetSessionRequest): GetSessionRequest.AsObject;
-  static serializeBinaryToWriter(message: GetSessionRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetSessionRequest;
-  static deserializeBinaryFromReader(message: GetSessionRequest, reader: jspb.BinaryReader): GetSessionRequest;
+  toObject(includeInstance?: boolean): VerifyAccessTokenRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: VerifyAccessTokenRequest): VerifyAccessTokenRequest.AsObject;
+  static serializeBinaryToWriter(message: VerifyAccessTokenRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerifyAccessTokenRequest;
+  static deserializeBinaryFromReader(message: VerifyAccessTokenRequest, reader: jspb.BinaryReader): VerifyAccessTokenRequest;
 }
 
-export namespace GetSessionRequest {
+export namespace VerifyAccessTokenRequest {
   export type AsObject = {
     accessToken: string,
   }
 }
 
-export class GetSessionResponse extends jspb.Message {
+export class VerifyAccessTokenResponse extends jspb.Message {
   getUserId(): number;
-  setUserId(value: number): GetSessionResponse;
+  setUserId(value: number): VerifyAccessTokenResponse;
 
   getUserRole(): string;
-  setUserRole(value: string): GetSessionResponse;
+  setUserRole(value: string): VerifyAccessTokenResponse;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetSessionResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: GetSessionResponse): GetSessionResponse.AsObject;
-  static serializeBinaryToWriter(message: GetSessionResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetSessionResponse;
-  static deserializeBinaryFromReader(message: GetSessionResponse, reader: jspb.BinaryReader): GetSessionResponse;
+  toObject(includeInstance?: boolean): VerifyAccessTokenResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: VerifyAccessTokenResponse): VerifyAccessTokenResponse.AsObject;
+  static serializeBinaryToWriter(message: VerifyAccessTokenResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): VerifyAccessTokenResponse;
+  static deserializeBinaryFromReader(message: VerifyAccessTokenResponse, reader: jspb.BinaryReader): VerifyAccessTokenResponse;
 }
 
-export namespace GetSessionResponse {
+export namespace VerifyAccessTokenResponse {
   export type AsObject = {
     userId: number,
     userRole: string,
@@ -209,28 +200,6 @@ export class LoginResponse extends jspb.Message {
 }
 
 export namespace LoginResponse {
-  export type AsObject = {
-    accessToken: string,
-    refreshToken: string,
-  }
-}
-
-export class LogoutRequest extends jspb.Message {
-  getAccessToken(): string;
-  setAccessToken(value: string): LogoutRequest;
-
-  getRefreshToken(): string;
-  setRefreshToken(value: string): LogoutRequest;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): LogoutRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: LogoutRequest): LogoutRequest.AsObject;
-  static serializeBinaryToWriter(message: LogoutRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): LogoutRequest;
-  static deserializeBinaryFromReader(message: LogoutRequest, reader: jspb.BinaryReader): LogoutRequest;
-}
-
-export namespace LogoutRequest {
   export type AsObject = {
     accessToken: string,
     refreshToken: string,

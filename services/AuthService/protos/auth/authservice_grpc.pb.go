@@ -7,7 +7,6 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -20,10 +19,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
 	RefreshToken(ctx context.Context, in *InternalRefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
-	DecodeToken(ctx context.Context, in *DecodeTokenRequest, opts ...grpc.CallOption) (*DecodeTokenResponse, error)
-	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
+	VerifyRefreshToken(ctx context.Context, in *VerifyRefreshTokenRequest, opts ...grpc.CallOption) (*VerifyRefreshTokenResponse, error)
+	VerifyAccessToken(ctx context.Context, in *VerifyAccessTokenRequest, opts ...grpc.CallOption) (*VerifyAccessTokenResponse, error)
 	Login(ctx context.Context, in *InternalLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type authServiceClient struct {
@@ -43,18 +41,18 @@ func (c *authServiceClient) RefreshToken(ctx context.Context, in *InternalRefres
 	return out, nil
 }
 
-func (c *authServiceClient) DecodeToken(ctx context.Context, in *DecodeTokenRequest, opts ...grpc.CallOption) (*DecodeTokenResponse, error) {
-	out := new(DecodeTokenResponse)
-	err := c.cc.Invoke(ctx, "/protos.AuthService/DecodeToken", in, out, opts...)
+func (c *authServiceClient) VerifyRefreshToken(ctx context.Context, in *VerifyRefreshTokenRequest, opts ...grpc.CallOption) (*VerifyRefreshTokenResponse, error) {
+	out := new(VerifyRefreshTokenResponse)
+	err := c.cc.Invoke(ctx, "/protos.AuthService/VerifyRefreshToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authServiceClient) GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error) {
-	out := new(GetSessionResponse)
-	err := c.cc.Invoke(ctx, "/protos.AuthService/GetSession", in, out, opts...)
+func (c *authServiceClient) VerifyAccessToken(ctx context.Context, in *VerifyAccessTokenRequest, opts ...grpc.CallOption) (*VerifyAccessTokenResponse, error) {
+	out := new(VerifyAccessTokenResponse)
+	err := c.cc.Invoke(ctx, "/protos.AuthService/VerifyAccessToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -70,24 +68,14 @@ func (c *authServiceClient) Login(ctx context.Context, in *InternalLoginRequest,
 	return out, nil
 }
 
-func (c *authServiceClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/protos.AuthService/Logout", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
 type AuthServiceServer interface {
 	RefreshToken(context.Context, *InternalRefreshRequest) (*RefreshResponse, error)
-	DecodeToken(context.Context, *DecodeTokenRequest) (*DecodeTokenResponse, error)
-	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
+	VerifyRefreshToken(context.Context, *VerifyRefreshTokenRequest) (*VerifyRefreshTokenResponse, error)
+	VerifyAccessToken(context.Context, *VerifyAccessTokenRequest) (*VerifyAccessTokenResponse, error)
 	Login(context.Context, *InternalLoginRequest) (*LoginResponse, error)
-	Logout(context.Context, *LogoutRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -98,17 +86,14 @@ type UnimplementedAuthServiceServer struct {
 func (UnimplementedAuthServiceServer) RefreshToken(context.Context, *InternalRefreshRequest) (*RefreshResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshToken not implemented")
 }
-func (UnimplementedAuthServiceServer) DecodeToken(context.Context, *DecodeTokenRequest) (*DecodeTokenResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DecodeToken not implemented")
+func (UnimplementedAuthServiceServer) VerifyRefreshToken(context.Context, *VerifyRefreshTokenRequest) (*VerifyRefreshTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyRefreshToken not implemented")
 }
-func (UnimplementedAuthServiceServer) GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSession not implemented")
+func (UnimplementedAuthServiceServer) VerifyAccessToken(context.Context, *VerifyAccessTokenRequest) (*VerifyAccessTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyAccessToken not implemented")
 }
 func (UnimplementedAuthServiceServer) Login(context.Context, *InternalLoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
-}
-func (UnimplementedAuthServiceServer) Logout(context.Context, *LogoutRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -141,38 +126,38 @@ func _AuthService_RefreshToken_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_DecodeToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DecodeTokenRequest)
+func _AuthService_VerifyRefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyRefreshTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).DecodeToken(ctx, in)
+		return srv.(AuthServiceServer).VerifyRefreshToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protos.AuthService/DecodeToken",
+		FullMethod: "/protos.AuthService/VerifyRefreshToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).DecodeToken(ctx, req.(*DecodeTokenRequest))
+		return srv.(AuthServiceServer).VerifyRefreshToken(ctx, req.(*VerifyRefreshTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetSessionRequest)
+func _AuthService_VerifyAccessToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyAccessTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).GetSession(ctx, in)
+		return srv.(AuthServiceServer).VerifyAccessToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/protos.AuthService/GetSession",
+		FullMethod: "/protos.AuthService/VerifyAccessToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GetSession(ctx, req.(*GetSessionRequest))
+		return srv.(AuthServiceServer).VerifyAccessToken(ctx, req.(*VerifyAccessTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -195,24 +180,6 @@ func _AuthService_Login_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogoutRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServiceServer).Logout(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/protos.AuthService/Logout",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Logout(ctx, req.(*LogoutRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -225,20 +192,16 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_RefreshToken_Handler,
 		},
 		{
-			MethodName: "DecodeToken",
-			Handler:    _AuthService_DecodeToken_Handler,
+			MethodName: "VerifyRefreshToken",
+			Handler:    _AuthService_VerifyRefreshToken_Handler,
 		},
 		{
-			MethodName: "GetSession",
-			Handler:    _AuthService_GetSession_Handler,
+			MethodName: "VerifyAccessToken",
+			Handler:    _AuthService_VerifyAccessToken_Handler,
 		},
 		{
 			MethodName: "Login",
 			Handler:    _AuthService_Login_Handler,
-		},
-		{
-			MethodName: "Logout",
-			Handler:    _AuthService_Logout_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

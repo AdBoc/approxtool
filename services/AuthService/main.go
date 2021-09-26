@@ -3,7 +3,6 @@ package main
 import (
 	"authsrv/protos/auth"
 	"authsrv/server"
-	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"log"
@@ -17,10 +16,6 @@ func main() {
 		log.Fatalf("Error loading .evn files")
 	}
 
-	rdb := redis.NewClient(&redis.Options{
-		Addr: os.Getenv("REDIS_ADDR"),
-	})
-
 	serverPort := os.Getenv("PORT")
 	lis, err := net.Listen("tcp", "0.0.0.0"+serverPort)
 	if err != nil {
@@ -28,7 +23,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	auth.RegisterAuthServiceServer(s, &server.Server{RedisClient: rdb})
+	auth.RegisterAuthServiceServer(s, &server.Server{})
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve on port %s (%v)", serverPort, err)

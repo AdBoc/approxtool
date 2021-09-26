@@ -14,7 +14,6 @@
 import * as grpcWeb from 'grpc-web';
 
 import * as authservice_pb from './authservice_pb';
-import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 
 
 export class AuthServiceClient {
@@ -76,84 +75,84 @@ export class AuthServiceClient {
     this.methodInfoRefreshToken);
   }
 
-  methodInfoDecodeToken = new grpcWeb.AbstractClientBase.MethodInfo(
-    authservice_pb.DecodeTokenResponse,
-    (request: authservice_pb.DecodeTokenRequest) => {
+  methodInfoVerifyRefreshToken = new grpcWeb.AbstractClientBase.MethodInfo(
+    authservice_pb.VerifyRefreshTokenResponse,
+    (request: authservice_pb.VerifyRefreshTokenRequest) => {
       return request.serializeBinary();
     },
-    authservice_pb.DecodeTokenResponse.deserializeBinary
+    authservice_pb.VerifyRefreshTokenResponse.deserializeBinary
   );
 
-  decodeToken(
-    request: authservice_pb.DecodeTokenRequest,
-    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.DecodeTokenResponse>;
+  verifyRefreshToken(
+    request: authservice_pb.VerifyRefreshTokenRequest,
+    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.VerifyRefreshTokenResponse>;
 
-  decodeToken(
-    request: authservice_pb.DecodeTokenRequest,
+  verifyRefreshToken(
+    request: authservice_pb.VerifyRefreshTokenRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: authservice_pb.DecodeTokenResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.DecodeTokenResponse>;
+               response: authservice_pb.VerifyRefreshTokenResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.VerifyRefreshTokenResponse>;
 
-  decodeToken(
-    request: authservice_pb.DecodeTokenRequest,
+  verifyRefreshToken(
+    request: authservice_pb.VerifyRefreshTokenRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: authservice_pb.DecodeTokenResponse) => void) {
+               response: authservice_pb.VerifyRefreshTokenResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/protos.AuthService/DecodeToken',
+          '/protos.AuthService/VerifyRefreshToken',
         request,
         metadata || {},
-        this.methodInfoDecodeToken,
+        this.methodInfoVerifyRefreshToken,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/protos.AuthService/DecodeToken',
+      '/protos.AuthService/VerifyRefreshToken',
     request,
     metadata || {},
-    this.methodInfoDecodeToken);
+    this.methodInfoVerifyRefreshToken);
   }
 
-  methodInfoGetSession = new grpcWeb.AbstractClientBase.MethodInfo(
-    authservice_pb.GetSessionResponse,
-    (request: authservice_pb.GetSessionRequest) => {
+  methodInfoVerifyAccessToken = new grpcWeb.AbstractClientBase.MethodInfo(
+    authservice_pb.VerifyAccessTokenResponse,
+    (request: authservice_pb.VerifyAccessTokenRequest) => {
       return request.serializeBinary();
     },
-    authservice_pb.GetSessionResponse.deserializeBinary
+    authservice_pb.VerifyAccessTokenResponse.deserializeBinary
   );
 
-  getSession(
-    request: authservice_pb.GetSessionRequest,
-    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.GetSessionResponse>;
+  verifyAccessToken(
+    request: authservice_pb.VerifyAccessTokenRequest,
+    metadata: grpcWeb.Metadata | null): Promise<authservice_pb.VerifyAccessTokenResponse>;
 
-  getSession(
-    request: authservice_pb.GetSessionRequest,
+  verifyAccessToken(
+    request: authservice_pb.VerifyAccessTokenRequest,
     metadata: grpcWeb.Metadata | null,
     callback: (err: grpcWeb.Error,
-               response: authservice_pb.GetSessionResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.GetSessionResponse>;
+               response: authservice_pb.VerifyAccessTokenResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.VerifyAccessTokenResponse>;
 
-  getSession(
-    request: authservice_pb.GetSessionRequest,
+  verifyAccessToken(
+    request: authservice_pb.VerifyAccessTokenRequest,
     metadata: grpcWeb.Metadata | null,
     callback?: (err: grpcWeb.Error,
-               response: authservice_pb.GetSessionResponse) => void) {
+               response: authservice_pb.VerifyAccessTokenResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
         this.hostname_ +
-          '/protos.AuthService/GetSession',
+          '/protos.AuthService/VerifyAccessToken',
         request,
         metadata || {},
-        this.methodInfoGetSession,
+        this.methodInfoVerifyAccessToken,
         callback);
     }
     return this.client_.unaryCall(
     this.hostname_ +
-      '/protos.AuthService/GetSession',
+      '/protos.AuthService/VerifyAccessToken',
     request,
     metadata || {},
-    this.methodInfoGetSession);
+    this.methodInfoVerifyAccessToken);
   }
 
   methodInfoLogin = new grpcWeb.AbstractClientBase.MethodInfo(
@@ -194,46 +193,6 @@ export class AuthServiceClient {
     request,
     metadata || {},
     this.methodInfoLogin);
-  }
-
-  methodInfoLogout = new grpcWeb.AbstractClientBase.MethodInfo(
-    google_protobuf_empty_pb.Empty,
-    (request: authservice_pb.LogoutRequest) => {
-      return request.serializeBinary();
-    },
-    google_protobuf_empty_pb.Empty.deserializeBinary
-  );
-
-  logout(
-    request: authservice_pb.LogoutRequest,
-    metadata: grpcWeb.Metadata | null): Promise<google_protobuf_empty_pb.Empty>;
-
-  logout(
-    request: authservice_pb.LogoutRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
-
-  logout(
-    request: authservice_pb.LogoutRequest,
-    metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
-               response: google_protobuf_empty_pb.Empty) => void) {
-    if (callback !== undefined) {
-      return this.client_.rpcCall(
-        this.hostname_ +
-          '/protos.AuthService/Logout',
-        request,
-        metadata || {},
-        this.methodInfoLogout,
-        callback);
-    }
-    return this.client_.unaryCall(
-    this.hostname_ +
-      '/protos.AuthService/Logout',
-    request,
-    metadata || {},
-    this.methodInfoLogout);
   }
 
 }

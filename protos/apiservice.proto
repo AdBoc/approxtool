@@ -13,8 +13,7 @@ service ApiService {
     // Auth Service
     rpc Login (LoginRequest) returns (LoginResponse) {}
     rpc RefreshToken (RefreshRequest) returns (RefreshResponse) {}
-    rpc Logout (LogoutRequest) returns (google.protobuf.Empty) {}
-    
+
     // User Service
     rpc ChangeUserPrivilege(ChangePrivilegeRequest) returns (google.protobuf.Empty) {}
     rpc CreateUser(NewUserRequest) returns (UserResponse) {}
