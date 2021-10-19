@@ -5,6 +5,7 @@ import { useIsMounted } from '../../../hooks/useIsMounted';
 import { Model } from '../../../protos/modelservice_pb';
 import { Button } from '../../../common-components/Button/Button';
 import { InputField } from '../../../common-components/InputField/InputField';
+import { isApiError } from '../../../utils/isApiError';
 
 interface Props {
   modelId: number | null;
@@ -25,7 +26,9 @@ export const EditTag: React.FC<Props> = ({modelId, setModels, toggleModal}): JSX
         setModels(prev => mutateModel.editTag(prev, modelId, tagInput));
       }
     } catch (err) {
-      console.error(err.code, err.message);
+      if (isApiError(err)) {
+        console.error(err.code, err.message);
+      }
     } finally {
       toggleModal();
     }

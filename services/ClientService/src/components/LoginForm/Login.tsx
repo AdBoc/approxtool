@@ -1,4 +1,4 @@
-import React, {
+import {
   BaseSyntheticEvent,
   useState
 } from 'react';
@@ -9,9 +9,10 @@ import {
   isError,
   validateLoginForm
 } from './Login.utils';
-import styles from './styles.module.scss';
 import { apiService } from '../../grpc-web/apiService';
 import { token } from '../../utils/token';
+import { isApiError } from '../../utils/isApiError';
+import styles from './styles.module.scss';
 
 export const Login = () => {
   const history = useHistory();
@@ -36,7 +37,9 @@ export const Login = () => {
       token.setRefreshToken = response.toObject().refreshToken;
       history.push('/');
     } catch (err) {
-      console.error(err.code, err.message);
+      if (isApiError(err)) {
+        console.error(err.code, err.message);
+      }
     }
   };
 

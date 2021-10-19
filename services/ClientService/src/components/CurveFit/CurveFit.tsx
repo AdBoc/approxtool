@@ -29,6 +29,7 @@ import styles from './styles.module.scss';
 import { apiService } from '../../grpc-web/apiService';
 import { useIsMounted } from '../../hooks/useIsMounted';
 import { FitStateExpression } from '../../types/stateExpression';
+import { isApiError } from '../../utils/isApiError';
 
 export const CurveFit = () => {
   const history = useHistory();
@@ -82,7 +83,9 @@ export const CurveFit = () => {
             dispatch({type: FitActionType.SET_MODELS, models: modelsObject});
           }
         } catch (err) {
-          console.error(err.code, err.message);
+          if (isApiError(err)) {
+            console.error(err.code, err.message);
+          }
         }
       }
     }
@@ -121,7 +124,9 @@ export const CurveFit = () => {
           dispatch({type: FitActionType.SET_RESULT, result: fitResult});
         }
       } catch (err) {
-        console.error(err.code, err.message);
+        if (isApiError(err)) {
+          console.error(err.code, err.message);
+        }
       }
       graphDataManager.clearExpressions();
     }

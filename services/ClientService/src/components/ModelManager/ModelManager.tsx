@@ -2,20 +2,21 @@ import React, {
   useEffect,
   useState
 } from 'react';
+import TexMath from '@matejmazur/react-katex';
+import { apiService } from '../../grpc-web/apiService';
+import { mutateModel } from './ModelManager.utils';
+import { useIsMounted } from '../../hooks/useIsMounted';
 import { useModal } from '../../hooks/useModal';
+import { isApiError } from '../../utils/isApiError';
 import { Modal } from '../../common-components/Modal/Modal';
 import { AddModel } from '../../common-components/AddModel/AddModel';
 import { Button } from '../../common-components/Button/Button';
-import styles from './styles.module.scss';
-import { mutateModel } from './ModelManager.utils';
 import { Model } from '../../protos/modelservice_pb';
 import { fetchTempModels, } from '../../temporary/sim-request/sim-request';
-import TexMath from '@matejmazur/react-katex';
-import './katex.css';
-import { apiService } from '../../grpc-web/apiService';
-import { useIsMounted } from '../../hooks/useIsMounted';
 import { EditTag } from './EditTag';
 import { NewExpression } from '../../types/stateExpression';
+import styles from './styles.module.scss';
+import './katex.css';
 
 export const ModelManager: React.FC = (): JSX.Element => {
   const [models, setModels] = useState<Model.AsObject[]>([]);
@@ -37,7 +38,9 @@ export const ModelManager: React.FC = (): JSX.Element => {
             setModels(response.toObject().modelsList.sort((a, b) => a.tag.localeCompare(b.tag)));
           }
         } catch (err) {
-          console.error(err.code, err.message);
+          if (isApiError(err)) {
+            console.error(err.code, err.message);
+          }
         }
       }
     }
@@ -53,7 +56,9 @@ export const ModelManager: React.FC = (): JSX.Element => {
         toggleAddModel();
       }
     } catch (err) {
-      console.error(err.code, err.message);
+      if (isApiError(err)) {
+        console.error(err.code, err.message);
+      }
     }
   };
 
@@ -64,7 +69,9 @@ export const ModelManager: React.FC = (): JSX.Element => {
         setModels(prev => mutateModel.deleteModel(prev, modelId));
       }
     } catch (err) {
-      console.error(err.code, err.message);
+      if (isApiError(err)) {
+        console.error(err.code, err.message);
+      }
     }
   };
 

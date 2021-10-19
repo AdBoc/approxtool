@@ -30,7 +30,7 @@ export const DataHandler: React.FC<Props> = ({state, dispatch, toggleModal}): JS
       const parsedData = parseCSVText(result);
       dispatch({type: FitActionType.SET_PLOT_POINTS, plotPoints: parsedData});
     } catch (error) {
-      if (error.message === Errors.ERR_CSV_EXT) return console.error(Errors.ERR_CSV_EXT);
+      if (error instanceof Error && error.message === Errors.ERR_CSV_EXT) return console.error(Errors.ERR_CSV_EXT);
     }
   };
 

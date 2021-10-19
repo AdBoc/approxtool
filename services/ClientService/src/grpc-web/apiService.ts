@@ -33,30 +33,30 @@ import { Role } from '../types';
 import { FitStateExpression } from '../types/stateExpression';
 
 class ApiService {
-  #client = new ApiServiceClient('http://localhost:8080');
+  private client = new ApiServiceClient('http://localhost:8080');
 
-  async #withRetry<T, R extends { setAccessToken: Function }>(
+  private async withRetry<T, R extends { setAccessToken: Function }>(
     method: T,
     request: R,
     metadata: null
   ) {
     try {
       // @ts-ignore
-      return await this.#client[method](request, metadata);
-    } catch (err) {
+      return await this.client[method](request, metadata);
+    } catch (err: any) {
       if (err.code === 16 && err.message === 'token is expired') {
         try {
           const authRequest = new RefreshRequest();
           authRequest.setRefreshToken(token.refreshToken);
-          const response = await this.#client.refreshToken(authRequest, null);
+          const response = await this.client.refreshToken(authRequest, null);
 
           const {refreshToken, accessToken} = response.toObject();
           token.setRefreshToken = refreshToken;
           token.setAccessToken = accessToken;
           request.setAccessToken(accessToken);
           //@ts-ignore
-          return await this.#client[method](request, metadata);
-        } catch (err) {
+          return await this.client[method](request, metadata);
+        } catch (err: any) {
           if (err.code === 16) {
             token.removeTokens();
             window.location.href = '/';
@@ -79,7 +79,7 @@ class ApiService {
     request.setEmail(email);
     request.setPassword(password);
 
-    return this.#client.login(request, null);
+    return this.client.login(request, null);
   };
 
   // User Service
@@ -89,7 +89,7 @@ class ApiService {
     request.setNewrole(Role.ADMIN);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('changeUserPrivilege', request, null);
+    return this.withRetry('changeUserPrivilege', request, null);
   };
 
   CreateUser(name: string, email: string, password: string): Promise<UserResponse> {
@@ -100,7 +100,7 @@ class ApiService {
     request.setRole(Role.USER);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('createUser', request, null);
+    return this.withRetry('createUser', request, null);
   };
 
   DeleteUser(userId: number): Promise<Empty> {
@@ -108,7 +108,7 @@ class ApiService {
     request.setId(userId);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('deleteUser', request, null);
+    return this.withRetry('deleteUser', request, null);
   };
 
   SearchForUsers(userQuery: string, keySetVal: number): Promise<SearchResponse> {
@@ -117,7 +117,7 @@ class ApiService {
     request.setKeysetvalue(keySetVal);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('searchForUsers', request, null);
+    return this.withRetry('searchForUsers', request, null);
   };
 
   ChangePassword(userId: number, newPassword: string): Promise<Empty> {
@@ -126,7 +126,7 @@ class ApiService {
     request.setNewpassword(newPassword);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('changePassword', request, null);
+    return this.withRetry('changePassword', request, null);
   };
 
   // Model Service
@@ -138,7 +138,7 @@ class ApiService {
     request.setTag(tag);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('addModel', request, null);
+    return this.withRetry('addModel', request, null);
   };
 
   EditTag(modelId: number, tag: string): Promise<Empty> {
@@ -147,7 +147,7 @@ class ApiService {
     request.setModelid(modelId);
     request.setNewtag(tag);
 
-    return this.#withRetry('editTag', request, null);
+    return this.withRetry('editTag', request, null);
   };
 
   DeleteModel(modelId: number): Promise<Empty> {
@@ -155,14 +155,14 @@ class ApiService {
     request.setModelid(modelId);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('deleteModel', request, null);
+    return this.withRetry('deleteModel', request, null);
   };
 
   GetUserModels(): Promise<GetModelsResponse> {
     const request = new GetModelsRequest();
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('getUserModels', request, null);
+    return this.withRetry('getUserModels', request, null);
   };
 
   // Approx Service
@@ -199,7 +199,7 @@ class ApiService {
     request.setYDataList(yData);
     request.setAccessToken(token.accessToken);
 
-    return this.#withRetry('fitCurves', request, null);
+    return this.withRetry('fitCurves', request, null);
   };
 }
 

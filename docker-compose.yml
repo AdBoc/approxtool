@@ -15,7 +15,7 @@ services:
     build:
       context: ./services/ApiService
     deploy:
-      replicas: 2
+      replicas: 1
     restart: always
     depends_on:
       - auth_svc
@@ -34,11 +34,8 @@ services:
     build:
       context: ./services/AuthService
     restart: always
-    depends_on:
-      - redis
     environment:
       PORT: ':9091'
-      REDIS_ADDR: 'redis:6379'
   user_svc:
     build:
       context: ./services/UserService
@@ -70,7 +67,7 @@ services:
     build:
       context: ./services/ApproxService
     deploy:
-      replicas: 2
+      replicas: 1
     environment:
       PORT: ':9094'
   postgres:
@@ -91,5 +88,3 @@ services:
       timeout: 5s
       retries: 5
     restart: always
-  redis:
-    image: "redis:alpine"

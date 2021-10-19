@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from '../../../common-components/Modal/Modal';
-import { Role } from '../../../types';
+import { isApiError } from '../../../utils/isApiError';
 import { token } from '../../../utils/token';
 import { apiService } from '../../../grpc-web/apiService';
 import { mutateUser } from '../UserManager.utils';
@@ -9,6 +9,7 @@ import { UserResponse } from '../../../protos/userservice_pb';
 import { Button } from '../../../common-components/Button/Button';
 import { InputField } from '../../../common-components/InputField/InputField';
 import styles from './styles.module.scss';
+import { Role } from '../../../types';
 
 interface Props {
   users: UserResponse.AsObject[];
@@ -30,7 +31,9 @@ export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, 
         setSelectedUser(null);
       }
     } catch (err) {
-      console.error(err.code, err.message);
+      if (isApiError(err)) {
+        console.error(err.code, err.message);
+      }
     }
   };
 
@@ -42,7 +45,9 @@ export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, 
         setSelectedUser(null);
       }
     } catch (err) {
-      console.error(err.code, err.message);
+      if (isApiError(err)) {
+        console.error(err.code, err.message);
+      }
     }
   };
 
@@ -56,7 +61,9 @@ export const UserOperations: React.FC<Props> = ({users, selectedUser, setUsers, 
         setSelectedUser(null);
       }
     } catch (err) {
-      console.error(err.code, err.message);
+      if (isApiError(err)) {
+        console.error(err.code, err.message);
+      }
     }
   };
 
