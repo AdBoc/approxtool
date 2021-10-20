@@ -35,6 +35,7 @@ import { FitStateExpression } from '../types/stateExpression';
 class ApiService {
   private client = new ApiServiceClient('http://localhost:8080');
 
+  // TODO: IMPROVE CODE
   private async withRetry<T, R extends { setAccessToken: Function }>(
     method: T,
     request: R,

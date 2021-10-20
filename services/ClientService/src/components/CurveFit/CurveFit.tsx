@@ -161,9 +161,8 @@ export const CurveFit = () => {
         <p>3. Send fit request.</p>
         <p className={styles.descriptionText}>
           Green color indicates successful calculation.
-          Yellow color indicates that the result should be used with caution.
-          Red color means that calculation failed and threw exception
-          (Likely generated NaN values, make sure that default and bounds of parameters are set correctly).
+          Yellow color indicates that the result should be used with caution (ex. parameter value is NaN).
+          Red color means that calculation failed and threw exception (Make sure that default and bounds of parameters are set correctly).
         </p>
         <Button text="Fit" type="button" onClick={handleApproximation}/>
       </section>

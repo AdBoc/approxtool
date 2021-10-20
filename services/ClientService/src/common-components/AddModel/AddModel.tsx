@@ -97,9 +97,9 @@ export const AddModel: React.FC<Props> = ({modelSubmit, temporary}): JSX.Element
   return (
     <div className={styles.modalWrapper}>
       <div>
-        <InputField label="Name*" name="name" value={modelForm.name} handler={handleInput}/>
-        <InputField label="Expression*" name="expression" value={modelForm.expression} handler={handleInput}/>
-        {!temporary && <InputField label="Tag" name="tag" value={modelForm.tag} handler={handleInput}/>}
+        <InputField label="Name*" name="name" value={modelForm.name} handler={handleInput} autoComplete="off"/>
+        <InputField label="Expression*" name="expression" value={modelForm.expression} handler={handleInput} autoComplete="off" />
+        {!temporary && <InputField label="Tag" name="tag" value={modelForm.tag} handler={handleInput} autoComplete="off"/>}
         {modelForm.lexexpression && (
           <TexMath
             block
