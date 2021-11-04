@@ -1,7 +1,5 @@
-import {
-  Role,
-  User
-} from '../../types';
+import { Role } from '../../constants/role';
+import { User } from '../../types';
 
 class MutateUser {
   deleteUser(users: User[], deletedUserId: number) {

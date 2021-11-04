@@ -5,7 +5,7 @@ import {
 import { Parser } from 'expr-eval';
 import { parseAsterisks } from './dataParsing';
 import { GraphExpression, } from '../types/stateExpression';
-import { FitRes } from '../types/fitResult';
+import { FitResponse } from '../types/fitResult';
 
 /**
  * calculate points to draw on graph from string expression
@@ -15,7 +15,7 @@ import { FitRes } from '../types/fitResult';
  * @param xMax - max x value for axis
  * @return [[x],[y]] points are returned in successful calculation, undefined is returned on error
  */
-export function calculatePoints(expression: string, expressionParams: GenericObject<number>, xMin = -100, xMax = 100): Point[] | false {
+export function calculatePoints(expression: string, expressionParams: GenericObject<number>, xMin = -100, xMax = 100): Point[] {
   const parser = new Parser();
 
   const points: Point[] = [];
@@ -23,16 +23,12 @@ export function calculatePoints(expression: string, expressionParams: GenericObj
   const numOfPlotPoints = 1000;
   const addValue = (xMax - xMin) / numOfPlotPoints;
 
-  try {
-    let expressionToEval = expression.replace(/ /g, ''); //TODO: NECESSARY?
-    expressionToEval = parseAsterisks(expressionToEval);
-    const expr = parser.parse(expressionToEval);
-    for (let x = xMin; x < xMax; x += addValue) {
-      points.push([x, expr.evaluate({...expressionParams, x})]);
-    }
-  } catch (e) {
-    return false;
+  const expr = parser.parse(parseAsterisks(expression, 'python').replace(/ /g, ''));
+  
+  for (let x = xMin; x < xMax; x += addValue) {
+    points.push([x, expr.evaluate({...expressionParams, x})]);
   }
+
   return points;
 }
 
@@ -43,7 +39,7 @@ export function calculatePoints(expression: string, expressionParams: GenericObj
  * @param xMax
  * @return {name, points} are returned on successful calculation, false is returned on error
  */
-export function calculateExpressionsPoints(expressions: FitRes[], xMin: number, xMax: number): GraphExpression[] | false {
+export function calculateExpressionsPoints(expressions: FitResponse[], xMin: number, xMax: number): GraphExpression[] | false {
   const parsedExpressions: GraphExpression[] = [];
 
 
@@ -52,7 +48,7 @@ export function calculateExpressionsPoints(expressions: FitRes[], xMin: number, 
 
     if (!expression.successStatus) continue;
 
-    const parsedExpression = parseAsterisks(expression.modelExpression, true).replaceAll(' ', '');
+    const parsedExpression = parseAsterisks(expression.modelExpression, 'js').replaceAll(' ', '');
 
     const params = expression.parametersList.reduce((parameters, curr) => {
       parameters[curr.name] = curr.value;
@@ -60,13 +56,12 @@ export function calculateExpressionsPoints(expressions: FitRes[], xMin: number, 
     }, {} as GenericObject<number>);
 
     const result = calculatePoints(parsedExpression, params, xMin, xMax);
-    if (result) {
-      parsedExpressions.push({
-        id: expression.modelId,
-        name: expression.modelName,
-        points: result,
-      });
-    }
+   
+    parsedExpressions.push({
+      id: expression.modelId,
+      name: expression.modelName,
+      points: result,
+    });
   }
 
   return parsedExpressions;
@@ -111,15 +106,13 @@ export function getXAxisMinMax(points: Point[]): [number, number] {
 export function getXYAxisMinMax(points: Point[]): [number, number, number, number] {
   let xMin = Infinity, xMax = -Infinity, yMin = Infinity, yMax = -Infinity;
 
-  points.forEach(([x, y]) => {
+  for (let [x, y] of points) {
     if (x < xMin) xMin = x;
     if (x > xMax) xMax = x;
     if (y < yMin) yMin = y;
     if (y > yMax) yMax = y;
-  }); //TODO: FOR??
+  }
 
   if (!Number.isFinite(xMin) || !Number.isFinite(xMax) || !Number.isFinite(yMin) || !Number.isFinite(yMax)) return [0, 0, 0, 0];
   return [xMin, xMax, yMin, yMax];
 }
-
-//TODO: DRY?

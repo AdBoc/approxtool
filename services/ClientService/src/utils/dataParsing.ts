@@ -26,51 +26,51 @@ function uniqueFilter(value: string | number, index: number, self: (string | num
   return self.indexOf(value) === index;
 }
 
-export function expressionParams(expression: string): string[] {
+export function getExpressionParams(expression: string): string[] {
   return splitStringByArray(expression, splitExpressionChars)
     .filter(param => param !== 'x' && Boolean(param) && param.length === 1 && isNaN(Number(param)))
     .filter(uniqueFilter);
 }
 
-export function illegalCharacters(expression: string) {
+export function searchForIllegalChars(expression: string) {
   const words = splitStringByArray(expression, splitExpressionChars)
     .filter(param => param.length !== 1 && Boolean(param) && isNaN(Number(param)));
   return words.some((word) => !allowedMathSymbols[word]);
 }
 
-export function parseAsterisks(expression: string, toJs = true) {
-  if (toJs) return expression.replaceAll('**', '^');
+export function parseAsterisks(expression: string, target: 'js' | 'python') {
+  if (target === 'js') return expression.replaceAll('**', '^');
   else return expression.replace('^', '**');
 }
 
-//to [[xvals], [yvals]]
-export function parsePointsForRequest(data: number[]): [number[], number[]] {
+/**
+ * parse points to backend expected format
+ * @param points
+ * @return [[xValues],[yValues]] - separate arrays with only X and Y values
+ */
+export function parsePointsForRequest(points: number[]): [number[], number[]] {
   const xData: number[] = [];
   const yData: number[] = [];
 
-  let toFirstArr = true;
-
-  for (let i = 0; i <= data.length - 1; i++) {
-    toFirstArr ? xData.push(data[i]) : yData.push(data[i]);
-    toFirstArr = !toFirstArr;
+  for (let i = 0; i < points.length; i+= 2) {
+    xData.push(points[i]);
+    yData.push(points[i+1]);
   }
 
   return [xData, yData];
 }
 
 /**
- * calculate points to draw on graph from string expression
+ * calculate points that will be drawn on graph
  * @param points
  * @return [[x],[y]] points are returned in successful calculation, undefined is returned on error
  */
 export function parsePointsForGraph(points: number[]): Point[] {
   const fitPoints: Point[] = [];
 
-  for (let i = 0; i <= points.length; i += 2) {
+  for (let i = 0; i < points.length; i += 2) {
     fitPoints.push([points[i], points[i + 1]]);
   }
-
-  //TODO: TWO LAST POINTS ARE UNDEFINED
 
   return fitPoints;
 }

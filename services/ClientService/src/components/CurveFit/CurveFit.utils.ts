@@ -1,7 +1,6 @@
-import { FitRes } from '../../types/fitResult';
+import { FitResponse } from '../../types/fitResult';
 
-//stderr too big or 0 or NaN??
-export function RateResult(fitObject: FitRes, index: number, array: FitRes[]) {
+export function rateResults(fitObject: FitResponse, index: number, array: FitResponse[]) {
   if (!fitObject.successStatus) return;
   fitObject.parametersList.forEach(param => {
     if (param.value === 1) return array[index].successStatus = 'WARN';

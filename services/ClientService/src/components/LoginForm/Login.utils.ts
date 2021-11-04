@@ -1,5 +1,6 @@
 import { emailRegex } from '../../constants/constants';
 import {
+  GenericObject,
   LoginForm,
   RegisterForm
 } from '../../types';
@@ -46,9 +47,9 @@ export function validateRegisterForm(prevErrors: RegisterForm, form: RegisterFor
   return errors;
 }
 
-export function isError(errors: [string, string][]) {
-  for (const error of errors) {
-    if (error[1]) return true;
+export function isError(errors: GenericObject<string>) {
+  for (const errorMessage of Object.values(errors)) {
+    if (errorMessage) return true;
   }
   return false;
 }

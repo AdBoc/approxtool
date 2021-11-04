@@ -12,7 +12,6 @@ import { Modal } from '../../common-components/Modal/Modal';
 import { AddModel } from '../../common-components/AddModel/AddModel';
 import { Button } from '../../common-components/Button/Button';
 import { Model } from '../../protos/modelservice_pb';
-import { fetchTempModels, } from '../../temporary/sim-request/sim-request';
 import { EditTag } from './EditTag';
 import { NewExpression } from '../../types/stateExpression';
 import styles from './styles.module.scss';
@@ -27,20 +26,14 @@ export const ModelManager: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     async function fetchModels() {
-      if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        fetchTempModels().then(models => {
-          if (isMounted()) setModels(models);
-        });
-      } else {
-        try {
-          const response = await apiService.GetUserModels();
-          if (isMounted()) {
-            setModels(response.toObject().modelsList.sort((a, b) => a.tag.localeCompare(b.tag)));
-          }
-        } catch (err) {
-          if (isApiError(err)) {
-            console.error(err.code, err.message);
-          }
+      try {
+        const response = await apiService.GetUserModels();
+        if (isMounted()) {
+          setModels(response.toObject().modelsList.sort((a, b) => a.tag.localeCompare(b.tag)));
+        }
+      } catch (err) {
+        if (isApiError(err)) {
+          console.error(err.code, err.message);
         }
       }
     }

@@ -1,8 +1,9 @@
-import React, {
+import {
   BaseSyntheticEvent,
+  Dispatch,
+  FC,
   useState
 } from 'react';
-import { FitStateExpression } from '../../types/stateExpression';
 import TexMath from '@matejmazur/react-katex';
 import {
   CurveFitActions,
@@ -10,26 +11,27 @@ import {
 } from '../../reducers/curveFitReducer';
 import { InputField } from '../InputField/InputField';
 import { Button } from '../Button/Button';
+import { FitStateExpression } from '../../types/stateExpression';
 
 interface Props {
   model: FitStateExpression;
-  dispatch: React.Dispatch<CurveFitActions>;
+  dispatch: Dispatch<CurveFitActions>;
   closeModal: () => void;
 }
 
-export const EditModelParams: React.FC<Props> = ({model, dispatch, closeModal}): JSX.Element => {
+export const EditModelParams: FC<Props> = ({ model, dispatch, closeModal }): JSX.Element => {
   const [paramsForm, setParamsForm] = useState(model.params);
 
   const handleChangeParam = (e: BaseSyntheticEvent, paramIndex: number) => {
     let newValue = parseFloat(e.target.value);
     if (Number.isNaN(newValue)) newValue = 0;
-    const newParamsState = [...paramsForm];
-    newParamsState[paramIndex] = {...newParamsState[paramIndex], [e.target.name]: newValue};
-    setParamsForm(newParamsState);
+    const newParamsForm = [...paramsForm];
+    newParamsForm[paramIndex] = {...newParamsForm[paramIndex], [e.target.name]: newValue};
+    setParamsForm(newParamsForm);
   };
 
   const handleCloseAndSave = () => {
-    dispatch({type: FitActionType.CHANGE_PARAMS, params: paramsForm, modelId: model.id, tag: model.tag});
+    dispatch({ type: FitActionType.CHANGE_PARAMS, params: paramsForm, modelId: model.id, tag: model.tag });
     closeModal();
   };
 

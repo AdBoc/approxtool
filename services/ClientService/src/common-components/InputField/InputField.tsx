@@ -6,10 +6,8 @@ interface Props extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLIn
   handler: (e: BaseSyntheticEvent) => void;
 }
 
-export const InputField: React.FC<Props> = ({label, handler, ...props}): JSX.Element => {
-  return (
-    <label className={styles.label}>{label}
-      <input className={styles.input} onChange={handler} {...props}/>
-    </label>
-  );
-};
+export const InputField: React.FC<Props> = ({ label, handler, ...props }): JSX.Element => (
+  <label className={styles.label}>{label}
+    <input className={styles.input} onChange={handler} {...props} />
+  </label>
+)

@@ -36,7 +36,10 @@ export class ModelServiceClient {
     this.options_ = options;
   }
 
-  methodInfoAddModel = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoAddModel = new grpcWeb.MethodDescriptor(
+    '/protos.ModelService/AddModel',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.InternalNewModelRequest,
     modelservice_pb.NewModelResponse,
     (request: modelservice_pb.InternalNewModelRequest) => {
       return request.serializeBinary();
@@ -51,13 +54,13 @@ export class ModelServiceClient {
   addModel(
     request: modelservice_pb.InternalNewModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: modelservice_pb.NewModelResponse) => void): grpcWeb.ClientReadableStream<modelservice_pb.NewModelResponse>;
 
   addModel(
     request: modelservice_pb.InternalNewModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: modelservice_pb.NewModelResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -76,7 +79,10 @@ export class ModelServiceClient {
     this.methodInfoAddModel);
   }
 
-  methodInfoEditTag = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoEditTag = new grpcWeb.MethodDescriptor(
+    '/protos.ModelService/EditTag',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.InternalEditTagRequest,
     google_protobuf_empty_pb.Empty,
     (request: modelservice_pb.InternalEditTagRequest) => {
       return request.serializeBinary();
@@ -91,13 +97,13 @@ export class ModelServiceClient {
   editTag(
     request: modelservice_pb.InternalEditTagRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   editTag(
     request: modelservice_pb.InternalEditTagRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -116,7 +122,10 @@ export class ModelServiceClient {
     this.methodInfoEditTag);
   }
 
-  methodInfoDeleteModel = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoDeleteModel = new grpcWeb.MethodDescriptor(
+    '/protos.ModelService/DeleteModel',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.InternalDeleteModelRequest,
     google_protobuf_empty_pb.Empty,
     (request: modelservice_pb.InternalDeleteModelRequest) => {
       return request.serializeBinary();
@@ -131,13 +140,13 @@ export class ModelServiceClient {
   deleteModel(
     request: modelservice_pb.InternalDeleteModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   deleteModel(
     request: modelservice_pb.InternalDeleteModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -156,7 +165,10 @@ export class ModelServiceClient {
     this.methodInfoDeleteModel);
   }
 
-  methodInfoGetUserModels = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoGetUserModels = new grpcWeb.MethodDescriptor(
+    '/protos.ModelService/GetUserModels',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.InternalGetModelsRequest,
     modelservice_pb.GetModelsResponse,
     (request: modelservice_pb.InternalGetModelsRequest) => {
       return request.serializeBinary();
@@ -171,13 +183,13 @@ export class ModelServiceClient {
   getUserModels(
     request: modelservice_pb.InternalGetModelsRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: modelservice_pb.GetModelsResponse) => void): grpcWeb.ClientReadableStream<modelservice_pb.GetModelsResponse>;
 
   getUserModels(
     request: modelservice_pb.InternalGetModelsRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: modelservice_pb.GetModelsResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -196,7 +208,10 @@ export class ModelServiceClient {
     this.methodInfoGetUserModels);
   }
 
-  methodInfoAddDefaultModels = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoAddDefaultModels = new grpcWeb.MethodDescriptor(
+    '/protos.ModelService/AddDefaultModels',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.AddDefaultModelRequest,
     google_protobuf_empty_pb.Empty,
     (request: modelservice_pb.AddDefaultModelRequest) => {
       return request.serializeBinary();
@@ -211,13 +226,13 @@ export class ModelServiceClient {
   addDefaultModels(
     request: modelservice_pb.AddDefaultModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   addDefaultModels(
     request: modelservice_pb.AddDefaultModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(

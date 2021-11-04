@@ -29,62 +29,92 @@ import {
   RequestExpressionParameter
 } from '../protos/approximationservice_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { Role } from '../types';
-import { FitStateExpression } from '../types/stateExpression';
+import { API_CLIENT } from '../constants/constants';
+import { FitStateExpression } from '../types';
+import { Role } from '../constants/role';
+
+type Methods = 'changeUserPrivilege'
+  | 'createUser'
+  | 'deleteUser'
+  | 'searchForUsers'
+  | 'changePassword'
+  | 'addModel'
+  | 'editTag'
+  | 'deleteModel'
+  | 'getUserModels'
+  | 'fitCurves';
+
+type Request = NewUserRequest 
+  | DeleteUserRequest 
+  | SearchRequest 
+  | ChangePasswordRequest 
+  | NewModelRequest
+  | EditTagRequest 
+  | DeleteModelRequest 
+  | GetModelsRequest 
+  | CurveFitRequest;
 
 class ApiService {
-  private client = new ApiServiceClient('http://localhost:8080');
+  private client: ApiServiceClient;
 
-  // TODO: IMPROVE CODE
-  private async withRetry<T, R extends { setAccessToken: Function }>(
-    method: T,
-    request: R,
-    metadata: null
-  ) {
+  constructor() {
+    this.client = new ApiServiceClient(API_CLIENT);
+  }
+
+  private async withRetry(method: Methods, request: Request, metadata: null) {
     try {
-      // @ts-ignore
-      return await this.client[method](request, metadata);
+      return await (this.client as any)[method](request, metadata);
     } catch (err: any) {
-      if (err.code === 16 && err.message === 'token is expired') {
-        try {
-          const authRequest = new RefreshRequest();
-          authRequest.setRefreshToken(token.refreshToken);
-          const response = await this.client.refreshToken(authRequest, null);
-
-          const {refreshToken, accessToken} = response.toObject();
-          token.setRefreshToken = refreshToken;
-          token.setAccessToken = accessToken;
-          request.setAccessToken(accessToken);
-          //@ts-ignore
-          return await this.client[method](request, metadata);
-        } catch (err: any) {
-          if (err.code === 16) {
-            token.removeTokens();
-            window.location.href = '/';
-            throw err;
-          }
-          throw err;
+      if (err.code === 16) {
+        if (err.message === 'token is expired') {
+          await this.refreshToken(method, request, metadata);
+        } else {
+          this.deleteToken();
         }
-      } else if (err.code === 16) {
-        token.removeTokens();
-        window.location.href = '/';
-        throw err;
       }
       throw err;
-    }
-  };
+    };
+  }
+
+  private deleteToken() {
+    token.removeTokens();
+    window.location.href = '/';
+  }
+
+  private async refreshToken(method: any, request: any, metadata: any) {
+    try {
+      const authRequest = new RefreshRequest();
+      authRequest.setRefreshToken(token.refreshToken);
+      const response = await this.client.refreshToken(authRequest, null);
+
+      const { refreshToken, accessToken } = response.toObject();
+      token.setRefreshToken = refreshToken;
+      token.setAccessToken = accessToken;
+      request.setAccessToken(accessToken);
+      
+      return (this.client as any)[method](request, metadata);
+    } catch (err: any) {
+      this.deleteToken();
+    } 
+  }
 
   //Auth Service
-  Login(email: string, password: string): Promise<LoginResponse> {
+  public async Login(email: string, password: string): Promise<LoginResponse> {
     const request = new LoginRequest();
     request.setEmail(email);
     request.setPassword(password);
+    
+    const response = await this.client.login(request, null);
 
-    return this.client.login(request, null);
+    const { accessToken, refreshToken } = response.toObject();
+    token.setAccessToken = accessToken;
+    token.setRefreshToken = refreshToken;
+
+    return response;
   };
 
   // User Service
-  ChangeUserPrivilege(userId: number): Promise<Empty> {
+  public ChangeUserPrivilege(userId: number): Promise<Empty> {
     const request = new ChangePrivilegeRequest();
     request.setUserid(userId);
     request.setNewrole(Role.ADMIN);
@@ -93,7 +123,7 @@ class ApiService {
     return this.withRetry('changeUserPrivilege', request, null);
   };
 
-  CreateUser(name: string, email: string, password: string): Promise<UserResponse> {
+  public CreateUser(name: string, email: string, password: string): Promise<UserResponse> {
     const request = new NewUserRequest();
     request.setUsername(name);
     request.setEmail(email);
@@ -104,7 +134,7 @@ class ApiService {
     return this.withRetry('createUser', request, null);
   };
 
-  DeleteUser(userId: number): Promise<Empty> {
+  public DeleteUser(userId: number): Promise<Empty> {
     const request = new DeleteUserRequest();
     request.setId(userId);
     request.setAccessToken(token.accessToken);
@@ -112,7 +142,7 @@ class ApiService {
     return this.withRetry('deleteUser', request, null);
   };
 
-  SearchForUsers(userQuery: string, keySetVal: number): Promise<SearchResponse> {
+  public SearchForUsers(userQuery: string, keySetVal: number): Promise<SearchResponse> {
     const request = new SearchRequest();
     request.setSearchquery(userQuery);
     request.setKeysetvalue(keySetVal);
@@ -121,7 +151,7 @@ class ApiService {
     return this.withRetry('searchForUsers', request, null);
   };
 
-  ChangePassword(userId: number, newPassword: string): Promise<Empty> {
+  public ChangePassword(userId: number, newPassword: string): Promise<Empty> {
     const request = new ChangePasswordRequest();
     request.setUserid(userId)
     request.setNewpassword(newPassword);
@@ -131,7 +161,7 @@ class ApiService {
   };
 
   // Model Service
-  AddModel(name: string, expression: string, lexexpression: string, tag: string): Promise<NewModelResponse> {
+  public AddModel(name: string, expression: string, lexexpression: string, tag: string): Promise<NewModelResponse> {
     const request = new NewModelRequest();
     request.setName(name);
     request.setExpression(expression);
@@ -142,7 +172,7 @@ class ApiService {
     return this.withRetry('addModel', request, null);
   };
 
-  EditTag(modelId: number, tag: string): Promise<Empty> {
+  public EditTag(modelId: number, tag: string): Promise<Empty> {
     const request = new EditTagRequest();
     request.setAccessToken(token.accessToken);
     request.setModelid(modelId);
@@ -151,7 +181,7 @@ class ApiService {
     return this.withRetry('editTag', request, null);
   };
 
-  DeleteModel(modelId: number): Promise<Empty> {
+  public DeleteModel(modelId: number): Promise<Empty> {
     const request = new DeleteModelRequest();
     request.setModelid(modelId);
     request.setAccessToken(token.accessToken);
@@ -159,7 +189,7 @@ class ApiService {
     return this.withRetry('deleteModel', request, null);
   };
 
-  GetUserModels(): Promise<GetModelsResponse> {
+  public GetUserModels(): Promise<GetModelsResponse> {
     const request = new GetModelsRequest();
     request.setAccessToken(token.accessToken);
 
@@ -167,10 +197,10 @@ class ApiService {
   };
 
   // Approx Service
-  FitCurves(modelsList: FitStateExpression[], xData: number[], yData: number[]): Promise<CurveFitResult> {
+  public FitCurves(modelsList: FitStateExpression[], xData: number[], yData: number[]): Promise<CurveFitResult> {
     const expressions: Expression[] = [];
 
-    modelsList.forEach(({id, name, expression, lexexpression, params}) => {
+    modelsList.forEach(({ id, name, expression, lexexpression, params }) => {
       const parsedParams = params.map(param => {
         const requestParams = new RequestExpressionParameter();
 

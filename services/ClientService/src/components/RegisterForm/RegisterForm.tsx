@@ -37,7 +37,7 @@ export const RegisterForm: React.FC<Props> = ({handleClose, setUsers}): JSX.Elem
 
     const errors = validateRegisterForm(registerErrors, registerForm);
     setRegisterErrors(errors);
-    if (isError(Object.entries(errors))) return;
+    if (isError(errors)) return;
 
     try {
       const response = await apiService.CreateUser(name, email, password);

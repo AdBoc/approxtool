@@ -9,11 +9,11 @@ class MutateModel {
     return models.filter(({id}) => id !== modelId);
   };
 
-  editTag(models: Model.AsObject[], modelId: number, tag: string) {
+  editTag(models: Model.AsObject[], modelId: number, newTag: string) {
     const index = models.findIndex(model => model.id === modelId);
     if (!index) return models;
     const modelCopy = [...models]
-    modelCopy[index].tag = tag; // TODO: DO PERF BENCH
+    modelCopy[index].tag = newTag;
     return modelCopy;
   }
 }

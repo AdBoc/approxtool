@@ -10,7 +10,6 @@ import { useModal } from '../../hooks/useModal';
 import { RegisterForm } from '../RegisterForm';
 import { InputField } from '../../common-components/InputField/InputField';
 import { User } from '../../types';
-import { fetchTempUsers } from '../../temporary/sim-request/sim-request';
 import { apiService } from '../../grpc-web/apiService';
 import { useIsMounted } from '../../hooks/useIsMounted';
 import { UserOperations } from './Operations';
@@ -37,24 +36,18 @@ export const UserManager: React.FC = (): JSX.Element => {
     observer.current = new IntersectionObserver(async entries => {
       if (entries[0].isIntersecting && hasMore) {
         const maxId = users[users.length - 1].id;
-        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-          fetchTempUsers().then(users => {
-            if (isMounted()) setUsers(users);
-          });
-        } else {
-          try {
-            setLoading(true);
-            const response = await apiService.SearchForUsers(userQuery, maxId);
-            if (isMounted()) {
-              const usersList = response.toObject().usersList
-              if (usersList.length < 5) setHasMore(false);
-              setUsers([...users, ...usersList]);
-            }
-          } catch (e) {
-            console.error(e);
-          } finally {
-            setLoading(false);
+        try {
+          setLoading(true);
+          const response = await apiService.SearchForUsers(userQuery, maxId);
+          if (isMounted()) {
+            const usersList = response.toObject().usersList
+            if (usersList.length < 5) setHasMore(false);
+            setUsers([...users, ...usersList]);
           }
+        } catch (e) {
+          console.error(e);
+        } finally {
+          setLoading(false);
         }
       }
     });
@@ -63,24 +56,18 @@ export const UserManager: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     async function fetchUsers(keySetVal?: number) {
-      if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        fetchTempUsers().then(users => {
-          if (isMounted()) setUsers(users);
-        });
-      } else {
-        try {
-          setLoading(true);
-          const response = await apiService.SearchForUsers(userQuery, keySetVal || 0);
-          if (isMounted()) {
-            const usersList = response.toObject().usersList
-            if (usersList.length === 5) setHasMore(true);
-            setUsers(usersList);
-          }
-        } catch (e) {
-          console.error(e);
-        } finally {
-          setLoading(false);
+      try {
+        setLoading(true);
+        const response = await apiService.SearchForUsers(userQuery, keySetVal || 0);
+        if (isMounted()) {
+          const usersList = response.toObject().usersList
+          if (usersList.length === 5) setHasMore(true);
+          setUsers(usersList);
         }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
       }
     }
 

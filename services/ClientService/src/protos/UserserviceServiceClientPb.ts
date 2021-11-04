@@ -36,7 +36,10 @@ export class UserServiceClient {
     this.options_ = options;
   }
 
-  methodInfoChangeUserPrivilege = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoChangeUserPrivilege = new grpcWeb.MethodDescriptor(
+    '/protos.UserService/ChangeUserPrivilege',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.InternalChangePrivilegeRequest,
     google_protobuf_empty_pb.Empty,
     (request: userservice_pb.InternalChangePrivilegeRequest) => {
       return request.serializeBinary();
@@ -51,13 +54,13 @@ export class UserServiceClient {
   changeUserPrivilege(
     request: userservice_pb.InternalChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   changeUserPrivilege(
     request: userservice_pb.InternalChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -76,7 +79,10 @@ export class UserServiceClient {
     this.methodInfoChangeUserPrivilege);
   }
 
-  methodInfoVerifyPassword = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoVerifyPassword = new grpcWeb.MethodDescriptor(
+    '/protos.UserService/VerifyPassword',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.VerifyPasswordRequest,
     userservice_pb.VerifyPasswordResponse,
     (request: userservice_pb.VerifyPasswordRequest) => {
       return request.serializeBinary();
@@ -91,13 +97,13 @@ export class UserServiceClient {
   verifyPassword(
     request: userservice_pb.VerifyPasswordRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: userservice_pb.VerifyPasswordResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.VerifyPasswordResponse>;
 
   verifyPassword(
     request: userservice_pb.VerifyPasswordRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: userservice_pb.VerifyPasswordResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -116,7 +122,10 @@ export class UserServiceClient {
     this.methodInfoVerifyPassword);
   }
 
-  methodInfoCreateUser = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoCreateUser = new grpcWeb.MethodDescriptor(
+    '/protos.UserService/CreateUser',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.InternalNewUserRequest,
     userservice_pb.UserResponse,
     (request: userservice_pb.InternalNewUserRequest) => {
       return request.serializeBinary();
@@ -131,13 +140,13 @@ export class UserServiceClient {
   createUser(
     request: userservice_pb.InternalNewUserRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: userservice_pb.UserResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.UserResponse>;
 
   createUser(
     request: userservice_pb.InternalNewUserRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: userservice_pb.UserResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -156,7 +165,10 @@ export class UserServiceClient {
     this.methodInfoCreateUser);
   }
 
-  methodInfoDeleteUser = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoDeleteUser = new grpcWeb.MethodDescriptor(
+    '/protos.UserService/DeleteUser',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.InternalDeleteUserRequest,
     google_protobuf_empty_pb.Empty,
     (request: userservice_pb.InternalDeleteUserRequest) => {
       return request.serializeBinary();
@@ -171,13 +183,13 @@ export class UserServiceClient {
   deleteUser(
     request: userservice_pb.InternalDeleteUserRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   deleteUser(
     request: userservice_pb.InternalDeleteUserRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -196,7 +208,10 @@ export class UserServiceClient {
     this.methodInfoDeleteUser);
   }
 
-  methodInfoSearchForUsers = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoSearchForUsers = new grpcWeb.MethodDescriptor(
+    '/protos.UserService/SearchForUsers',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.InternalSearchRequest,
     userservice_pb.SearchResponse,
     (request: userservice_pb.InternalSearchRequest) => {
       return request.serializeBinary();
@@ -211,13 +226,13 @@ export class UserServiceClient {
   searchForUsers(
     request: userservice_pb.InternalSearchRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: userservice_pb.SearchResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.SearchResponse>;
 
   searchForUsers(
     request: userservice_pb.InternalSearchRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: userservice_pb.SearchResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -236,7 +251,10 @@ export class UserServiceClient {
     this.methodInfoSearchForUsers);
   }
 
-  methodInfoGetUserById = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoGetUserById = new grpcWeb.MethodDescriptor(
+    '/protos.UserService/GetUserById',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.GetUserByIdRequest,
     userservice_pb.GetUserByIdResponse,
     (request: userservice_pb.GetUserByIdRequest) => {
       return request.serializeBinary();
@@ -251,13 +269,13 @@ export class UserServiceClient {
   getUserById(
     request: userservice_pb.GetUserByIdRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: userservice_pb.GetUserByIdResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.GetUserByIdResponse>;
 
   getUserById(
     request: userservice_pb.GetUserByIdRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: userservice_pb.GetUserByIdResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -276,7 +294,10 @@ export class UserServiceClient {
     this.methodInfoGetUserById);
   }
 
-  methodInfoChangePassword = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoChangePassword = new grpcWeb.MethodDescriptor(
+    '/protos.UserService/ChangePassword',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.InternalChangePasswordRequest,
     google_protobuf_empty_pb.Empty,
     (request: userservice_pb.InternalChangePasswordRequest) => {
       return request.serializeBinary();
@@ -291,13 +312,13 @@ export class UserServiceClient {
   changePassword(
     request: userservice_pb.InternalChangePasswordRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   changePassword(
     request: userservice_pb.InternalChangePasswordRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(

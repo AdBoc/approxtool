@@ -10,7 +10,6 @@ import {
   validateLoginForm
 } from './Login.utils';
 import { apiService } from '../../grpc-web/apiService';
-import { token } from '../../utils/token';
 import { isApiError } from '../../utils/isApiError';
 import styles from './styles.module.scss';
 
@@ -24,22 +23,19 @@ export const Login = () => {
     [e.target.name]: e.target.value
   }));
 
-  const handleLogin = async (e: BaseSyntheticEvent) => {
+  const handleLogin = (e: BaseSyntheticEvent) => {
     e.preventDefault();
     const errors = validateLoginForm(loginErrors, loginForm);
     setLoginErrors(errors);
-    if (isError(Object.entries(errors))) return;
+    if (isError(errors)) return;
 
     const {email, password} = loginForm;
+
     try {
-      const response = await apiService.Login(email, password);
-      token.setAccessToken = response.toObject().accessToken;
-      token.setRefreshToken = response.toObject().refreshToken;
+      apiService.Login(email, password);
       history.push('/');
     } catch (err) {
-      if (isApiError(err)) {
-        console.error(err.code, err.message);
-      }
+      if (isApiError(err)) console.error(err.code, err.message);
     }
   };
 

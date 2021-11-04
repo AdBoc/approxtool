@@ -7,7 +7,7 @@ import {
   CurveFitState,
   FitActionType
 } from '../../reducers/curveFitReducer';
-import { expressionParams } from '../../utils/dataParsing';
+import { getExpressionParams } from '../../utils/dataParsing';
 import { useModal } from '../../hooks/useModal';
 import { Button } from '../../common-components/Button/Button';
 import { Modal } from '../../common-components/Modal/Modal';
@@ -48,7 +48,7 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
       ...newExpr,
       isSelected: false,
       tag: 'Unassigned',
-      params: expressionParams(newExpr.expression).map(param => ({
+      params: getExpressionParams(newExpr.expression).map(param => ({
         paramName: param,
         paramValue: 1,
         minBound: -Infinity,
@@ -86,7 +86,7 @@ export const Models: React.FC<Props> = ({expressions, dispatch, closeModelsModal
         <Button text="Close modal" type="button" onClick={closeModelsModal}/>
       </div>
       <Modal isShowing={isAddModelModal}>
-        <AddModel temporary modelSubmit={modelSubmit}/>
+        <AddModel isTempModel modelSubmit={modelSubmit}/>
         <Button text="Close" onClick={toggleIsModelModal}/>
       </Modal>
       <Modal isShowing={Boolean(modelDetails)}>

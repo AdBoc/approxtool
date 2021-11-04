@@ -11,29 +11,29 @@ import {
   CurveFitActions,
   FitActionType
 } from '../../reducers/curveFitReducer';
-import { FitRes } from '../../types/fitResult';
+import { FitResponse } from '../../types/fitResult';
 import TexMath from '@matejmazur/react-katex';
 
 interface Props {
-  results: FitRes[];
+  results: FitResponse[];
   dispatch: React.Dispatch<CurveFitActions>;
 }
 
 export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element => {
-  const [highlightedResult, setHighlightedResult] = useState<FitRes | null>(null);
+  const [highlightedResult, setHighlightedResult] = useState<FitResponse | null>(null);
   const {isShowing, toggle} = useModal();
 
-  const handleShowDetails = (result: FitRes) => {
+  const handleShowDetails = (result: FitResponse) => {
     if (!result.successStatus) return;
     setHighlightedResult(result);
     toggle();
   };
 
-  const drawExpression = (e: BaseSyntheticEvent, result: FitRes) => {
+  const drawExpression = (e: BaseSyntheticEvent, result: FitResponse) => {
     e.stopPropagation();
     let expression = graphDataManager.getExpression(result);
     if (!expression) {
-      console.error('Error calculation expression');
+      console.error('Error while calculating expression');
       return;
     }
     dispatch({type: FitActionType.SET_GRAPH_EXPRESSION, expression});
@@ -48,11 +48,9 @@ export const FitResults: React.FC<Props> = ({results, dispatch}): JSX.Element =>
   };
 
   const handleParamsToExcel = async () => {
-    //\n -> to next column
-    //\t -> lower
     let formattedText = '';
     for (const result of Object.values(highlightedResult!.parametersList)) {
-      formattedText += `${result.name}\t${result.value}\n`;
+      formattedText += `${result.name}\t${result.value}\n`; //\n -> go to next column, \t -> go lower 
     }
     try {
       await navigator.clipboard.writeText(formattedText);

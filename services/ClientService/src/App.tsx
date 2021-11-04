@@ -1,9 +1,9 @@
-import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
 } from 'react-router-dom';
+import { Role } from './constants/role';
 import { CurveFit } from './components/CurveFit';
 import { ErrorPage } from './components/ErrorPage';
 import { AuthView } from './components/AuthView';
@@ -15,13 +15,13 @@ function App(): JSX.Element {
   return (
     <Router>
       <Switch>
-        <ProtectedRoute exact path="/">
+        <ProtectedRoute exact roles={[Role.ADMIN, Role.USER]} path="/">
           <CurveFit/>
         </ProtectedRoute>
-        <ProtectedRoute exact path="/model-manager">
+        <ProtectedRoute exact roles={[Role.ADMIN, Role.USER]} path="/model-manager">
           <ModelManager/>
         </ProtectedRoute>
-        <ProtectedRoute exact path="/user-manager">
+        <ProtectedRoute exact roles={[Role.ADMIN]} path="/user-manager">
           <UserManager/>
         </ProtectedRoute>
         <Route exact path="/login">

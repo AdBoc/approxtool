@@ -13,11 +13,11 @@
 
 import * as grpcWeb from 'grpc-web';
 
-import * as authservice_pb from './authservice_pb';
 import * as google_protobuf_empty_pb from 'google-protobuf/google/protobuf/empty_pb';
 import * as userservice_pb from './userservice_pb';
-import * as modelservice_pb from './modelservice_pb';
 import * as approximationservice_pb from './approximationservice_pb';
+import * as modelservice_pb from './modelservice_pb';
+import * as authservice_pb from './authservice_pb';
 
 
 export class ApiServiceClient {
@@ -39,7 +39,10 @@ export class ApiServiceClient {
     this.options_ = options;
   }
 
-  methodInfoLogin = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoLogin = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/Login',
+    grpcWeb.MethodType.UNARY,
+    authservice_pb.LoginRequest,
     authservice_pb.LoginResponse,
     (request: authservice_pb.LoginRequest) => {
       return request.serializeBinary();
@@ -54,13 +57,13 @@ export class ApiServiceClient {
   login(
     request: authservice_pb.LoginRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: authservice_pb.LoginResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.LoginResponse>;
 
   login(
     request: authservice_pb.LoginRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: authservice_pb.LoginResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -79,7 +82,10 @@ export class ApiServiceClient {
     this.methodInfoLogin);
   }
 
-  methodInfoRefreshToken = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoRefreshToken = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/RefreshToken',
+    grpcWeb.MethodType.UNARY,
+    authservice_pb.RefreshRequest,
     authservice_pb.RefreshResponse,
     (request: authservice_pb.RefreshRequest) => {
       return request.serializeBinary();
@@ -94,13 +100,13 @@ export class ApiServiceClient {
   refreshToken(
     request: authservice_pb.RefreshRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: authservice_pb.RefreshResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.RefreshResponse>;
 
   refreshToken(
     request: authservice_pb.RefreshRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: authservice_pb.RefreshResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -119,7 +125,10 @@ export class ApiServiceClient {
     this.methodInfoRefreshToken);
   }
 
-  methodInfoChangeUserPrivilege = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoChangeUserPrivilege = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/ChangeUserPrivilege',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.ChangePrivilegeRequest,
     google_protobuf_empty_pb.Empty,
     (request: userservice_pb.ChangePrivilegeRequest) => {
       return request.serializeBinary();
@@ -134,13 +143,13 @@ export class ApiServiceClient {
   changeUserPrivilege(
     request: userservice_pb.ChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   changeUserPrivilege(
     request: userservice_pb.ChangePrivilegeRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -159,7 +168,10 @@ export class ApiServiceClient {
     this.methodInfoChangeUserPrivilege);
   }
 
-  methodInfoCreateUser = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoCreateUser = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/CreateUser',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.NewUserRequest,
     userservice_pb.UserResponse,
     (request: userservice_pb.NewUserRequest) => {
       return request.serializeBinary();
@@ -174,13 +186,13 @@ export class ApiServiceClient {
   createUser(
     request: userservice_pb.NewUserRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: userservice_pb.UserResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.UserResponse>;
 
   createUser(
     request: userservice_pb.NewUserRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: userservice_pb.UserResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -199,7 +211,10 @@ export class ApiServiceClient {
     this.methodInfoCreateUser);
   }
 
-  methodInfoDeleteUser = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoDeleteUser = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/DeleteUser',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.DeleteUserRequest,
     google_protobuf_empty_pb.Empty,
     (request: userservice_pb.DeleteUserRequest) => {
       return request.serializeBinary();
@@ -214,13 +229,13 @@ export class ApiServiceClient {
   deleteUser(
     request: userservice_pb.DeleteUserRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   deleteUser(
     request: userservice_pb.DeleteUserRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -239,7 +254,10 @@ export class ApiServiceClient {
     this.methodInfoDeleteUser);
   }
 
-  methodInfoSearchForUsers = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoSearchForUsers = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/SearchForUsers',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.SearchRequest,
     userservice_pb.SearchResponse,
     (request: userservice_pb.SearchRequest) => {
       return request.serializeBinary();
@@ -254,13 +272,13 @@ export class ApiServiceClient {
   searchForUsers(
     request: userservice_pb.SearchRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: userservice_pb.SearchResponse) => void): grpcWeb.ClientReadableStream<userservice_pb.SearchResponse>;
 
   searchForUsers(
     request: userservice_pb.SearchRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: userservice_pb.SearchResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -279,7 +297,10 @@ export class ApiServiceClient {
     this.methodInfoSearchForUsers);
   }
 
-  methodInfoChangePassword = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoChangePassword = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/ChangePassword',
+    grpcWeb.MethodType.UNARY,
+    userservice_pb.ChangePasswordRequest,
     google_protobuf_empty_pb.Empty,
     (request: userservice_pb.ChangePasswordRequest) => {
       return request.serializeBinary();
@@ -294,13 +315,13 @@ export class ApiServiceClient {
   changePassword(
     request: userservice_pb.ChangePasswordRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   changePassword(
     request: userservice_pb.ChangePasswordRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -319,7 +340,10 @@ export class ApiServiceClient {
     this.methodInfoChangePassword);
   }
 
-  methodInfoAddModel = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoAddModel = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/AddModel',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.NewModelRequest,
     modelservice_pb.NewModelResponse,
     (request: modelservice_pb.NewModelRequest) => {
       return request.serializeBinary();
@@ -334,13 +358,13 @@ export class ApiServiceClient {
   addModel(
     request: modelservice_pb.NewModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: modelservice_pb.NewModelResponse) => void): grpcWeb.ClientReadableStream<modelservice_pb.NewModelResponse>;
 
   addModel(
     request: modelservice_pb.NewModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: modelservice_pb.NewModelResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -359,7 +383,10 @@ export class ApiServiceClient {
     this.methodInfoAddModel);
   }
 
-  methodInfoEditTag = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoEditTag = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/EditTag',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.EditTagRequest,
     google_protobuf_empty_pb.Empty,
     (request: modelservice_pb.EditTagRequest) => {
       return request.serializeBinary();
@@ -374,13 +401,13 @@ export class ApiServiceClient {
   editTag(
     request: modelservice_pb.EditTagRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   editTag(
     request: modelservice_pb.EditTagRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -399,7 +426,10 @@ export class ApiServiceClient {
     this.methodInfoEditTag);
   }
 
-  methodInfoDeleteModel = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoDeleteModel = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/DeleteModel',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.DeleteModelRequest,
     google_protobuf_empty_pb.Empty,
     (request: modelservice_pb.DeleteModelRequest) => {
       return request.serializeBinary();
@@ -414,13 +444,13 @@ export class ApiServiceClient {
   deleteModel(
     request: modelservice_pb.DeleteModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void): grpcWeb.ClientReadableStream<google_protobuf_empty_pb.Empty>;
 
   deleteModel(
     request: modelservice_pb.DeleteModelRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: google_protobuf_empty_pb.Empty) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -439,7 +469,10 @@ export class ApiServiceClient {
     this.methodInfoDeleteModel);
   }
 
-  methodInfoGetUserModels = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoGetUserModels = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/GetUserModels',
+    grpcWeb.MethodType.UNARY,
+    modelservice_pb.GetModelsRequest,
     modelservice_pb.GetModelsResponse,
     (request: modelservice_pb.GetModelsRequest) => {
       return request.serializeBinary();
@@ -454,13 +487,13 @@ export class ApiServiceClient {
   getUserModels(
     request: modelservice_pb.GetModelsRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: modelservice_pb.GetModelsResponse) => void): grpcWeb.ClientReadableStream<modelservice_pb.GetModelsResponse>;
 
   getUserModels(
     request: modelservice_pb.GetModelsRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: modelservice_pb.GetModelsResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -479,7 +512,10 @@ export class ApiServiceClient {
     this.methodInfoGetUserModels);
   }
 
-  methodInfoFitCurves = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoFitCurves = new grpcWeb.MethodDescriptor(
+    '/protos.ApiService/FitCurves',
+    grpcWeb.MethodType.UNARY,
+    approximationservice_pb.CurveFitRequest,
     approximationservice_pb.CurveFitResult,
     (request: approximationservice_pb.CurveFitRequest) => {
       return request.serializeBinary();
@@ -494,13 +530,13 @@ export class ApiServiceClient {
   fitCurves(
     request: approximationservice_pb.CurveFitRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: approximationservice_pb.CurveFitResult) => void): grpcWeb.ClientReadableStream<approximationservice_pb.CurveFitResult>;
 
   fitCurves(
     request: approximationservice_pb.CurveFitRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: approximationservice_pb.CurveFitResult) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(

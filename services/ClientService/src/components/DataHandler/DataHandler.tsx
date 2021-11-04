@@ -1,9 +1,15 @@
-import React, { BaseSyntheticEvent } from 'react';
+import {
+  BaseSyntheticEvent,
+  FC,
+  Dispatch
+} from 'react';
 import { readCSV } from './DataHandler.utils';
 import {
   parseCSVText,
   parsePointsForGraph
 } from '../../utils/dataParsing';
+import { getXYAxisMinMax } from '../../utils/curveFit';
+import { graphDataManager } from '../../utils/graphData';
 import { Errors } from '../../constants/constants';
 import { DataTable } from '../DataTable';
 import { Button } from '../../common-components/Button/Button';
@@ -13,16 +19,15 @@ import {
   FitActionType
 } from '../../reducers/curveFitReducer';
 import styles from './styles.module.scss';
-import { getXYAxisMinMax } from '../../utils/curveFit';
-import { graphDataManager } from '../../utils/graphData';
+
 
 interface Props {
   state: CurveFitState;
-  dispatch: React.Dispatch<CurveFitActions>;
+  dispatch: Dispatch<CurveFitActions>;
   toggleModal: () => void;
 }
 
-export const DataHandler: React.FC<Props> = ({state, dispatch, toggleModal}): JSX.Element => {
+export const DataHandler: FC<Props> = ({state, dispatch, toggleModal}): JSX.Element => {
   const handleFileRead = async (e: BaseSyntheticEvent) => {
     const file = e.target.files as FileList;
     try {
@@ -55,14 +60,11 @@ export const DataHandler: React.FC<Props> = ({state, dispatch, toggleModal}): JS
       <DataTable plotPoints={state.rawPoints} dispatch={dispatch}/>
       <div className={styles.buttonsWrapper}>
         <label className={styles.csvButton} htmlFor="file">Open CSV</label>
-        <input id="file" className={styles.fileInput} type="file" accept="text/csv" name="csv reader"
-               onChange={handleFileRead}/>
+        <input id="file" className={styles.fileInput} type="file" accept="text/csv" name="csv reader" onChange={handleFileRead}/>
         <Button type="button" onClick={handlePointsReset} text="Clean Data"/>
-        <Button type="submit" text="Submit" onClick={handleSubmit}/>
-        <Button type="button" text="Cancel" onClick={toggleModal}/>
+        <Button type="submit" onClick={handleSubmit} text="Submit"/>
+        <Button type="button" onClick={toggleModal} text="Cancel"/>
       </div>
     </div>
   );
 };
-
-//TODO: DRAG AND DROP FILE

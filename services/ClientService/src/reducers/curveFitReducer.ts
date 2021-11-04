@@ -4,13 +4,13 @@ import {
   FitStateExpression,
   GraphExpression,
 } from '../types/stateExpression';
-import { FitRes } from '../types/fitResult';
+import { FitResponse } from '../types/fitResult';
 
 export type CurveFitState = {
   allModels: { [k: string]: FitStateExpression[] };
   graphExpression: GraphExpression | null;
   graphPoints: Point[];
-  fitResult: FitRes[];
+  fitResult: FitResponse[];
   rawPoints: number[];
   xDomain: [number, number];
   yDomain: [number, number];
@@ -33,7 +33,7 @@ export enum FitActionType {
 export type CurveFitActions =
   { type: FitActionType.SET_MODELS, models: { [k: string]: FitStateExpression[] } } |
   { type: FitActionType.SET_PLOT_POINTS, plotPoints: number[] } |
-  { type: FitActionType.SET_RESULT, result: FitRes[] } |
+  { type: FitActionType.SET_RESULT, result: FitResponse[] } |
   { type: FitActionType.TOGGLE_MODEL_SELECT, id: number, tag: string } |
   { type: FitActionType.RAW_POINTS_TO_GRAPH_POINTS, graphPoints: Point[] } |
   { type: FitActionType.SET_GRAPH_EXPRESSION, expression: GraphExpression } |

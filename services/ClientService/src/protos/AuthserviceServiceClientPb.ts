@@ -35,7 +35,10 @@ export class AuthServiceClient {
     this.options_ = options;
   }
 
-  methodInfoRefreshToken = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoRefreshToken = new grpcWeb.MethodDescriptor(
+    '/protos.AuthService/RefreshToken',
+    grpcWeb.MethodType.UNARY,
+    authservice_pb.InternalRefreshRequest,
     authservice_pb.RefreshResponse,
     (request: authservice_pb.InternalRefreshRequest) => {
       return request.serializeBinary();
@@ -50,13 +53,13 @@ export class AuthServiceClient {
   refreshToken(
     request: authservice_pb.InternalRefreshRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: authservice_pb.RefreshResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.RefreshResponse>;
 
   refreshToken(
     request: authservice_pb.InternalRefreshRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: authservice_pb.RefreshResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -75,7 +78,10 @@ export class AuthServiceClient {
     this.methodInfoRefreshToken);
   }
 
-  methodInfoVerifyRefreshToken = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoVerifyRefreshToken = new grpcWeb.MethodDescriptor(
+    '/protos.AuthService/VerifyRefreshToken',
+    grpcWeb.MethodType.UNARY,
+    authservice_pb.VerifyRefreshTokenRequest,
     authservice_pb.VerifyRefreshTokenResponse,
     (request: authservice_pb.VerifyRefreshTokenRequest) => {
       return request.serializeBinary();
@@ -90,13 +96,13 @@ export class AuthServiceClient {
   verifyRefreshToken(
     request: authservice_pb.VerifyRefreshTokenRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: authservice_pb.VerifyRefreshTokenResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.VerifyRefreshTokenResponse>;
 
   verifyRefreshToken(
     request: authservice_pb.VerifyRefreshTokenRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: authservice_pb.VerifyRefreshTokenResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -115,7 +121,10 @@ export class AuthServiceClient {
     this.methodInfoVerifyRefreshToken);
   }
 
-  methodInfoVerifyAccessToken = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoVerifyAccessToken = new grpcWeb.MethodDescriptor(
+    '/protos.AuthService/VerifyAccessToken',
+    grpcWeb.MethodType.UNARY,
+    authservice_pb.VerifyAccessTokenRequest,
     authservice_pb.VerifyAccessTokenResponse,
     (request: authservice_pb.VerifyAccessTokenRequest) => {
       return request.serializeBinary();
@@ -130,13 +139,13 @@ export class AuthServiceClient {
   verifyAccessToken(
     request: authservice_pb.VerifyAccessTokenRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: authservice_pb.VerifyAccessTokenResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.VerifyAccessTokenResponse>;
 
   verifyAccessToken(
     request: authservice_pb.VerifyAccessTokenRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: authservice_pb.VerifyAccessTokenResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(
@@ -155,7 +164,10 @@ export class AuthServiceClient {
     this.methodInfoVerifyAccessToken);
   }
 
-  methodInfoLogin = new grpcWeb.AbstractClientBase.MethodInfo(
+  methodInfoLogin = new grpcWeb.MethodDescriptor(
+    '/protos.AuthService/Login',
+    grpcWeb.MethodType.UNARY,
+    authservice_pb.InternalLoginRequest,
     authservice_pb.LoginResponse,
     (request: authservice_pb.InternalLoginRequest) => {
       return request.serializeBinary();
@@ -170,13 +182,13 @@ export class AuthServiceClient {
   login(
     request: authservice_pb.InternalLoginRequest,
     metadata: grpcWeb.Metadata | null,
-    callback: (err: grpcWeb.Error,
+    callback: (err: grpcWeb.RpcError,
                response: authservice_pb.LoginResponse) => void): grpcWeb.ClientReadableStream<authservice_pb.LoginResponse>;
 
   login(
     request: authservice_pb.InternalLoginRequest,
     metadata: grpcWeb.Metadata | null,
-    callback?: (err: grpcWeb.Error,
+    callback?: (err: grpcWeb.RpcError,
                response: authservice_pb.LoginResponse) => void) {
     if (callback !== undefined) {
       return this.client_.rpcCall(

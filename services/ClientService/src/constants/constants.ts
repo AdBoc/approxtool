@@ -1,3 +1,8 @@
+import { GenericObject } from "../types";
+
+/*API*/
+export const API_CLIENT = 'http://localhost:8080';
+
 /*REGEXES*/
 export const csvRegex = /^.*\.csv$/gm;
 export const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -5,8 +10,8 @@ export const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 /*SPLIT CHARS*/
 export const csvSplitter = /\r?\n|,/;
 export const pasteSplitter = /\r?\n|,|\t/;
-export const splitExpressionChars = ['+', '-', '*', '^', '**', '(', ')', '/', ' ']; //TODO: DO I NEED ' '?
-export const allowedMathSymbols: { [key: string]: boolean } = {
+export const splitExpressionChars = ['+', '-', '*', '^', '**', '(', ')', '/', ' '];
+export const allowedMathSymbols: GenericObject<boolean> = {
   acos: true,
   acosh: true,
   asin: true,
@@ -32,6 +37,6 @@ export const allowedMathSymbols: { [key: string]: boolean } = {
 
 /*APP ERRORS*/
 export enum Errors {
-  ERR_CSV_EXT = 'Wrong File Extension',
+  ERR_CSV_EXT = 'Wrong File Extension.',
   ERR_PARSING_FILE = 'Problem parsing input file.'
 }

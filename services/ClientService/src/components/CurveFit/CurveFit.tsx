@@ -3,9 +3,9 @@ import React, {
   useReducer
 } from 'react';
 import { useHistory } from 'react-router-dom';
-import { RateResult } from './CurveFit.utils';
+import { rateResults } from './CurveFit.utils';
 import {
-  expressionParams,
+  getExpressionParams,
   parsePointsForRequest,
 } from '../../utils/dataParsing';
 import {
@@ -21,10 +21,6 @@ import { Button } from '../../common-components/Button/Button';
 import { DataHandler } from '../DataHandler';
 import { Models } from '../Models';
 import { FitResults } from '../FitResults';
-import {
-  fetchTempModels,
-  fetchTempResults,
-} from '../../temporary/sim-request/sim-request';
 import styles from './styles.module.scss';
 import { apiService } from '../../grpc-web/apiService';
 import { useIsMounted } from '../../hooks/useIsMounted';
@@ -42,8 +38,25 @@ export const CurveFit = () => {
 
   useEffect(() => {
     async function fetchModels() {
-      if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-        fetchTempModels().then(models => {
+      try {
+        const response = await apiService.GetUserModels();
+
+        if (isMounted()) {
+          const models = response.toObject().modelsList.map(model => {
+            const defaultParams = getExpressionParams(model.expression).map(param => ({
+              paramName: param,
+              paramValue: 1,
+              minBound: -Infinity,
+              maxBound: Infinity,
+            }));
+
+            return {
+              ...model,
+              isSelected: false,
+              params: defaultParams
+            }
+          });
+
           const modelsObject: { [k: string]: FitStateExpression[] } = {};
 
           models.forEach(model => {
@@ -51,41 +64,11 @@ export const CurveFit = () => {
             modelsObject[model.tag].push(model);
           });
 
-          if (isMounted()) dispatch({type: FitActionType.SET_MODELS, models: modelsObject});
-        });
-      } else {
-        try {
-          const response = await apiService.GetUserModels();
-
-          if (isMounted()) {
-            const models = response.toObject().modelsList.map(model => {
-              const defaultParams = expressionParams(model.expression).map(param => ({
-                paramName: param,
-                paramValue: 1,
-                minBound: -Infinity,
-                maxBound: Infinity,
-              }));
-
-              return {
-                ...model,
-                isSelected: false,
-                params: defaultParams
-              }
-            });
-
-            const modelsObject: { [k: string]: FitStateExpression[] } = {};
-
-            models.forEach(model => {
-              if (!modelsObject.hasOwnProperty(model.tag)) modelsObject[model.tag] = [];
-              modelsObject[model.tag].push(model);
-            });
-
-            dispatch({type: FitActionType.SET_MODELS, models: modelsObject});
-          }
-        } catch (err) {
-          if (isApiError(err)) {
-            console.error(err.code, err.message);
-          }
+          dispatch({type: FitActionType.SET_MODELS, models: modelsObject});
+        }
+      } catch (err) {
+        if (isApiError(err)) {
+          console.error(err.code, err.message);
         }
       }
     }
@@ -94,42 +77,29 @@ export const CurveFit = () => {
   }, [history, isMounted]);
 
   const handleApproximation = async () => {
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      Object.values(state.allModels).reduce((acc, models) => {
-        models.forEach(model => (model.isSelected && acc.push(model)));
-        return acc;
-      }, []);
+    const modelsList = Object.values(state.allModels).reduce((acc, models) => {
+      models.forEach(model => (model.isSelected && acc.push(model)));
+      return acc;
+    }, []);
 
-      fetchTempResults().then(results => {
-        results.forEach(RateResult);
-        dispatch({type: FitActionType.SET_RESULT, result: results});
-        graphDataManager.clearExpressions();
-      });
-    } else {
-      const modelsList = Object.values(state.allModels).reduce((acc, models) => {
-        models.forEach(model => (model.isSelected && acc.push(model)));
-        return acc;
-      }, []);
+    if (!state.rawPoints.length) return;
 
-      if (!state.rawPoints.length) return;
+    const [xData, yData] = parsePointsForRequest(state.rawPoints);
 
-      const [xData, yData] = parsePointsForRequest(state.rawPoints); //TODO: ADD TO CLASS METHOD?
-
-      try {
-        const response = await apiService.FitCurves(modelsList, xData, yData);
-        if (isMounted()) {
-          const fitResult = response.toObject().fitResultList
-            .sort((a, b) => a.rootMeanSquaredError - b.rootMeanSquaredError);
-          fitResult.forEach(RateResult);
-          dispatch({type: FitActionType.SET_RESULT, result: fitResult});
-        }
-      } catch (err) {
-        if (isApiError(err)) {
-          console.error(err.code, err.message);
-        }
+    try {
+      const response = await apiService.FitCurves(modelsList, xData, yData);
+      if (isMounted()) {
+        const fitResult = response.toObject().fitResultList
+          .sort((a, b) => a.rootMeanSquaredError - b.rootMeanSquaredError);
+        fitResult.forEach(rateResults);
+        dispatch({type: FitActionType.SET_RESULT, result: fitResult});
       }
-      graphDataManager.clearExpressions();
+    } catch (err) {
+      if (isApiError(err)) {
+        console.error(err.code, err.message);
+      }
     }
+    graphDataManager.clearExpressions();
   };
 
   return (

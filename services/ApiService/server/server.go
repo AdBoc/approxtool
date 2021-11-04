@@ -9,7 +9,6 @@ import (
 	"context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 )
 
 type Server struct {
@@ -23,7 +22,6 @@ type Server struct {
 func (s *Server) secureRpc(accessToken string) (*auth.VerifyAccessTokenResponse, error) {
 	token, err := s.AuthClient.VerifyAccessToken(context.Background(), &auth.VerifyAccessTokenRequest{AccessToken: accessToken})
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -33,7 +31,6 @@ func (s *Server) secureRpc(accessToken string) (*auth.VerifyAccessTokenResponse,
 func (s *Server) secureAdminRpc(accessToken string) (*auth.VerifyAccessTokenResponse, error) {
 	token, err := s.AuthClient.VerifyAccessToken(context.Background(), &auth.VerifyAccessTokenRequest{AccessToken: accessToken})
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 	if token.UserRole != "ADMIN" {

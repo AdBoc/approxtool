@@ -1,8 +1,10 @@
+import { Role } from "../constants/role";
+
 type TokenData = {
   exp: number;
   user_id: number;
-  user_role: 'BASIC_USER' | 'ADMIN'; // TODO: SHOULD I USE ENUM??
-  username: string; // TODO: should be uuid?
+  user_role: Role;
+  username: string;
 };
 
 class Token {

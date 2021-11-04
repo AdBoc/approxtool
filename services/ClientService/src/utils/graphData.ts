@@ -2,16 +2,15 @@ import { GraphExpression, } from '../types/stateExpression';
 import { parseAsterisks } from './dataParsing';
 import { GenericObject } from '../types';
 import { calculatePoints } from './curveFit';
-import { FitRes } from '../types/fitResult';
+import { FitResponse } from '../types';
 
 class GraphDataManager {
   #calculatedExpressions: GraphExpression[] = [];
   #xMin = 0;
   #xMax = 0;
 
-  private addExpression(result: FitRes) {
-    const parsedExpression = parseAsterisks(result.modelExpression, true)
-      .replaceAll(' ', '');
+  private addExpression(result: FitResponse) {
+    const parsedExpression = parseAsterisks(result.modelExpression, 'js').replaceAll(' ', '');
 
     const params = result.parametersList.reduce((parameters, parameter) => {
       parameters[parameter.name] = parameter.value;
@@ -20,18 +19,14 @@ class GraphDataManager {
 
     const graphPoints = calculatePoints(parsedExpression, params, this.#xMin, this.#xMax);
 
-    if (graphPoints) {
-      const newExpression = {
-        id: result.modelId,
-        name: result.modelName,
-        points: graphPoints,
-      };
+    const newExpression = {
+      id: result.modelId,
+      name: result.modelName,
+      points: graphPoints,
+    };
 
-      this.#calculatedExpressions.push(newExpression);
-      return newExpression;
-    }
-
-    return false;
+    this.#calculatedExpressions.push(newExpression);
+    return newExpression;
   };
 
   public setXMinMax(min: number, max: number) {
@@ -39,13 +34,10 @@ class GraphDataManager {
     this.#xMax = max;
   };
 
-  public getExpression(expression: FitRes) {
+  public getExpression(expression: FitResponse) {
     let graphExpr: undefined | false | GraphExpression;
-
     graphExpr = this.#calculatedExpressions.find(({id}) => expression.modelId === id);
-
     if (!graphExpr) graphExpr = this.addExpression(expression);
-
     return graphExpr;
   };
 

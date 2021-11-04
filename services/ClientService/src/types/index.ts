@@ -1,4 +1,9 @@
-export type { StateExpression } from './stateExpression';
+export type {
+  StateExpression,
+  FitStateExpression,
+  GraphExpression,
+  NewExpression,
+} from './stateExpression';
 export type {
   RegisterForm,
   LoginForm
@@ -6,4 +11,4 @@ export type {
 export type { Point } from './pointCoordinate';
 export type { User } from './users';
 export type { GenericObject } from './utils';
-export { Role } from './role';
+export type { FitResponse } from './fitResult';

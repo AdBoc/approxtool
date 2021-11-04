@@ -22,6 +22,3 @@ export function readCSV(file: File): Promise<string> {
     temporaryFileReader.readAsText(file);
   });
 }
-
-//TODO: What if file is empty?
-//TODO: Error handle parsing + float Parsing error?

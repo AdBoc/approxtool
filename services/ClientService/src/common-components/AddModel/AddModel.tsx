@@ -6,10 +6,10 @@ import React, {
 } from 'react';
 import nerdamer from 'nerdamer';
 import TexMath from '@matejmazur/react-katex';
-import { expressionParams } from '../../utils/dataParsing';
-import { extraExprValidation } from './AddModel.utils';
-import { NewExpression } from '../../types/stateExpression';
+import { getExpressionParams } from '../../utils/dataParsing';
+import { expressionValidation } from './AddModel.utils';
 import { InputField } from '../InputField/InputField';
+import { Graph } from '../Graph';
 import {
   calculatePoints,
   getYAxisMinMax
@@ -17,22 +17,22 @@ import {
 import { Button } from '../Button/Button';
 import {
   GenericObject,
-  Point
+  Point,
+  NewExpression
 } from '../../types';
 import styles from './styles.module.scss';
 import 'katex/dist/katex.min.css';
-import { Graph } from '../Graph';
 
 interface Props {
   modelSubmit: (expr: NewExpression) => void;
-  temporary?: boolean;
+  isTempModel?: boolean;
 }
 
-export const AddModel: React.FC<Props> = ({modelSubmit, temporary}): JSX.Element => {
+export const AddModel: React.FC<Props> = ({modelSubmit, isTempModel: temporary}): JSX.Element => {
   const [graphPoints, setGraphPoints] = useState<Point[]>([]);
   const [parameters, setParameters] = useState<GenericObject<number>>({});
-  const [errors, setErrors] = useState<string[]>([]);
-  const [modelForm, setModelForm] = useState<NewExpression>({
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [newModelData, setNewModelData] = useState<NewExpression>({
     name: '',
     expression: '',
     lexexpression: '',
@@ -40,43 +40,40 @@ export const AddModel: React.FC<Props> = ({modelSubmit, temporary}): JSX.Element
   });
 
   useEffect(() => {
-    if (!modelForm.expression) return setModelForm(prev => ({...prev, lexexpression: ''}));
+    if (!newModelData.expression) return setNewModelData(prev => ({...prev, lexexpression: ''}));
     let exprErrors: string[] = [];
     try {
-      const lexEquation = nerdamer(modelForm.expression).toTeX();
-      let exprParams: string[] | GenericObject<number> = expressionParams(modelForm.expression);
-      exprErrors = extraExprValidation(modelForm.expression, exprParams, modelForm.name);
-      setModelForm(prev => ({...prev, lexexpression: lexEquation}));
+      const lexEquation = nerdamer(newModelData.expression).toTeX();
+      let exprParams: string[] | GenericObject<number> = getExpressionParams(newModelData.expression);
+      exprErrors = expressionValidation(newModelData.expression, exprParams, newModelData.name);
+      setNewModelData(prev => ({...prev, lexexpression: lexEquation}));
 
-      exprParams = exprParams.reduce((params, letter) => {
+      setParameters(exprParams.reduce((params, letter) => {
         params[letter] = 1;
         return params;
-      }, {} as GenericObject<number>);
-
-      setParameters(exprParams)
-    } catch (e) {
+      }, {} as GenericObject<number>));
+    } catch {
       exprErrors.push('Expression cannot be converted to latex');
     } finally {
-      setErrors(exprErrors);
+      setValidationErrors(exprErrors);
     }
-  }, [modelForm.expression, modelForm.name]);
+  }, [newModelData.expression, newModelData.name]);
 
   useEffect(() => {
-    if (errors.length || !modelForm.expression) return;
+    if (validationErrors.length || !newModelData.expression || !Object.values(parameters).length) return;
 
-    const calculatedPoints = calculatePoints(modelForm.expression, parameters);
-    if (!calculatedPoints) {
-      setErrors(prev => [...prev, 'Expression cannot be evaluated']);
-      return;
+    try {
+      const points = calculatePoints(newModelData.expression, parameters);
+      setGraphPoints(points);
+    } catch {
+      setValidationErrors(prev => [...prev, 'Expression cannot be evaluated']);
     }
-
-    setGraphPoints(calculatedPoints);
-  }, [modelForm.expression, parameters, errors.length]);
+  }, [newModelData.expression, parameters, validationErrors.length]);
 
 
   const yScaleDomain = useMemo(() => getYAxisMinMax(graphPoints), [graphPoints]);
 
-  const handleInput = (e: BaseSyntheticEvent) => setModelForm(prev => ({...prev, [e.target.name]: e.target.value}));
+  const handleInput = (e: BaseSyntheticEvent) => setNewModelData(prev => ({...prev, [e.target.name]: e.target.value}));
 
   const handleChangeParameter = (e: BaseSyntheticEvent) => {
     const newParam = parseFloat(e.target.value);
@@ -86,29 +83,29 @@ export const AddModel: React.FC<Props> = ({modelSubmit, temporary}): JSX.Element
   };
 
   const handleModelSubmit = () => {
-    if (!modelForm.name || !modelForm.expression) {
-      setErrors(prev => [...prev, 'Name or expression fields cannot be empty']);
+    if (!newModelData.name || !newModelData.expression) {
+      setValidationErrors(prev => [...prev, 'Name or expression fields cannot be empty']);
       return;
     }
-    if (errors.length) return;
-    modelSubmit(modelForm);
+    if (validationErrors.length) return;
+    modelSubmit(newModelData);
   };
 
   return (
     <div className={styles.modalWrapper}>
       <div>
-        <InputField label="Name*" name="name" value={modelForm.name} handler={handleInput} autoComplete="off"/>
-        <InputField label="Expression*" name="expression" value={modelForm.expression} handler={handleInput} autoComplete="off" />
-        {!temporary && <InputField label="Tag" name="tag" value={modelForm.tag} handler={handleInput} autoComplete="off"/>}
-        {modelForm.lexexpression && (
+        <InputField label="Name*" name="name" value={newModelData.name} handler={handleInput} autoComplete="off"/>
+        <InputField label="Expression*" name="expression" value={newModelData.expression} handler={handleInput} autoComplete="off" />
+        {!temporary && <InputField label="Tag" name="tag" value={newModelData.tag} handler={handleInput} autoComplete="off"/>}
+        {newModelData.lexexpression && (
           <TexMath
             block
-            className={`${styles.texExpression} ${errors.length ? styles.texError : styles.texValid}`}
-            math={modelForm.lexexpression}
+            className={`${styles.texExpression} ${validationErrors.length ? styles.texError : styles.texValid}`}
+            math={newModelData.lexexpression}
           />
         )}
         <div className={styles.textWrapper}>
-          {errors.map(error => <p key={error} className={styles.textError}>{error}</p>)}
+          {validationErrors.map(error => <p key={error} className={styles.textError}>{error}</p>)}
         </div>
         {Boolean(Object.keys(parameters).length) && <div className={styles.textWrapper}>
             <p>Detected parameters: {Object.keys(parameters).join(', ')}</p>
@@ -133,7 +130,7 @@ export const AddModel: React.FC<Props> = ({modelSubmit, temporary}): JSX.Element
       </div>
       <div className={styles.graphWrapper}>
         <Graph
-          graphExpression={{id: 1, name: modelForm.name, points: graphPoints}}
+          graphExpression={{id: 1, name: newModelData.name, points: graphPoints}}
           yScaleDomain={yScaleDomain}
           xScaleDomain={[-100, 100]}
         />

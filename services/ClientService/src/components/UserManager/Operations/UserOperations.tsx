@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Role } from '../../../constants/role';
 import { Modal } from '../../../common-components/Modal/Modal';
 import { isApiError } from '../../../utils/isApiError';
 import { token } from '../../../utils/token';
@@ -9,7 +10,6 @@ import { UserResponse } from '../../../protos/userservice_pb';
 import { Button } from '../../../common-components/Button/Button';
 import { InputField } from '../../../common-components/InputField/InputField';
 import styles from './styles.module.scss';
-import { Role } from '../../../types';
 
 interface Props {
   users: UserResponse.AsObject[];

@@ -1,84 +1,62 @@
-import React, { BaseSyntheticEvent } from 'react';
-import { parsePasteText } from '../../utils/dataParsing';
+import { BaseSyntheticEvent, Dispatch, FC } from 'react';
 import styles from './styles.module.scss';
 import {
-  CurveFitActions,
-  FitActionType
+  CurveFitActions, FitActionType,
 } from '../../reducers/curveFitReducer';
+import { Row } from './Row';
+import { parsePasteText } from '../../utils/dataParsing';
+import { Cell } from './Cell';
 
 interface Props {
   plotPoints: number[];
-  dispatch: React.Dispatch<CurveFitActions>;
+  dispatch: Dispatch<CurveFitActions>;
 }
 
-export const DataTable: React.FC<Props> = ({plotPoints, dispatch}): JSX.Element => {
+function getNum(num: number) {
+  let count = num / 2;
+  if (!Number.isInteger(count)) count += 0.5;
+  return count;
+}
+
+export const DataTable: FC<Props> = ({plotPoints, dispatch}): JSX.Element => {
+  const pointsCount = plotPoints.length;
+  
   const handlePaste = (e: any) => {
     e.clipboardData.items[0].getAsString((text: string) => {
       const data = parsePasteText(text);
-      dispatch({type: FitActionType.SET_PLOT_POINTS, plotPoints: data});
+      dispatch({ type: FitActionType.SET_PLOT_POINTS, plotPoints: data });
     });
   };
 
-  const handleFocus = (e: BaseSyntheticEvent) => e.target.select();
-
-  const handleChange = (e: BaseSyntheticEvent, i: number, addNewRow = false) => {
+  const handleChange = (index: number) => (e: BaseSyntheticEvent) => {
     const newValue = parseFloat(e.target.value);
     if (isNaN(newValue)) return;
-
     const newCalculationData = [...plotPoints];
-
-    if (addNewRow) newCalculationData.push(0, 0);
-
-    newCalculationData[i] = parseFloat(e.target.value);
+    if (index >= pointsCount) newCalculationData.push(0, 0);
+    newCalculationData[index] = newValue;
     dispatch({type: FitActionType.SET_PLOT_POINTS, plotPoints: newCalculationData});
   };
 
-  function generateData(calculationData: number[]) {
-    let cells: JSX.Element[] = [];
-    let cellKey = 1;
-
-    for (let i = 0; i <= calculationData.length; i += 2) {
-      cells.push(
-        <div key={cellKey} className={styles.row}>
-          <span className={styles.numberCell}>{cellKey}</span>
-          <input className={styles.cell} type="number" onPaste={handlePaste}
-                 value={calculationData[i]} onChange={(e) => handleChange(e, i)} onFocus={handleFocus}/>
-          <input className={styles.cell} type="number" onPaste={handlePaste}
-                 value={calculationData[i + 1]} onChange={(e) => handleChange(e, i + 1)} onFocus={handleFocus}/>
-        </div>
-      )
-      cellKey++;
+  const generateRows = () => {
+    const rows: JSX.Element[] = [];
+    for (let i = 0; i < pointsCount; i += 2) {
+      rows.push(
+        <Row key={i} rowNo={i/2}>
+          <Cell value={plotPoints[i]} onChange={handleChange(i)} onPaste={handlePaste}/>
+          <Cell value={plotPoints[i+1]} onChange={handleChange(i + 1)} onPaste={handlePaste}/>
+        </Row>
+      );
     }
-    cells.pop();
-
-    return cells;
-  }
-
-  if (!plotPoints.length) return (
-    <div className={styles.sheetWrapper}>
-      <div className={styles.row}>
-        <span className={styles.numberCell}>1</span>
-        <input className={styles.cell} type="number" onPaste={handlePaste} onChange={(e) => handleChange(e, 0, true)}/>
-        <input className={styles.cell} type="number" onPaste={handlePaste} onChange={(e) => handleChange(e, 1, true)}/>
-      </div>
-    </div>
-  );
+    return rows;
+  };
 
   return (
     <div className={styles.sheetWrapper}>
-      {generateData(plotPoints)}
-      <div className={styles.row}>
-        <span className={styles.numberCell}>{Math.floor((plotPoints.length / 2) + 1)}</span>
-        <input className={styles.cell} type="number" onPaste={handlePaste} value=""
-               onChange={(e) => handleChange(e, plotPoints.length, true)}/>
-        <input className={styles.cell} type="number" onPaste={handlePaste} value=""
-               onChange={(e) => handleChange(e, plotPoints.length + 1, true)}/>
-      </div>
+      {generateRows()}
+      <Row rowNo={getNum(pointsCount)}>
+        <Cell value={''} onChange={handleChange(pointsCount)} onPaste={handlePaste}/>
+        <Cell value={''} onChange={handleChange(pointsCount + 1)} onPaste={handlePaste}/>
+      </Row>
     </div>
-  );
+  )
 };
-
-//TODO: PASTE FROM POSITION INDEX 5 FOR EXAMPLE
-//TODO: CREATE ROW COMPONENT
-//TODO: DATA SELECTION BY USER
-//TODO: REFACTOR
