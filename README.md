@@ -1,6 +1,8 @@
 # APPROXIMATION TOOL
 
-- Fit data to multiple user defined models.
+- Add multiple custom models.
+- Fit models to data.
+- Create and manage users.
 
 ## Run project
 
