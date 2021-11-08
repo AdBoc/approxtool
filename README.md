@@ -7,7 +7,7 @@
 ## Run project
 
 ### Setup
-Make sure that you modify secrets located inside /services/AuthService/.env file.
+Make sure you modify secrets located inside /services/AuthService/.env file.
 
 ### Commands
 `docker-compose build` - compile go code, create frontend optimized build.
