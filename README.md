@@ -23,6 +23,6 @@ Improve initial admin creation process. (current admin login: admin@admin.com, p
 
 Export colors to scss variables.
 
-Improve graph code.
+Improve graphs code and responsiveness.
 
 Create proper mansonry grid for models selection.
