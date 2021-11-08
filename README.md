@@ -19,7 +19,7 @@ Make sure that you modify secrets located inside /services/AuthService/.env file
 ## TODO:
 Complete README.md.
 
-Improve initial admin creation process.
+Improve initial admin creation process. (current admin login: admin@admin.com, password: password123)
 
 Export colors to scss variables.
 
